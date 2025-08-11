@@ -26,6 +26,6 @@ public class RedstoneOreBlockMixin extends Block
 	@Inject(method="spawnAfterBreak", at=@At("HEAD"), cancellable=true)
 	private void preventOreDrops (BlockState state, ServerLevel level, BlockPos pos, ItemStack stack, boolean dropExperience, CallbackInfo ci)
 	{
-		if (state.is(ModTags.XP_DROP_DISABLED) && CommonConfigs.ENABLE_ROUGH_GEMS.get()) ci.cancel();
+		if (CommonConfigs.ENABLE_ROUGH_GEMS.get()) ci.cancel();
 	}
 }

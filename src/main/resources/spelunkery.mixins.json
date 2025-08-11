@@ -1,17 +1,17 @@
 {
-
 	"required": true,
 	"minVersion": "0.8",
 	"package": "com.ordana.spelunkery.mixins",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"BoatPaddleSoundMixin",
-		"FlowingFluidMixin",
 		"MossBlockMixin",
 		"NetherPortalBlockMixin",
 		"OreBlockMixin",
 		"RedstoneOreBlockMixin",
 	],
+	"client": [],
+	"server": [],
 	"injectors": {
 		"defaultRequire": 1
 	}

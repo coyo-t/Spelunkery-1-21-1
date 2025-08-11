@@ -13,20 +13,21 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
+import static com.ordana.spelunkery.Spelunkery.MOD_ID;
+
 public class ModItems
 {
+
+	public static final DeferredRegister.Items ITEMS   = DeferredRegister.createItems(MOD_ID);
 	
 	public static void init ()
 	{
-	}
-	
-	public static <T extends Item> Supplier<T> regItem (String name, Supplier<T> itemSup)
-	{
-		return RegHelper.registerItem(Spelunkery.res(name), itemSup);
 	}
 	
 	
@@ -212,5 +213,19 @@ public class ModItems
 	
 	public static final Supplier<Item> DUST_BUNNY_SPAWN_EGG = RegHelper.registerItem(Spelunkery.res("dust_bunny_spawn_egg"), () ->
 			  PlatHelper.newSpawnEgg(ModEntities.DUST_BUNNY, 0x5E625E, 0x3F3C39, new Item.Properties()));
+
+
+	
+	public static Supplier<Item> rb (String name, Block it)
+	{
+		return ITEMS.register(name, () -> new BlockItem(it, new Item.Properties()));
+	}
+	
+	
+	
+	public static <T extends Item> Supplier<T> regItem (String name, Supplier<T> itemSup)
+	{
+		return ITEMS.register(name, itemSup);
+	}
 	
 }

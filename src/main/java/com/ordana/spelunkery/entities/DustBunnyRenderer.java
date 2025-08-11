@@ -1,7 +1,7 @@
 package com.ordana.spelunkery.entities;
 
 import com.ordana.spelunkery.Spelunkery;
-import com.ordana.spelunkery.SpelunkeryClient;
+//import com.ordana.spelunkery.SpelunkeryClient;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +12,7 @@ public class DustBunnyRenderer extends MobRenderer<DustBunnyEntity, DustBunnyMod
 	
 	public DustBunnyRenderer (EntityRendererProvider.Context context)
 	{
-		super(context, new DustBunnyModel<>(context.bakeLayer(SpelunkeryClient.DUST_BUNNY)), 0.5F);
+		super(context, new DustBunnyModel<>(context.bakeLayer(Spelunkery.Client.DUST_BUNNY)), 0.5F);
 	}
 	
 	@Override

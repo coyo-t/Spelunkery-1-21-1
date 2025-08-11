@@ -1,4 +1,4 @@
-package com.ordana.spelunkery.forge;
+package com.ordana.spelunkery.blocks;
 
 import com.ordana.spelunkery.reg.ModBlocks;
 import com.ordana.spelunkery.reg.ModFluids;

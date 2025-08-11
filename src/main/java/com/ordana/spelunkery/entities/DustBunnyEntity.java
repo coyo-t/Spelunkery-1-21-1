@@ -40,9 +40,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class DustBunnyEntity extends PathfinderMob
 {
-	private static final EntityDataAccessor<Integer>
-	DATA_TYPE_ID = SynchedEntityData.defineId(DustBunnyEntity.class, EntityDataSerializers.INT);
-	
 	int moreCarrotTicks;
 	
 	public DustBunnyEntity (EntityType<? extends PathfinderMob> entityType, Level level)

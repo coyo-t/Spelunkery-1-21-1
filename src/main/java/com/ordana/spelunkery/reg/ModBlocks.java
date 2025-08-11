@@ -1,12 +1,10 @@
 package com.ordana.spelunkery.reg;
 
 import com.ordana.spelunkery.Spelunkery;
-import com.ordana.spelunkery.SpelunkeryPlatform;
 import com.ordana.spelunkery.blocks.*;
 import com.ordana.spelunkery.blocks.fungi.*;
 import com.ordana.spelunkery.blocks.nephrite.*;
 import com.ordana.spelunkery.blocks.rock_salt.*;
-import com.ordana.spelunkery.configs.CommonConfigs;
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.ColorRGBA;
@@ -21,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -29,63 +28,8 @@ import static net.minecraft.world.level.block.state.BlockBehaviour.Properties.of
 
 public class ModBlocks
 {
+	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Spelunkery.MOD_ID);
 	
-	public static void init ()
-	{
-	}
-	
-	private static boolean always (BlockState state, BlockGetter blockGetter, BlockPos pos)
-	{
-		return true;
-	}
-	
-	private static boolean never (BlockState state, BlockGetter blockGetter, BlockPos pos)
-	{
-		return false;
-	}
-	
-	private static boolean never (BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, EntityType<?> entityType)
-	{
-		return false;
-	}
-	
-	private static boolean ifIlluminated (BlockState state, BlockGetter blockGetter, BlockPos pos)
-	{
-		return state.getValue(ModBlockProperties.ILLUMINATED);
-	}
-	
-	private static boolean ifLit (BlockState state, BlockGetter blockGetter, BlockPos pos)
-	{
-		return state.getValue(BlockStateProperties.LIT);
-	}
-	
-	private static ToIntFunction<BlockState> createLightLevelFromIlluminatedBlockState (int litLevel)
-	{
-		return (state) -> (Boolean)state.getValue(ModBlockProperties.ILLUMINATED) ? litLevel : 0;
-	}
-	
-	private static ToIntFunction<BlockState> createLightLevelFromLitBlockState (int lightValue)
-	{
-		return (blockState) -> (Boolean)blockState.getValue(BlockStateProperties.LIT) ? lightValue : 0;
-	}
-	
-	public static <T extends Block> Supplier<T> regBlock (String name, Supplier<T> block)
-	{
-		return RegHelper.registerBlock(Spelunkery.res(name), block);
-	}
-	
-	public static <T extends Block> Supplier<T> regWithItem (String name, Supplier<T> blockFactory)
-	{
-		Supplier<T> block = regBlock(name, blockFactory);
-		RegHelper.registerItem(Spelunkery.res(name), () -> new BlockItem(((Supplier<? extends Block>)block).get(), new Item.Properties()));
-		return block;
-	}
-	
-	public static <T extends Block> Supplier<T> regWithItemConfigurable (String name, Supplier<T> block)
-	{
-		if (CommonConfigs.ENABLE_MORES.get()) return regWithItem(name, block);
-		else return null;
-	}
 	
 	
 	//rough gem blocks
@@ -386,15 +330,9 @@ public class ModBlocks
 			  new HugeMushroomBlock(ofFullCopy(Blocks.MUSHROOM_STEM).mapColor(MapColor.TERRACOTTA_GRAY).strength(0.2F).sound(SoundType.WOOD)));
 	
 	
-	//mining gear
+
 	public static final Supplier<Block> GLOWSTICK = regBlock("glowstick", () ->
 			  new GlowstickBlock(ofFullCopy(Blocks.END_ROD).instabreak().noCollission().noOcclusion().emissiveRendering(ModBlocks::always).lightLevel((blockStatex) -> 14).sound(SoundType.CANDLE)));
-//	public static final Supplier<Block> ROPE_LADDER = regBlock("rope_ladder", () ->
-//			  new RopeLadderBlock(ofFullCopy(Blocks.LADDER).strength(1f).sound(SoundType.WOOD)));
-//	public static final Supplier<Block> WOODEN_RAIL = regBlock("wooden_rail", () ->
-//			  new WoodenRailBlock(true, ofFullCopy(Blocks.RAIL).noOcclusion().strength(0.7F).sound(SoundType.WOOD).instabreak()));
-	
-	//glowsticks
 	public static final Supplier<Block> RED_GLOWSTICK = regBlock("red_glowstick", () ->
 			  new GlowstickBlock(ofFullCopy(GLOWSTICK.get())));
 	public static final Supplier<Block> ORANGE_GLOWSTICK = regBlock("orange_glowstick", () ->
@@ -428,71 +366,103 @@ public class ModBlocks
 	public static final Supplier<Block> LIGHT_GRAY_GLOWSTICK = regBlock("light_gray_glowstick", () ->
 			  new GlowstickBlock(ofFullCopy(GLOWSTICK.get())));
 	
-	
-//	public static final Supplier<Block> WOODEN_CHANNEL = regBlock("wooden_channel", () ->
-//			  new ChannelBlock(ofFullCopy(Blocks.OAK_WOOD).ignitedByLava()));
-//	public static final Supplier<Block> WOODEN_SLUICE = regBlock("wooden_sluice", () ->
-//			  new ChannelSluiceBlock(ofFullCopy(Blocks.OAK_WOOD).ignitedByLava()));
-//	public static final Supplier<Block> STONE_CHANNEL = regBlock("stone_channel", () ->
-//			  new ChannelBlock(ofFullCopy(Blocks.STONE_BRICKS)));
-//	public static final Supplier<Block> STONE_SLUICE = regBlock("stone_sluice", () ->
-//			  new ChannelSluiceBlock(ofFullCopy(Blocks.STONE_BRICKS)));
-	
-	
-	// FIXME should take interactionmap not map
-//	public static final Supplier<Block> PORTAL_CAULDRON = regBlock("portal_cauldron", () ->
-//			  new PortalFluidCauldronBlock(ofFullCopy(Blocks.CAULDRON).lightLevel((blockStatex) -> 5), CauldronInteraction.WATER.map()));
-	
 	//fluids
 	public static final Supplier<LiquidBlock> PORTAL_FLUID = regBlock("portal_fluid", () ->
-			  SpelunkeryPlatform.doPortalFluid(ModFluids.PORTAL_FLUID, ofFullCopy(Blocks.WATER).noCollission().strength(100f).noLootTable().lightLevel((blockStatex) -> 5)));
+			  new PortalFluidBlock(ModFluids.PORTAL_FLUID, ofFullCopy(Blocks.WATER).noCollission().strength(100f).noLootTable().lightLevel((blockStatex) -> 5)));
 	public static final Supplier<LiquidBlock> SPRING_WATER = regBlock("spring_water", () ->
-			  SpelunkeryPlatform.doSpringWater(ModFluids.SPRING_WATER, ofFullCopy(Blocks.WATER).noCollission().strength(100f).noLootTable().lightLevel((blockStatex) -> 2)));
+			  new SpringWaterBlock(ModFluids.SPRING_WATER, ofFullCopy(Blocks.WATER).noCollission().strength(100f).noLootTable().lightLevel((blockStatex) -> 2)));
 	
 	
 	//mod support
 	
-	public static final Supplier<Block> GRANITE_ZINC_ORE = regWithItemConfigurable("granite_zinc_ore", () ->
+	public static final Supplier<Block> GRANITE_ZINC_ORE = regWithItem("granite_zinc_ore", () ->
 			  new Block(ofFullCopy(Blocks.GOLD_ORE)
 						 .requiresCorrectToolForDrops().strength(3f, 3f)));
-	public static final Supplier<Block> ANDESITE_ZINC_ORE = regWithItemConfigurable("andesite_zinc_ore", () ->
+	public static final Supplier<Block> ANDESITE_ZINC_ORE = regWithItem("andesite_zinc_ore", () ->
 			  new Block(ofFullCopy(ModBlocks.GRANITE_ZINC_ORE.get())));
-	public static final Supplier<Block> DIORITE_ZINC_ORE = regWithItemConfigurable("diorite_zinc_ore", () ->
+	public static final Supplier<Block> DIORITE_ZINC_ORE = regWithItem("diorite_zinc_ore", () ->
 			  new Block(ofFullCopy(ModBlocks.GRANITE_ZINC_ORE.get())));
-	public static final Supplier<Block> TUFF_ZINC_ORE = regWithItemConfigurable("tuff_zinc_ore", () ->
+	public static final Supplier<Block> TUFF_ZINC_ORE = regWithItem("tuff_zinc_ore", () ->
 			  new Block(ofFullCopy(ModBlocks.GRANITE_ZINC_ORE.get()).sound(SoundType.TUFF)));
 	
-	public static final Supplier<Block> GRANITE_LEAD_ORE = regWithItemConfigurable("granite_lead_ore", () ->
+	public static final Supplier<Block> GRANITE_LEAD_ORE = regWithItem("granite_lead_ore", () ->
 			  new Block(ofFullCopy(Blocks.GOLD_ORE)
 						 .requiresCorrectToolForDrops().strength(3f, 3f)));
-	public static final Supplier<Block> ANDESITE_LEAD_ORE = regWithItemConfigurable("andesite_lead_ore", () ->
+	public static final Supplier<Block> ANDESITE_LEAD_ORE = regWithItem("andesite_lead_ore", () ->
 			  new Block(ofFullCopy(ModBlocks.GRANITE_LEAD_ORE.get())));
-	public static final Supplier<Block> DIORITE_LEAD_ORE = regWithItemConfigurable("diorite_lead_ore", () ->
+	public static final Supplier<Block> DIORITE_LEAD_ORE = regWithItem("diorite_lead_ore", () ->
 			  new Block(ofFullCopy(ModBlocks.GRANITE_LEAD_ORE.get())));
-	public static final Supplier<Block> TUFF_LEAD_ORE = regWithItemConfigurable("tuff_lead_ore", () ->
+	public static final Supplier<Block> TUFF_LEAD_ORE = regWithItem("tuff_lead_ore", () ->
 			  new Block(ofFullCopy(ModBlocks.GRANITE_LEAD_ORE.get()).sound(SoundType.TUFF)));
 	
-	public static final Supplier<Block> GRANITE_SILVER_ORE = regWithItemConfigurable("granite_silver_ore", () ->
+	public static final Supplier<Block> GRANITE_SILVER_ORE = regWithItem("granite_silver_ore", () ->
 			  new Block(ofFullCopy(Blocks.GOLD_ORE)
 						 .requiresCorrectToolForDrops().strength(3f, 3f)));
-	public static final Supplier<Block> ANDESITE_SILVER_ORE = regWithItemConfigurable("andesite_silver_ore", () ->
+	public static final Supplier<Block> ANDESITE_SILVER_ORE = regWithItem("andesite_silver_ore", () ->
 			  new Block(ofFullCopy(ModBlocks.GRANITE_SILVER_ORE.get())));
-	public static final Supplier<Block> DIORITE_SILVER_ORE = regWithItemConfigurable("diorite_silver_ore", () ->
+	public static final Supplier<Block> DIORITE_SILVER_ORE = regWithItem("diorite_silver_ore", () ->
 			  new Block(ofFullCopy(ModBlocks.GRANITE_SILVER_ORE.get())));
-	public static final Supplier<Block> TUFF_SILVER_ORE = regWithItemConfigurable("tuff_silver_ore", () ->
+	public static final Supplier<Block> TUFF_SILVER_ORE = regWithItem("tuff_silver_ore", () ->
 			  new Block(ofFullCopy(ModBlocks.GRANITE_SILVER_ORE.get()).sound(SoundType.TUFF)));
 	
 	private static final IntProvider JADE_XP = UniformInt.of(3, 7);
 	
-	public static final Supplier<Block> GRANITE_JADE_ORE = regWithItemConfigurable("granite_jade_ore", () ->
+	public static final Supplier<Block> GRANITE_JADE_ORE = regWithItem("granite_jade_ore", () ->
 			  new DropExperienceBlock(JADE_XP, ofFullCopy(Blocks.EMERALD_ORE)
 						 .requiresCorrectToolForDrops().strength(3f, 3f)));
-	public static final Supplier<Block> ANDESITE_JADE_ORE = regWithItemConfigurable("andesite_jade_ore", () ->
+	public static final Supplier<Block> ANDESITE_JADE_ORE = regWithItem("andesite_jade_ore", () ->
 			  new DropExperienceBlock(JADE_XP, ofFullCopy(ModBlocks.GRANITE_JADE_ORE.get())));
-	public static final Supplier<Block> DIORITE_JADE_ORE = regWithItemConfigurable("diorite_jade_ore", () ->
+	public static final Supplier<Block> DIORITE_JADE_ORE = regWithItem("diorite_jade_ore", () ->
 			  new DropExperienceBlock(JADE_XP, ofFullCopy(ModBlocks.GRANITE_JADE_ORE.get())));
-	public static final Supplier<Block> TUFF_JADE_ORE = regWithItemConfigurable("tuff_jade_ore", () ->
+	public static final Supplier<Block> TUFF_JADE_ORE = regWithItem("tuff_jade_ore", () ->
 			  new DropExperienceBlock(JADE_XP, ofFullCopy(ModBlocks.GRANITE_JADE_ORE.get()).sound(SoundType.TUFF)));
 	
+	
+	private static boolean always (BlockState state, BlockGetter blockGetter, BlockPos pos)
+	{
+		return true;
+	}
+	
+	private static boolean never (BlockState state, BlockGetter blockGetter, BlockPos pos)
+	{
+		return false;
+	}
+	
+	private static boolean never (BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, EntityType<?> entityType)
+	{
+		return false;
+	}
+	
+	private static boolean ifIlluminated (BlockState state, BlockGetter blockGetter, BlockPos pos)
+	{
+		return state.getValue(ModBlockProperties.ILLUMINATED);
+	}
+	
+	private static boolean ifLit (BlockState state, BlockGetter blockGetter, BlockPos pos)
+	{
+		return state.getValue(BlockStateProperties.LIT);
+	}
+	
+	private static ToIntFunction<BlockState> createLightLevelFromIlluminatedBlockState (int litLevel)
+	{
+		return (state) -> (Boolean)state.getValue(ModBlockProperties.ILLUMINATED) ? litLevel : 0;
+	}
+	
+	private static ToIntFunction<BlockState> createLightLevelFromLitBlockState (int lightValue)
+	{
+		return (blockState) -> (Boolean)blockState.getValue(BlockStateProperties.LIT) ? lightValue : 0;
+	}
+	
+	public static <T extends Block> Supplier<T> regBlock (String name, Supplier<T> block)
+	{
+		return BLOCKS.register(name, block);
+	}
+	
+	public static <T extends Block> Supplier<T> regWithItem (String name, Supplier<T> blockFactory)
+	{
+		Supplier<T> block = regBlock(name, blockFactory);
+		RegHelper.registerItem(Spelunkery.res(name), () -> new BlockItem(((Supplier<? extends Block>)block).get(), new Item.Properties()));
+		return block;
+	}
 	
 }
