@@ -35,11 +35,14 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class DustBunnyEntity extends PathfinderMob
 {
-	private static final EntityDataAccessor<Integer> DATA_TYPE_ID;
+	private static final EntityDataAccessor<Integer>
+	DATA_TYPE_ID = SynchedEntityData.defineId(DustBunnyEntity.class, EntityDataSerializers.INT);
+	
 	int moreCarrotTicks;
 	
 	public DustBunnyEntity (EntityType<? extends PathfinderMob> entityType, Level level)
@@ -85,9 +88,9 @@ public class DustBunnyEntity extends PathfinderMob
 		this.goalSelector.addGoal(1, new ClimbOnTopOfPowderSnowGoal(this, this.level()));
 		this.goalSelector.addGoal(1, new DustBunnyEntity.RabbitPanicGoal(this, 2.2D));
 		this.goalSelector.addGoal(3, new TemptGoal(this, 1.0D, Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Blocks.DANDELION), false));
-		this.goalSelector.addGoal(4, new DustBunnyEntity.RabbitAvoidEntityGoal(this, Player.class, 8.0F, 2.2D, 2.2D));
-		this.goalSelector.addGoal(4, new DustBunnyEntity.RabbitAvoidEntityGoal(this, Wolf.class, 10.0F, 2.2D, 2.2D));
-		this.goalSelector.addGoal(4, new DustBunnyEntity.RabbitAvoidEntityGoal(this, Monster.class, 4.0F, 2.2D, 2.2D));
+		this.goalSelector.addGoal(4, new DustBunnyEntity.RabbitAvoidEntityGoal<>(this, Player.class, 8.0F, 2.2D, 2.2D));
+		this.goalSelector.addGoal(4, new DustBunnyEntity.RabbitAvoidEntityGoal<>(this, Wolf.class, 10.0F, 2.2D, 2.2D));
+		this.goalSelector.addGoal(4, new DustBunnyEntity.RabbitAvoidEntityGoal<>(this, Monster.class, 4.0F, 2.2D, 2.2D));
 		this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.6D));
 		this.goalSelector.addGoal(11, new LookAtPlayerGoal(this, Player.class, 10.0F));
 	}
@@ -177,12 +180,6 @@ public class DustBunnyEntity extends PathfinderMob
 		return isTemptingItem(stack);
 	}
 	
-	@Nullable
-	public SpawnGroupData finalizeSpawn (ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag)
-	{
-		return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
-	}
-	
 	public static boolean checkRabbitSpawnRules (EntityType<Rabbit> rabbit, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random)
 	{
 		return level.getBlockState(pos.below()).is(BlockTags.RABBITS_SPAWNABLE_ON);
@@ -209,11 +206,6 @@ public class DustBunnyEntity extends PathfinderMob
 	public Vec3 getLeashOffset ()
 	{
 		return new Vec3(0.0D, 0.6F * this.getEyeHeight(), this.getBbWidth() * 0.4F);
-	}
-	
-	static
-	{
-		DATA_TYPE_ID = SynchedEntityData.defineId(DustBunnyEntity.class, EntityDataSerializers.INT);
 	}
 	
 	

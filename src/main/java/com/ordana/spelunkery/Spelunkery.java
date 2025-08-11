@@ -36,7 +36,7 @@ public class Spelunkery
 	
 	public static ResourceLocation res (String name)
 	{
-		return new ResourceLocation(MOD_ID, name);
+		return ResourceLocation.tryBuild(MOD_ID, name);
 	}
 	
 	public static void commonInit ()
@@ -80,7 +80,6 @@ public class Spelunkery
 	
 	public static void setup ()
 	{
-		ModCompostable.register();
 	}
 	
 	private static void compassLogic (IDropItemOnDeathEvent event)
