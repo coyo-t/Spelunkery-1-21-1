@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "spelunkery:item/light_gray_glowstick"
+	}
+}

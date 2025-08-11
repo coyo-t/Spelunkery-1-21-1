@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/handheld",
+	"textures": {
+		"layer0": "spelunkery:item/item_magnet_active"
+	}
+}

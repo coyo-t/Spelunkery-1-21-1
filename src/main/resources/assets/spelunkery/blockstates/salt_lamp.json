@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"lit=false,hanging=false": {
+			"model": "spelunkery:block/salt_lamp"
+		},
+		"lit=true,hanging=false": {
+			"model": "spelunkery:block/salt_lamp_lit"
+		},
+		"lit=false,hanging=true": {
+			"model": "spelunkery:block/salt_lamp_hanging"
+		},
+		"lit=true,hanging=true": {
+			"model": "spelunkery:block/salt_lamp_hanging_lit"
+		}
+	}
+}
