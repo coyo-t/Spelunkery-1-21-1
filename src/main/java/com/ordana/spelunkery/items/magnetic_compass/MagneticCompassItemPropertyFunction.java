@@ -1,7 +1,5 @@
 package com.ordana.spelunkery.items.magnetic_compass;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.core.BlockPos;
@@ -14,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-@Environment(EnvType.CLIENT)
 public class MagneticCompassItemPropertyFunction implements ClampedItemPropertyFunction
 {
 	public static final int DEFAULT_ROTATION = 0;
@@ -119,12 +116,12 @@ public class MagneticCompassItemPropertyFunction implements ClampedItemPropertyF
 	@Nullable
 	private ClientLevel tryFetchLevelIfMissing (Entity entity, @Nullable ClientLevel clientLevel)
 	{
-		return clientLevel == null && entity.level instanceof ClientLevel ? (ClientLevel)entity.level : clientLevel;
+		return clientLevel == null && entity.level() instanceof ClientLevel ? (ClientLevel)entity.level() : clientLevel;
 	}
 	
 	private boolean isValidCompassTargetPos (Entity entity, @Nullable GlobalPos globalPos)
 	{
-		return globalPos != null && globalPos.dimension() == entity.level.dimension() && !(globalPos.pos().distToCenterSqr(entity.position()) < 9.999999747378752E-6D);
+		return globalPos != null && globalPos.dimension() == entity.level().dimension() && !(globalPos.pos().distToCenterSqr(entity.position()) < 9.999999747378752E-6D);
 	}
 	
 	private double getAngleFromEntityToPos (Entity entity, BlockPos blockPos)
@@ -149,7 +146,6 @@ public class MagneticCompassItemPropertyFunction implements ClampedItemPropertyF
 		return i * 1327217883;
 	}
 	
-	@Environment(EnvType.CLIENT)
 	static class CompassWobble
 	{
 		double rotation;
@@ -176,7 +172,6 @@ public class MagneticCompassItemPropertyFunction implements ClampedItemPropertyF
 		}
 	}
 	
-	@Environment(EnvType.CLIENT)
 	public interface CompassTarget
 	{
 		@Nullable

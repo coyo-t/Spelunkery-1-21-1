@@ -2,6 +2,7 @@ package com.ordana.spelunkery.blocks.fungi;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.mojang.serialization.MapCodec;
 import com.ordana.spelunkery.Spelunkery;
 import com.ordana.spelunkery.reg.ModBlockProperties;
 import com.ordana.spelunkery.reg.ModBlocks;
@@ -142,9 +143,9 @@ public class FloorAndSidesMushroomBlock extends Block implements BonemealableBlo
 		}
 		else return false;
 	}
-	
+
 	@Override
-	public boolean isValidBonemealTarget (LevelReader level, BlockPos pos, BlockState state, boolean isClient)
+	public boolean isValidBonemealTarget (LevelReader level, BlockPos pos, BlockState state)
 	{
 		return state.getValue(FLOOR) && (level.getBlockState(pos.below()).is(BlockTags.MUSHROOM_GROW_BLOCK) || pos.getY() < 0);
 	}

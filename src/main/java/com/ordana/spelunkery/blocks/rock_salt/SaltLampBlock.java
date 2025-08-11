@@ -36,7 +36,7 @@ public class SaltLampBlock extends LanternBlock implements RockSalt
 	
 	
 	@Override
-	public InteractionResult use (BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+	protected InteractionResult useWithoutItem (BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult)
 	{
 		if (!level.isClientSide)
 		{
@@ -45,7 +45,6 @@ public class SaltLampBlock extends LanternBlock implements RockSalt
 		}
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
-	
 	
 	@Override
 	public VoxelShape getShape (BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)

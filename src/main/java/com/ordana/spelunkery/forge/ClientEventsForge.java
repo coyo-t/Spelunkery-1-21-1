@@ -1,20 +1,18 @@
 package com.ordana.spelunkery.forge;
 
 import com.ordana.spelunkery.SpelunkeryClient;
-import com.ordana.spelunkery.entities.ParachuteLayer;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent.AddLayers;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class ClientEventsForge
 {
 	
 	public static void init ()
 	{
-		MinecraftForge.EVENT_BUS.register(ClientEventsForge.class);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventsForge::onAddLayers);
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientEventsForge::loadComplete);
+		NeoForge.EVENT_BUS.register(ClientEventsForge.class);
+		NeoForge.EVENT_BUS.addListener(ClientEventsForge::onAddLayers);
+		NeoForge.EVENT_BUS.addListener(ClientEventsForge::loadComplete);
 	}
 	
 	public static void loadComplete (FMLLoadCompleteEvent event)
@@ -23,14 +21,16 @@ public class ClientEventsForge
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static void onAddLayers (EntityRenderersEvent.AddLayers event)
+	public static void onAddLayers (AddLayers event)
 	{
-		for (String skinType: event.getSkins())
+		for (var skinType: event.getSkins())
 		{
 			var renderer = event.getSkin(skinType);
 			if (renderer != null)
 			{
-				renderer.addLayer(new ParachuteLayer(renderer));
+				// FIXME
+//				renderer.render(new ParachuteLayer(skinType.pa));
+//				renderer.addLayer(new ParachuteLayer(renderer));
 			}
 		}
 	}

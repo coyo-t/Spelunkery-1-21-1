@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.FlowingFluid;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -28,7 +30,7 @@ public class PortalFluidBlock extends LiquidBlock
 	
 	public PortalFluidBlock (Supplier<FlowingFluid> flowingFluid, Properties properties)
 	{
-		super(flowingFluid, properties);
+		super(flowingFluid.get(), properties);
 	}
 	
 	public void tick (BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
@@ -44,7 +46,7 @@ public class PortalFluidBlock extends LiquidBlock
 	}
 	
 	@Override
-	public ItemStack pickupBlock (LevelAccessor level, BlockPos pos, BlockState state)
+	public ItemStack pickupBlock (@Nullable Player player, LevelAccessor level, BlockPos pos, BlockState state)
 	{
 		Optional<? extends Registry<DimensionType>> registry = level.registryAccess().registry(Registries.DIMENSION_TYPE);
 		
@@ -53,9 +55,8 @@ public class PortalFluidBlock extends LiquidBlock
 			return ItemStack.EMPTY;
 		}
 		
-		return super.pickupBlock(level, pos, state);
+		return super.pickupBlock(player, level, pos, state);
 	}
-	
 	
 	public void entityInside (BlockState state, Level level, BlockPos pos, Entity entity)
 	{
@@ -64,7 +65,7 @@ public class PortalFluidBlock extends LiquidBlock
 				  || !entity.isInFluidType()
 				  || entity.isPassenger()
 				  || entity.isVehicle()
-				  || !entity.canChangeDimensions()
+				  || !entity.canChangeDimensions(level, level)
 				  || pos.equals(level.getSharedSpawnPos())) return;
 		if (entity instanceof ServerPlayer player && player.isSecondaryUseActive()) return;
 		

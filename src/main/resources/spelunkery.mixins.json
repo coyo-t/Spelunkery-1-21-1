@@ -1,36 +1,16 @@
 {
+
 	"required": true,
 	"minVersion": "0.8",
 	"package": "com.ordana.spelunkery.mixins",
 	"compatibilityLevel": "JAVA_21",
-	"client": [
-		"LocalPlayerMixin",
-		"RemotePlayerMixin"
-	],
 	"mixins": [
-		"AbstractMinecartMixin",
-		"BaseFireBlockMixin",
-		"BindingMixin",
 		"BoatPaddleSoundMixin",
-		"BuddingAmethystBlockMixin",
-		"BuriedTreasureMixin",
-		"ExperienceOrbMixin",
 		"FlowingFluidMixin",
-		"GrindstoneMixin",
-		"IceMixin",
-		"ItemFrameMixin",
-		"LavaCauldronBlockMixin",
-		"MineshaftMixin",
 		"MossBlockMixin",
 		"NetherPortalBlockMixin",
-		"NetherPortalSoundMixin",
 		"OreBlockMixin",
-		"PlayerMixin",
 		"RedstoneOreBlockMixin",
-		"ServerPlayerMixin",
-		"SlimeMixin",
-		"TooltipMixin",
-		"WaterCauldronBlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

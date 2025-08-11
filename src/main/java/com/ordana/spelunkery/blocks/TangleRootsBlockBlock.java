@@ -1,5 +1,6 @@
 package com.ordana.spelunkery.blocks;
 
+import com.mojang.serialization.MapCodec;
 import com.ordana.spelunkery.reg.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -16,10 +17,18 @@ import net.minecraft.world.level.material.Fluids;
 
 public class TangleRootsBlockBlock extends DirectionalBlock implements BonemealableBlock
 {
+	public static final MapCodec<TangleRootsBlockBlock>
+	CODEC = simpleCodec(TangleRootsBlockBlock::new);
 	
 	public TangleRootsBlockBlock (Properties properties)
 	{
 		super(properties);
+	}
+	
+	@Override
+	protected MapCodec<? extends DirectionalBlock> codec ()
+	{
+		return CODEC;
 	}
 	
 	protected void createBlockStateDefinition (StateDefinition.Builder<Block, BlockState> builder)
@@ -48,6 +57,12 @@ public class TangleRootsBlockBlock extends DirectionalBlock implements Bonemeala
 	public boolean isValidBonemealTarget (LevelReader level, BlockPos pos, BlockState state, boolean isClient)
 	{
 		return this.canGrowInto(level.getBlockState(pos.below()));
+	}
+	
+	@Override
+	public boolean isValidBonemealTarget (LevelReader level, BlockPos pos, BlockState state)
+	{
+		return false;
 	}
 	
 	public boolean isBonemealSuccess (Level level, RandomSource random, BlockPos pos, BlockState state)

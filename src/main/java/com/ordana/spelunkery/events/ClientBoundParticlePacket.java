@@ -1,9 +1,10 @@
 package com.ordana.spelunkery.events;
 
-import net.mehvahdjukaar.moonlight.api.platform.network.ChannelHandler;
 import net.mehvahdjukaar.moonlight.api.platform.network.Message;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -60,7 +61,7 @@ public class ClientBoundParticlePacket implements Message
 	}
 	
 	@Override
-	public void writeToBuffer (FriendlyByteBuf buffer)
+	public void write (RegistryFriendlyByteBuf buffer)
 	{
 		buffer.writeEnum(this.id);
 		if (extraData != null)
@@ -86,9 +87,15 @@ public class ClientBoundParticlePacket implements Message
 	}
 	
 	@Override
-	public void handle (ChannelHandler.Context context)
+	public void handle (Context context)
 	{
 		ClientReceivers.handleSpawnBlockParticlePacket(this);
+	}
+	
+	@Override
+	public Type<? extends CustomPacketPayload> type ()
+	{
+		return null;
 	}
 	
 	public enum EventType

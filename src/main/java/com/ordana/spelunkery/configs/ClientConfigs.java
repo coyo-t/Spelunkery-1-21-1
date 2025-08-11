@@ -2,15 +2,16 @@ package com.ordana.spelunkery.configs;
 
 import com.ordana.spelunkery.Spelunkery;
 import net.mehvahdjukaar.moonlight.api.platform.configs.ConfigBuilder;
-import net.mehvahdjukaar.moonlight.api.platform.configs.ConfigSpec;
+//import net.mehvahdjukaar.moonlight.api.platform.configs.ConfigSpec;
 import net.mehvahdjukaar.moonlight.api.platform.configs.ConfigType;
+import net.mehvahdjukaar.moonlight.api.platform.configs.ModConfigHolder;
 
 import java.util.function.Supplier;
 
 public class ClientConfigs
 {
 	
-	public static ConfigSpec CLIENT_SPEC;
+	public static ModConfigHolder CLIENT_SPEC;
 	
 	public static Supplier<Boolean> ENABLE_TOOLTIPS;
 	public static Supplier<Double> PORTAL_FLUID_SEED;
@@ -26,10 +27,10 @@ public class ClientConfigs
 		
 		builder.pop();
 		
-		CLIENT_SPEC = builder.buildAndRegister();
-		
+		CLIENT_SPEC = builder.build();
+		// TODO
 		//load early
-		CLIENT_SPEC.loadFromFile();
+//		CLIENT_SPEC.loadFromFile();
 	}
 	
 }

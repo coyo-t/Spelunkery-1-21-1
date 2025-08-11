@@ -1,8 +1,9 @@
 package com.ordana.spelunkery.events;
 
-import net.mehvahdjukaar.moonlight.api.platform.network.ChannelHandler;
 import net.mehvahdjukaar.moonlight.api.platform.network.Message;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.phys.Vec3;
 
 public class ClientBoundSendKnockbackPacket implements Message
@@ -21,16 +22,6 @@ public class ClientBoundSendKnockbackPacket implements Message
 		this.knockbackZ = knockback.z;
 	}
 	
-	@Override
-	public void writeToBuffer (FriendlyByteBuf buf)
-	{
-		buf.writeInt(this.id);
-		buf.writeDouble(this.knockbackX);
-		buf.writeDouble(this.knockbackY);
-		buf.writeDouble(this.knockbackZ);
-		
-	}
-	
 	public ClientBoundSendKnockbackPacket (FriendlyByteBuf buf)
 	{
 		this.id = buf.readInt();
@@ -40,9 +31,25 @@ public class ClientBoundSendKnockbackPacket implements Message
 	}
 	
 	@Override
-	public void handle (ChannelHandler.Context context)
+	public void write (RegistryFriendlyByteBuf buf)
+	{
+		buf.writeInt(this.id);
+		buf.writeDouble(this.knockbackX);
+		buf.writeDouble(this.knockbackY);
+		buf.writeDouble(this.knockbackZ);
+		
+	}
+	
+	@Override
+	public void handle (Context context)
 	{
 		// client world
 		ClientReceivers.handleSendBombKnockbackPacket(this);
+	}
+	
+	@Override
+	public Type<? extends CustomPacketPayload> type ()
+	{
+		return null;
 	}
 }

@@ -3,9 +3,6 @@ package com.ordana.spelunkery;
 import com.ordana.spelunkery.blocks.rock_salt.RockSaltBlock;
 import com.ordana.spelunkery.entities.DustBunnyModel;
 import com.ordana.spelunkery.entities.DustBunnyRenderer;
-import com.ordana.spelunkery.items.AmethystTuningForkItem;
-import com.ordana.spelunkery.items.HandheldCompactorItem;
-import com.ordana.spelunkery.items.MagneticCompassItem;
 import com.ordana.spelunkery.items.magnetic_compass.MagneticCompassItemPropertyFunction;
 import com.ordana.spelunkery.particles.PortalFluidFlameParticle;
 import com.ordana.spelunkery.particles.SulfurParticle;
@@ -13,7 +10,6 @@ import com.ordana.spelunkery.reg.*;
 import net.mehvahdjukaar.moonlight.api.client.renderer.FallingBlockRendererGeneric;
 import net.mehvahdjukaar.moonlight.api.misc.EventCalled;
 import net.mehvahdjukaar.moonlight.api.platform.ClientHelper;
-import net.mehvahdjukaar.moonlight.api.set.leaves.LeavesType;
 import net.mehvahdjukaar.moonlight.api.util.math.colors.RGBColor;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.particle.ExplodeParticle;
@@ -21,23 +17,25 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
 
+@EventBusSubscriber(modid = Spelunkery.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+@Mod(value=Spelunkery.MOD_ID, dist=Dist.CLIENT)
 public class SpelunkeryClient
 {
 	
 	public static final ModelLayerLocation DUST_BUNNY = loc("dust_bunny");
-	public static final ResourceLocation PARACHUTE_3D_MODEL = Spelunkery.res("entity/parachute");
 	
 	public static void init ()
 	{
 		ClientHelper.addClientSetup(SpelunkeryClient::setup);
 		ClientHelper.addModelLayerRegistration(SpelunkeryClient::registerLayers);
 		ClientHelper.addEntityRenderersRegistration(SpelunkeryClient::registerEntityRenderers);
-		ClientHelper.addSpecialModelRegistration(SpelunkeryClient::registerSpecialModels);
 		ClientHelper.addParticleRegistration(SpelunkeryClient::registerParticles);
 	}
 	
@@ -53,15 +51,9 @@ public class SpelunkeryClient
 		ClientHelper.registerRenderType(ModBlocks.POLISHED_QUARTZ_BLOCK.get(), RenderType.translucent());
 		
 		ClientHelper.registerRenderType(ModBlocks.PORTAL_FLUID.get(), RenderType.translucent());
-		ClientHelper.registerRenderType(ModBlocks.PORTAL_CAULDRON.get(), RenderType.translucent());
 		ClientHelper.registerRenderType(ModBlocks.SPRING_WATER.get(), RenderType.translucent());
-		ClientHelper.registerRenderType(ModBlocks.WOODEN_SLUICE.get(), RenderType.cutout());
-		ClientHelper.registerRenderType(ModBlocks.STONE_SLUICE.get(), RenderType.cutout());
-		ClientHelper.registerRenderType(ModBlocks.MINEOMITE.get(), RenderType.cutout());
 		ClientHelper.registerRenderType(ModBlocks.SALT_LAMP.get(), RenderType.cutout());
 		ClientHelper.registerRenderType(ModBlocks.SALT.get(), RenderType.cutout());
-		ClientHelper.registerRenderType(ModBlocks.WOODEN_RAIL.get(), RenderType.cutout());
-		ClientHelper.registerRenderType(ModBlocks.ROPE_LADDER.get(), RenderType.cutout());
 		ClientHelper.registerRenderType(ModBlocks.TANGLE_ROOTS.get(), RenderType.cutout());
 		ClientHelper.registerRenderType(ModBlocks.TANGLE_ROOTS_PLANT.get(), RenderType.cutout());
 		ClientHelper.registerRenderType(ModBlocks.SPOROPHYTE.get(), RenderType.cutout());
@@ -88,37 +80,11 @@ public class SpelunkeryClient
 		ClientHelper.registerRenderType(ModBlocks.POTTED_SPOROPHYTE.get(), RenderType.cutout());
 		ClientHelper.registerRenderType(ModBlocks.PHOSPHOR_FUNGUS_BLOCK.get(), RenderType.translucent());
 		
-		ClientHelper.registerRenderType(ModBlocks.NEPHRITE_FOUNTAIN.get(), RenderType.cutout());
-		
 		ItemProperties.register(ModItems.DEPTH_GAUGE.get(), Spelunkery.res("depth"),
 				  (stack, world, entity, seed) -> entity != null ? (((float)entity.getBlockY() + 64) / 384) : 0);
 		
-		ItemProperties.register(ModItems.NEPHRITE_CHARM.get(), Spelunkery.res("charge"),
-				  (stack, world, entity, seed) -> stack.getTag() != null ? (stack.getTag().getInt("xp") / 1395f) : 0);
-		
-		ItemProperties.register(ModItems.ITEM_MAGNET.get(), Spelunkery.res("active"),
-				  (stack, world, entity, seed) -> stack.getTag() != null && stack.getTag().getBoolean("active") ? 0.5f : 0);
-		
-		ItemProperties.register(ModItems.HANDHELD_COMPACTOR.get(), Spelunkery.res("mode"),
-				  (stack, world, entity, seed) -> stack.getTag() != null ? (HandheldCompactorItem.getMode(stack).ordinal() / 4f) : 0f);
-		
 		ItemProperties.register(ModItems.MAGNETIC_COMPASS.get(), Spelunkery.res("angle"),
-				  new MagneticCompassItemPropertyFunction(((clientLevel, itemStack, entity) -> MagneticCompassItem.isMagnetiteNearby(itemStack) ? MagneticCompassItem.getMagnetitePos(itemStack.getOrCreateTag()) : MagneticCompassItem.getNorthPosition(clientLevel))));
-		
-		ItemProperties.register(ModItems.TUNING_FORK.get(), Spelunkery.res("angle"),
-				  new MagneticCompassItemPropertyFunction(((clientLevel, itemStack, entity) -> AmethystTuningForkItem.getAmethystPos(itemStack.getOrCreateTag()))));
-		
-		ItemProperties.register(ModItems.SALT_BUCKET.get(), Spelunkery.res("salt"),
-				  (stack, world, entity, seed) -> stack.getTag() != null ? (stack.getTag().getInt("salt") / 8f) : 0);
-		
-		ItemProperties.register(ModItems.PARACHUTE.get(), Spelunkery.res("active"),
-				  (stack, world, entity, seed) -> stack.getTag() != null ? (stack.getTag().getBoolean("active") ? 0.5f : 0) : 0);
-		
-		ItemProperties.register(ModItems.PARACHUTE.get(), Spelunkery.res("used"),
-				  (stack, world, entity, seed) -> stack.getTag() != null ? (stack.getTag().getBoolean("used") ? 0.5f : 0) : 0);
-		
-		ItemProperties.register(ModBlocks.DIAMOND_GRINDSTONE.get().asItem(), Spelunkery.res("depletion"),
-				  (stack, world, entity, seed) -> stack.getTag() != null ? (stack.getTag().getInt("depletion") / 8f) : 0);
+				  new MagneticCompassItemPropertyFunction(((clientLevel, itemStack, entity) -> clientLevel.dimensionType().natural() ? GlobalPos.of(clientLevel.dimension(), new BlockPos(0, 0, -10000000)) : null)));
 		
 		finishedSetup = true;
 	}
@@ -131,12 +97,6 @@ public class SpelunkeryClient
 	private static void registerLayers (ClientHelper.ModelLayerEvent event)
 	{
 		event.register(DUST_BUNNY, DustBunnyModel::createBodyLayer);
-	}
-	
-	@EventCalled
-	private static void registerSpecialModels (ClientHelper.SpecialModelEvent event)
-	{
-		event.register(PARACHUTE_3D_MODEL);
 	}
 	
 	public static void checkIfFailed ()
@@ -179,10 +139,6 @@ public class SpelunkeryClient
 		event.register(ModEntities.FALLING_LAYER.get(), FallingBlockRendererGeneric::new);
 		event.register(ModEntities.DUST_BUNNY.get(), DustBunnyRenderer::new);
 		event.register(ModEntities.GLOWSTICK.get(), context -> new ThrownItemRenderer<>(context, 1, true));
-		event.register(ModEntities.MINEOMITE.get(), context -> new ThrownItemRenderer<>(context, 1, false));
-		event.register(ModEntities.PEBBLE.get(), context -> new ThrownItemRenderer<>(context, 1, false));
-		event.register(ModEntities.PICK.get(), context -> new ThrownItemRenderer<>(context, 1, false));
-		event.register(ModEntities.EGGPLANT.get(), context -> new ThrownItemRenderer<>(context, 1, false));
 	}
 	
 	private static void registerParticles (ClientHelper.ParticleEvent event)

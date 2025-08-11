@@ -35,7 +35,7 @@ public abstract class PortalFluidMixin
 	
 	@Inject(method="baseTick",
 			  at=@At(value="INVOKE",
-						 target="Lnet/minecraft/world/entity/Entity;handleNetherPortal()V",
+						 target="Lnet/minecraft/world/entity/Entity;handlePortal()V",
 						 shift=At.Shift.AFTER))
 	public void insertFluidTick (CallbackInfo ci)
 	{

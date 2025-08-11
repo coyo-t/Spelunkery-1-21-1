@@ -1,11 +1,7 @@
 package com.ordana.spelunkery.items;
 
-import com.ordana.spelunkery.configs.ClientConfigs;
 import com.ordana.spelunkery.reg.ModBlocks;
 import com.ordana.spelunkery.reg.ModSoundEvents;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,13 +14,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class TrueCrownItem extends BlockItem implements Equipable
 {
@@ -32,15 +24,6 @@ public class TrueCrownItem extends BlockItem implements Equipable
 	public TrueCrownItem (Properties properties)
 	{
 		super(ModBlocks.TRUE_CROWN.get(), properties);
-	}
-	
-	@Override
-	public void appendHoverText (ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag context)
-	{
-		if (ClientConfigs.ENABLE_TOOLTIPS.get())
-		{
-			tooltip.add(Component.translatable("tooltip.spelunkery.crown_1").setStyle(Style.EMPTY.applyFormats(ChatFormatting.RED, ChatFormatting.ITALIC)));
-		}
 	}
 	
 	@Override

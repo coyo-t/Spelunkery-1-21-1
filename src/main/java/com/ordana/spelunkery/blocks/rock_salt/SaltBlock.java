@@ -9,9 +9,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -411,10 +413,24 @@ public class SaltBlock extends Block
 	}
 	
 	@Override
-	public InteractionResult use (BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	protected ItemInteractionResult useItemOn (ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
 	{
-		InteractionResult lightUp = super.use(state, world, pos, player, hand, hit);
-		if (lightUp.consumesAction()) return lightUp;
+		final var pev = super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+		if (pev.consumesAction())
+		{
+			return pev;
+		}
+		return use(state, level, pos, player, hand, hitResult) ? ItemInteractionResult.SUCCESS : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+	
+	@Override
+	protected InteractionResult useWithoutItem (BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult)
+	{
+		return use(state, level, pos, player, InteractionHand.MAIN_HAND, hitResult) ? InteractionResult.SUCCESS : InteractionResult.PASS;
+	}
+	
+	public boolean use (BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	{
 		if (player.getAbilities().mayBuild)
 		{
 			if (isCross(state) || isDot(state))
@@ -425,11 +441,11 @@ public class SaltBlock extends Block
 				{
 					world.setBlock(pos, blockstate, 3);
 					this.updatesOnShapeChange(world, pos, state, blockstate);
-					return InteractionResult.SUCCESS;
+					return true;
 				}
 			}
 		}
-		return InteractionResult.PASS;
+		return false;
 	}
 	
 	private void updatesOnShapeChange (Level world, BlockPos pos, BlockState state, BlockState newState)

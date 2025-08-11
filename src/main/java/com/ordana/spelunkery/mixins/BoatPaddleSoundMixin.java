@@ -4,6 +4,7 @@ import com.ordana.spelunkery.reg.ModFluids;
 import com.ordana.spelunkery.reg.ModSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -28,12 +29,20 @@ public class BoatPaddleSoundMixin extends Entity
 		super(entityType, level);
 	}
 	
+	@Shadow
+	@Override
+	protected void defineSynchedData (SynchedEntityData.Builder builder)
+	{
+	
+	}
+	
 	@Inject(method="getPaddleSound", at=@At("HEAD"), cancellable=true)
 	public void insertFluidTick (CallbackInfoReturnable<SoundEvent> cir)
 	{
 		if (isInPortalFluid()) cir.setReturnValue(ModSoundEvents.BOAT_PADDLE_PORTAL_FLUID.get());
 	}
 	
+	// FIXME maybe replacable with 'in fluid' func? i know that exists generically. or it did >:/
 	private boolean isInPortalFluid ()
 	{
 		AABB aabb = this.getBoundingBox();
@@ -63,12 +72,7 @@ public class BoatPaddleSoundMixin extends Entity
 		return flag;
 	}
 	
-	
-	@Shadow
-	protected void defineSynchedData ()
-	{
-	}
-	
+
 	@Shadow
 	protected void readAdditionalSaveData (CompoundTag compound)
 	{

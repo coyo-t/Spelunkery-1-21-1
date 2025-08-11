@@ -45,22 +45,19 @@ public class LevelHelper
 	{
 		BlockPos respawnPosition = player.getRespawnPosition();
 		ServerLevel serverLevel = player.server.getLevel(player.getRespawnDimension());
-		Vec3 exactSpawnPosition = null;
 		if (serverLevel == null)
 			return new Pair<>(Vec3.ZERO, null);
 		
-		if (respawnPosition != null)
-		{
-			float angle = player.getRespawnAngle();
-			Optional<Vec3> spawnPosition = Player.findRespawnPositionAndUseSpawnBlock(serverLevel, respawnPosition, angle, true, true);
-			if (spawnPosition.isPresent())
-				exactSpawnPosition = spawnPosition.get();
-		}
-		if (exactSpawnPosition == null)
+		Vec3 exactSpawnPosition;
+		if (respawnPosition == null)
 		{
 			serverLevel = player.server.getLevel(Level.OVERWORLD);
 			assert serverLevel != null;
 			exactSpawnPosition = Vec3.atCenterOf(serverLevel.getSharedSpawnPos());
+		}
+		else
+		{
+			exactSpawnPosition = respawnPosition.getBottomCenter();
 		}
 		return new Pair<>(exactSpawnPosition, serverLevel);
 	}

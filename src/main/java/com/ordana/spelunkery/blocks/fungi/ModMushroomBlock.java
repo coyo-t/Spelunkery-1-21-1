@@ -1,5 +1,6 @@
 package com.ordana.spelunkery.blocks.fungi;
 
+import com.mojang.serialization.MapCodec;
 import com.ordana.spelunkery.reg.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -16,11 +17,19 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ModMushroomBlock extends BushBlock
 {
+	public static final MapCodec<ModMushroomBlock> CODEC = simpleCodec(ModMushroomBlock::new);
+
 	protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
 	
 	public ModMushroomBlock (Properties properties)
 	{
 		super(properties);
+	}
+	
+	@Override
+	protected MapCodec<? extends BushBlock> codec ()
+	{
+		return CODEC;
 	}
 	
 	public VoxelShape getShape (BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)

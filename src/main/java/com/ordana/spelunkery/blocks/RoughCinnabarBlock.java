@@ -97,19 +97,16 @@ public class RoughCinnabarBlock extends Block
 	{
 		double d = 0.5625D;
 		RandomSource randomSource = level.random;
-		Direction[] var5 = Direction.values();
-		int var6 = var5.length;
 		
-		for (int var7 = 0; var7 < var6; ++var7)
+		for (var direction: Direction.values())
 		{
-			Direction direction = var5[var7];
 			BlockPos blockPos = pos.relative(direction);
 			if (!level.getBlockState(blockPos).isSolidRender(level, blockPos))
 			{
 				Direction.Axis axis = direction.getAxis();
-				double e = axis == Direction.Axis.X ? 0.5D + 0.5625D * (double)direction.getStepX() : (double)randomSource.nextFloat();
-				double f = axis == Direction.Axis.Y ? 0.5D + 0.5625D * (double)direction.getStepY() : (double)randomSource.nextFloat();
-				double g = axis == Direction.Axis.Z ? 0.5D + 0.5625D * (double)direction.getStepZ() : (double)randomSource.nextFloat();
+				double e = axis == Direction.Axis.X ? 0.5D + d * (double)direction.getStepX() : (double)randomSource.nextFloat();
+				double f = axis == Direction.Axis.Y ? 0.5D + d * (double)direction.getStepY() : (double)randomSource.nextFloat();
+				double g = axis == Direction.Axis.Z ? 0.5D + d * (double)direction.getStepZ() : (double)randomSource.nextFloat();
 				level.addParticle(DustParticleOptions.REDSTONE, (double)pos.getX() + e, (double)pos.getY() + f, (double)pos.getZ() + g, 0.0D, 0.0D, 0.0D);
 			}
 		}

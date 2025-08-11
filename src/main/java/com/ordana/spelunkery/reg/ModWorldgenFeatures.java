@@ -4,7 +4,6 @@ import com.ordana.spelunkery.Spelunkery;
 import com.ordana.spelunkery.SpelunkeryPlatform;
 import com.ordana.spelunkery.worldgen.feature_configs.*;
 import com.ordana.spelunkery.worldgen.features.*;
-import com.ordana.spelunkery.worldgen.structures.MineshaftDustCorridor;
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -14,18 +13,11 @@ import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 
 import java.util.function.Supplier;
 
 public class ModWorldgenFeatures
 {
-	
-	//structure pieces
-	
-	public static final Supplier<StructurePieceType> MINESHAFT_DUST_CORRIDOR = RegHelper.register(
-			  Spelunkery.res("mineshaft_dust_corridor"), () -> MineshaftDustCorridor::new, Registries.STRUCTURE_PIECE);
-	
 	
 	//custom feature types
 	public static final Supplier<Feature<HugeConkFungusFeatureConfig>> HUGE_CONK_FEATURE = RegHelper.registerFeature(

@@ -49,10 +49,11 @@ public class ThrownGlowstickEntity extends ImprovedProjectileEntity
 		super(ModEntities.GLOWSTICK.get(), x, y, z, worldIn);
 	}
 	
-	protected void defineSynchedData ()
+	@Override
+	protected void defineSynchedData (SynchedEntityData.Builder builder)
 	{
-		super.defineSynchedData();
-		this.entityData.define(DATA_GLOWSTICK_COLOR, DyeColor.RED.getId());
+		super.defineSynchedData(builder);
+		builder.define(DATA_GLOWSTICK_COLOR, DyeColor.RED.getId());
 	}
 	
 	public void addAdditionalSaveData (CompoundTag compound)
@@ -98,7 +99,7 @@ public class ThrownGlowstickEntity extends ImprovedProjectileEntity
 		
 		for (int i = 0; i < 4; ++i)
 		{
-			this.level.addParticle(particle, this.getX(), this.getY() + 0.5, this.getZ(), 0.0D, 0.0D, 0.0D);
+			level().addParticle(particle, this.getX(), this.getY() + 0.5, this.getZ(), 0.0D, 0.0D, 0.0D);
 		}
 		super.spawnTrailParticles();
 	}
@@ -110,7 +111,7 @@ public class ThrownGlowstickEntity extends ImprovedProjectileEntity
 	
 	protected void onHit (HitResult result)
 	{
-		if (result instanceof BlockHitResult bResult) placeGlowstick(level, bResult);
+		if (result instanceof BlockHitResult bResult) placeGlowstick(level(), bResult);
 		super.onHit(result);
 	}
 	

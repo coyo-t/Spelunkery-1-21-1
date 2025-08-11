@@ -1,21 +1,27 @@
 package com.ordana.spelunkery.events;
 
-import com.ordana.spelunkery.Spelunkery;
-import net.mehvahdjukaar.moonlight.api.platform.network.ChannelHandler;
-import net.mehvahdjukaar.moonlight.api.platform.network.NetworkDir;
+import net.mehvahdjukaar.moonlight.api.platform.network.Message;
+import net.mehvahdjukaar.moonlight.api.platform.network.NetworkHelper;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public class NetworkHandler
 {
-	
-	public static final ChannelHandler CHANNEL = ChannelHandler.createChannel(Spelunkery.res("network"));
+//	public static final ChannelHandler CHANNEL = ChannelHandler.createChannel(Spelunkery.res("network"));
 	
 	public static void registerMessages ()
 	{
-		CHANNEL.register(NetworkDir.PLAY_TO_CLIENT,
-				  ClientBoundSendKnockbackPacket.class, ClientBoundSendKnockbackPacket::new);
-		
-		CHANNEL.register(NetworkDir.PLAY_TO_CLIENT,
-				  ClientBoundParticlePacket.class, ClientBoundParticlePacket::new);
+		// FIXME
+		NetworkHelper.addNetworkRegistration(it -> {
+//				it.registerClientBound(new CustomPacketPayload.TypeAndCodec(ClientBoundSendKnockbackPacket.class, Message::makeType));
+				
+			},
+			0
+		);
+//		CHANNEL.register(NetworkDir.PLAY_TO_CLIENT,
+//				  ClientBoundSendKnockbackPacket.class, ClientBoundSendKnockbackPacket::new);
+//
+//		CHANNEL.register(NetworkDir.PLAY_TO_CLIENT,
+//				  ClientBoundParticlePacket.class, ClientBoundParticlePacket::new);
 	}
 	
 }

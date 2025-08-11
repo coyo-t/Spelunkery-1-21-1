@@ -1,7 +1,5 @@
 package com.ordana.spelunkery;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ordana.spelunkery.blocks.dispenser_interactions.ModDispenserBehaviors;
 import com.ordana.spelunkery.configs.ClientConfigs;
 import com.ordana.spelunkery.configs.CommonConfigs;
@@ -19,8 +17,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,14 +26,12 @@ public class Spelunkery
 	public static final String MOD_ID = "spelunkery";
 	public static final Logger LOGGER = LogManager.getLogger();
 	private static boolean initiated = false;
-	public static final Gson GSON = new GsonBuilder().setPrettyPrinting()
-			  .disableHtmlEscaping()
-			  .create();
 	
 	public static ResourceLocation res (String name)
 	{
 		return ResourceLocation.tryBuild(MOD_ID, name);
 	}
+	
 	
 	public static void commonInit ()
 	{
@@ -61,7 +55,6 @@ public class Spelunkery
 		}
 		
 		RegHelper.addAttributeRegistration(Spelunkery::registerEntityAttributes);
-		ModGameEvents.init();
 		ModLootOverrides.INSTANCE.register();
 		ModWorldgenFeatures.init();
 		ModBlocks.init();
@@ -70,7 +63,6 @@ public class Spelunkery
 		ModEntities.init();
 		ModParticles.init();
 		ModSoundEvents.init();
-		ModCreativeTabs.init();
 		ModDispenserBehaviors.init();
 		
 		MoonlightEventsHelper.addListener(Spelunkery::compassLogic, IDropItemOnDeathEvent.class);
@@ -84,16 +76,6 @@ public class Spelunkery
 	
 	private static void compassLogic (IDropItemOnDeathEvent event)
 	{
-		if (event.getItemStack().is(Items.DRAGON_EGG))
-		{
-			if (event.getPlayer() instanceof ServerPlayer serverPlayer && serverPlayer.getBlockY() < -64)
-			{
-				ItemStack itemStack = event.getItemStack();
-				itemStack.shrink(1);
-				event.setReturnItemStack(new ItemStack(ModItems.EGGPLANT.get()));
-				event.setCanceled(true);
-			}
-		}
 		if (event.getItemStack().is(ModTags.KEEP_ON_DEATH))
 		{
 			if (event.getPlayer() instanceof ServerPlayer serverPlayer)

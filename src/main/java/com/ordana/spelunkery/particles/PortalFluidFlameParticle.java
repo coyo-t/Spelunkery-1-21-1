@@ -2,8 +2,6 @@ package com.ordana.spelunkery.particles;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
@@ -13,7 +11,6 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-@Environment(EnvType.CLIENT)
 public class PortalFluidFlameParticle extends TextureSheetParticle
 {
 	private final SpriteSet sprites;
@@ -66,10 +63,10 @@ public class PortalFluidFlameParticle extends TextureSheetParticle
 		float n = this.getV0();
 		float o = this.getV1();
 		int p = this.getLightColor(partialTicks);
-		buffer.vertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z()).uv(m, o).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(p).endVertex();
-		buffer.vertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z()).uv(m, n).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(p).endVertex();
-		buffer.vertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z()).uv(l, n).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(p).endVertex();
-		buffer.vertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z()).uv(l, o).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(p).endVertex();
+		buffer.setUv(m, o).setColor(rCol, gCol, bCol, alpha).setLight(p).addVertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z());
+		buffer.setUv(m, n).setColor(rCol, gCol, bCol, alpha).setLight(p).addVertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z());
+		buffer.setUv(l, n).setColor(rCol, gCol, bCol, alpha).setLight(p).addVertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z());
+		buffer.setUv(l, o).setColor(rCol, gCol, bCol, alpha).setLight(p).addVertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z());
 	}
 	
 	public int getLightColor (float partialTick)
@@ -91,7 +88,6 @@ public class PortalFluidFlameParticle extends TextureSheetParticle
 		}
 	}
 	
-	@Environment(EnvType.CLIENT)
 	public static class Provider implements ParticleProvider<SimpleParticleType>
 	{
 		private final SpriteSet sprite;

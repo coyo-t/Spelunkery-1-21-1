@@ -39,15 +39,6 @@ public class GlowstickItem extends BlockItem
 		return this.color;
 	}
 	
-	@Override
-	public void appendHoverText (ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag context)
-	{
-		if (ClientConfigs.ENABLE_TOOLTIPS.get())
-		{
-			tooltip.add(Component.translatable("tooltip.spelunkery.throwable").setStyle(Style.EMPTY.applyFormats(ChatFormatting.GRAY, ChatFormatting.ITALIC)));
-		}
-	}
-	
 	public InteractionResultHolder<ItemStack> use (Level level, Player player, InteractionHand usedHand)
 	{
 		ItemStack itemStack = player.getItemInHand(usedHand);

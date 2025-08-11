@@ -93,6 +93,7 @@ public class FallingLayerEntity extends FallingBlockEntity
 	@Override
 	public void tick ()
 	{
+		final var level = level();
 		if (level.isClientSide)
 		{
 			super.tick();
@@ -111,13 +112,13 @@ public class FallingLayerEntity extends FallingBlockEntity
 			}
 			
 			this.move(MoverType.SELF, this.getDeltaMovement());
-			if (!this.level.isClientSide)
+			if (!level.isClientSide)
 			{
 				BlockPos pos = this.blockPosition();
 				if (this.getDeltaMovement().lengthSqr() > 1.0D)
 				{
-					BlockHitResult blockhitresult = this.level.clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
-					if (blockhitresult.getType() != HitResult.Type.MISS && this.level.getFluidState(blockhitresult.getBlockPos()).is(FluidTags.WATER))
+					BlockHitResult blockhitresult = level.clip(new ClipContext(new Vec3(this.xo, this.yo, this.zo), this.position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.SOURCE_ONLY, this));
+					if (blockhitresult.getType() != HitResult.Type.MISS && level.getFluidState(blockhitresult.getBlockPos()).is(FluidTags.WATER))
 					{
 						discardAndDrop(blockState, pos);
 						//what the hell is this for?
@@ -129,7 +130,7 @@ public class FallingLayerEntity extends FallingBlockEntity
 				//fall
 				if (!this.onGround())
 				{
-					if (!this.level.isClientSide && (this.time > 100 && (pos.getY() <= this.level.getMinBuildHeight() || pos.getY() > this.level.getMaxBuildHeight()) || this.time > 600))
+					if (!level.isClientSide && (this.time > 100 && (pos.getY() <= level.getMinBuildHeight() || pos.getY() > level.getMaxBuildHeight()) || this.time > 600))
 					{
 						discardAndDrop(blockState, pos);
 						return;
@@ -138,15 +139,15 @@ public class FallingLayerEntity extends FallingBlockEntity
 				}
 				else
 				{
-					BlockState onState = this.level.getBlockState(pos);
+					BlockState onState = level.getBlockState(pos);
 					this.setDeltaMovement(this.getDeltaMovement().multiply(0.7D, -0.5D, 0.7D));
 					if (!onState.is(Blocks.MOVING_PISTON))
 					{
 						
-						boolean canBeReplaced = onState.canBeReplaced(new DirectionalPlaceContext(this.level, pos, Direction.DOWN,
+						boolean canBeReplaced = onState.canBeReplaced(new DirectionalPlaceContext(level, pos, Direction.DOWN,
 								  new ItemStack(blockState.getBlock().asItem()), Direction.UP));
-						boolean isFree = block.shouldFall(this.level.getBlockState(pos.below()));
-						boolean canSurvive = blockState.canSurvive(this.level, pos) && !isFree;
+						boolean isFree = block.shouldFall(level.getBlockState(pos.below()));
+						boolean canSurvive = blockState.canSurvive(level, pos) && !isFree;
 						if (canBeReplaced && canSurvive)
 						{
 							
@@ -165,12 +166,12 @@ public class FallingLayerEntity extends FallingBlockEntity
 								blockState = blockState.setValue(layers_property, target);
 							}
 							
-							if (this.level.setBlock(pos, blockState, 3))
+							if (level.setBlock(pos, blockState, 3))
 							{
-								((ServerLevel)this.level).getChunkSource().chunkMap.broadcast(this,
-										  new ClientboundBlockUpdatePacket(pos, this.level.getBlockState(pos)));
+								((ServerLevel)level).getChunkSource().chunkMap.broadcast(this,
+										  new ClientboundBlockUpdatePacket(pos, level.getBlockState(pos)));
 								
-								block.onLand(this.level, pos, blockState, onState, this);
+								block.onLand(level, pos, blockState, onState, this);
 								
 								this.discard();
 								
@@ -180,10 +181,10 @@ public class FallingLayerEntity extends FallingBlockEntity
 									blockState = blockState.setValue(block.layerProperty(), remaining);
 									if (level.getBlockState(above).canBeReplaced())
 									{
-										if (!this.level.setBlock(above, blockState, 3))
+										if (!level.setBlock(above, blockState, 3))
 										{
-											((ServerLevel)this.level).getChunkSource().chunkMap.broadcast(this,
-													  new ClientboundBlockUpdatePacket(above, this.level.getBlockState(above)));
+											((ServerLevel)level).getChunkSource().chunkMap.broadcast(this,
+													  new ClientboundBlockUpdatePacket(above, level.getBlockState(above)));
 											this.dropItemAndBreak(blockState, pos);
 										}
 									}
@@ -205,7 +206,7 @@ public class FallingLayerEntity extends FallingBlockEntity
 	//TODO: merge these two
 	private void discardAndDrop (BlockState state, BlockPos pos)
 	{
-		if (this.dropItem && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+		if (this.dropItem && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
 		{
 			this.callOnBrokenAfterFall(state.getBlock(), pos);
 			this.dropItemAndBreak(state, pos);
@@ -216,6 +217,7 @@ public class FallingLayerEntity extends FallingBlockEntity
 	
 	private void dropItemAndBreak (BlockState state, BlockPos pos)
 	{
+		Level level = level();
 		Block.dropResources(state, level, pos, null, null, ItemStack.EMPTY);
 		
 		level.levelEvent(null, 2001, pos, Block.getId(state));

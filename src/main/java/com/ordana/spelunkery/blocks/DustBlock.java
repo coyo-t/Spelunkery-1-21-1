@@ -109,26 +109,31 @@ public class DustBlock extends FallingLayerBlock
 	@Override
 	public void onLand (Level level, BlockPos pos, BlockState state, BlockState replaceableState, FallingBlockEntity fallingBlock)
 	{
-		if (!(level instanceof ServerLevel serverLevel)) return;
-		for (int i = 0; i < 10; ++i)
+		if (level instanceof ServerLevel serverLevel)
 		{
-			double d0 = level.random.nextGaussian() * 0.02D;
-			double d1 = level.random.nextGaussian() * 0.02D;
-			double d2 = level.random.nextGaussian() * 0.02D;
-			serverLevel.sendParticles(ModParticles.DUST_POOF.get(), fallingBlock.getX() - d0 * 10.0D, fallingBlock.getY() - d1 * 10.0D, fallingBlock.getZ() - d2 * 10.0D, 1, 0, 0, 0, d2);
+			for (int i = 0; i < 10; ++i)
+			{
+				double d0 = level.random.nextGaussian() * 0.02D;
+				double d1 = level.random.nextGaussian() * 0.02D;
+				double d2 = level.random.nextGaussian() * 0.02D;
+				serverLevel.sendParticles(ModParticles.DUST_POOF.get(), fallingBlock.getX() - d0 * 10.0D, fallingBlock.getY() - d1 * 10.0D, fallingBlock.getZ() - d2 * 10.0D, 1, 0, 0, 0, d2);
+			}
 		}
 	}
 	
 	@Override
-	public void playerWillDestroy (Level level, BlockPos pos, BlockState state, Player player)
+	public BlockState playerWillDestroy (Level level, BlockPos pos, BlockState state, Player player)
 	{
-		if (!(level instanceof ServerLevel serverLevel)) return;
-		for (int i = 0; i < 10; ++i)
+		if (level instanceof ServerLevel serverLevel)
 		{
-			double d0 = level.random.nextGaussian() * 0.02D;
-			double d1 = level.random.nextGaussian() * 0.02D;
-			double d2 = level.random.nextGaussian() * 0.02D;
-			serverLevel.sendParticles(ModParticles.DUST_POOF.get(), (pos.getX() + 0.5) - d0 * 10.0D, (pos.getY() + 0.5) - d1 * 10.0D, (pos.getZ() + 0.5) - d2 * 10.0D, 1, 0, 0, 0, d2);
+			for (int i = 0; i < 10; ++i)
+			{
+				double d0 = level.random.nextGaussian() * 0.02D;
+				double d1 = level.random.nextGaussian() * 0.02D;
+				double d2 = level.random.nextGaussian() * 0.02D;
+				serverLevel.sendParticles(ModParticles.DUST_POOF.get(), (pos.getX() + 0.5) - d0 * 10.0D, (pos.getY() + 0.5) - d1 * 10.0D, (pos.getZ() + 0.5) - d2 * 10.0D, 1, 0, 0, 0, d2);
+			}
 		}
+		return state;
 	}
 }

@@ -1,5 +1,6 @@
 package com.ordana.spelunkery.blocks.fungi;
 
+import com.mojang.serialization.MapCodec;
 import com.ordana.spelunkery.Spelunkery;
 import com.ordana.spelunkery.reg.ModBlockProperties;
 import com.ordana.spelunkery.reg.ModBlocks;
@@ -30,6 +31,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class MillyBubcapMushroomBlock extends BushBlock implements BonemealableBlock
 {
+	public static final MapCodec<MillyBubcapMushroomBlock>
+	CODEC = simpleCodec(MillyBubcapMushroomBlock::new);
+
 	public static final int MAX_CAPS = 8;
 	public static final IntegerProperty CAPS;
 	protected static final VoxelShape ONE_AABB;
@@ -41,6 +45,12 @@ public class MillyBubcapMushroomBlock extends BushBlock implements BonemealableB
 	{
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(CAPS, 1));
+	}
+	
+	@Override
+	protected MapCodec<? extends BushBlock> codec ()
+	{
+		return CODEC;
 	}
 	
 	@Nullable
@@ -118,9 +128,10 @@ public class MillyBubcapMushroomBlock extends BushBlock implements BonemealableB
 		}
 	}
 	
-	public boolean isValidBonemealTarget (LevelReader level, BlockPos pos, BlockState state, boolean isClient)
+	@Override
+	public boolean isValidBonemealTarget (LevelReader level, BlockPos pos, BlockState state)
 	{
-		return true;
+		return false;
 	}
 	
 	public boolean isBonemealSuccess (Level level, RandomSource random, BlockPos pos, BlockState state)

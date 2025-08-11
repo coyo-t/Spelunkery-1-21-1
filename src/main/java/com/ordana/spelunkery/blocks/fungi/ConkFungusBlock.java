@@ -10,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -112,7 +113,7 @@ public class ConkFungusBlock extends FloorAndSidesMushroomBlock implements Bonem
 	}
 	
 	@Override
-	public boolean isValidBonemealTarget (LevelReader level, BlockPos pos, BlockState state, boolean isClient)
+	public boolean isValidBonemealTarget (LevelReader level, BlockPos pos, BlockState state)
 	{
 		return true;
 	}

@@ -25,7 +25,7 @@ public class SpringWaterBlock extends LiquidBlock
 	
 	public SpringWaterBlock (Supplier<FlowingFluid> flowingFluid, Properties properties)
 	{
-		super(flowingFluid, properties);
+		super(flowingFluid.get(), properties);
 	}
 	
 	public void entityInside (BlockState state, Level level, BlockPos pos, Entity entity)

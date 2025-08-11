@@ -9,10 +9,12 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.neoforged.fml.common.EventBusSubscriber;
 import org.jetbrains.annotations.Contract;
 
 import java.util.function.Supplier;
 
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, modid = Spelunkery.MOD_ID)
 public class SpelunkeryPlatform
 {
 	

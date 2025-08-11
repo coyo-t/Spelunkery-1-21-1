@@ -97,108 +97,42 @@ public class ModLootInjects
 	
 	public static void onLootInject (RegHelper.LootInjectEvent event)
 	{
-		
 		ResourceLocation name = event.getTable();
-		String path = name.getNamespace();
-		//if (!path.equals("minecraft") && !path.equals("spelunkery")) return;
-
-/*
-        if (name.equals(new ResourceLocation("minecraft", "blocks/gravel"))) {
-            event.addTableReference(Spelunkery.res("injects/ores/gravel"));
-        }
-
- */
 		
-		for (var loot: lootChests)
-		{
-			if (name.equals(new ResourceLocation("minecraft", "chests/" + loot)))
-			{
-				event.addTableReference(Spelunkery.res("injects/" + loot));
-			}
-		}
+		lootChests.stream().filter(loot -> name.equals(ResourceLocation.tryBuild("minecraft", "chests/" + loot))).map(loot -> Spelunkery.res("injects/" + loot)).forEach(event::addTableReference);
 		
 		if (PlatHelper.getPlatform() == PlatHelper.Platform.FORGE) return;
 		if (!CommonConfigs.ORE_STONE_DROPS.get()) return;
 		
 		if (PlatHelper.isModLoaded("ditr"))
 		{
-			if (name.equals(new ResourceLocation("ditr", "blocks/obsidian_diamond_ore")))
+			if (name.equals(ResourceLocation.tryBuild("ditr", "blocks/obsidian_diamond_ore")))
 			{
 				event.addTableReference(Spelunkery.res("injects/ores/obsidian"));
 			}
 		}
 		if (PlatHelper.isModLoaded("etcetera"))
 		{
-			if (name.equals(new ResourceLocation("etcetera", "blocks/nether_bismuth_ore")))
+			if (name.equals(ResourceLocation.tryBuild("etcetera", "blocks/nether_bismuth_ore")))
 			{
 				event.addTableReference(Spelunkery.res("injects/ores/netherrack"));
 			}
 		}
 		
-		for (var loot: oreNetherDrops)
-		{
-			if (name.equals(new ResourceLocation("minecraft", "blocks/" + loot)))
-			{
-				event.addTableReference(Spelunkery.res("injects/ores/netherrack"));
-			}
-		}
+		oreNetherDrops.stream().filter(loot -> name.equals(ResourceLocation.tryBuild("minecraft", "blocks/" + loot))).map(loot -> Spelunkery.res("injects/ores/netherrack")).forEach(event::addTableReference);
 		
-		for (var loot: oreStoneDropsOther)
-		{
-			if (name.equals(new ResourceLocation("spelunkery", "blocks/" + loot)))
-			{
-				event.addTableReference(Spelunkery.res("injects/ores/" + loot));
-			}
-		}
+		oreStoneDropsOther.stream().filter(loot -> name.equals(ResourceLocation.tryBuild("spelunkery", "blocks/" + loot))).map(loot -> Spelunkery.res("injects/ores/" + loot)).forEach(event::addTableReference);
 		
-		for (var loot: oreStoneDrops)
-		{
-			if (name.equals(new ResourceLocation("minecraft", "blocks/" + loot)))
-			{
-				event.addTableReference(Spelunkery.res("injects/ores/stone"));
-			}
-		}
+		oreStoneDrops.stream().filter(loot -> name.equals(ResourceLocation.tryBuild("minecraft", "blocks/" + loot))).map(loot -> Spelunkery.res("injects/ores/stone")).forEach(event::addTableReference);
 		
-		for (var loot: oreDeepslateDrops)
-		{
-			if (name.equals(new ResourceLocation("minecraft", "blocks/" + loot)))
-			{
-				event.addTableReference(Spelunkery.res("injects/ores/deepslate"));
-			}
-		}
+		oreDeepslateDrops.stream().filter(loot -> name.equals(ResourceLocation.tryBuild("minecraft", "blocks/" + loot))).map(loot -> Spelunkery.res("injects/ores/deepslate")).forEach(event::addTableReference);
 		
-		for (var loot: oreAndesiteDrops)
-		{
-			if (name.equals(new ResourceLocation("spelunkery", "blocks/" + loot)))
-			{
-				event.addTableReference(Spelunkery.res("injects/ores/andesite"));
-				
-			}
-		}
+		oreAndesiteDrops.stream().filter(loot -> name.equals(ResourceLocation.tryBuild("spelunkery", "blocks/" + loot))).map(loot -> Spelunkery.res("injects/ores/andesite")).forEach(event::addTableReference);
 		
-		for (var loot: oreDioriteDrops)
-		{
-			if (name.equals(new ResourceLocation("spelunkery", "blocks/" + loot)))
-			{
-				event.addTableReference(Spelunkery.res("injects/ores/diorite"));
-			}
-		}
+		oreDioriteDrops.stream().filter(loot -> name.equals(ResourceLocation.tryBuild("spelunkery", "blocks/" + loot))).map(loot -> Spelunkery.res("injects/ores/diorite")).forEach(event::addTableReference);
 		
-		for (var loot: oreGraniteDrops)
-		{
-			if (name.equals(new ResourceLocation("spelunkery", "blocks/" + loot)))
-			{
-				event.addTableReference(Spelunkery.res("injects/ores/granite"));
-				
-			}
-		}
+		oreGraniteDrops.stream().filter(loot -> name.equals(ResourceLocation.tryBuild("spelunkery", "blocks/" + loot))).map(loot -> Spelunkery.res("injects/ores/granite")).forEach(event::addTableReference);
 		
-		for (var loot: oreTuffDrops)
-		{
-			if (name.equals(new ResourceLocation("spelunkery", "blocks/" + loot)))
-			{
-				event.addTableReference(Spelunkery.res("injects/ores/tuff"));
-			}
-		}
+		oreTuffDrops.stream().filter(loot -> name.equals(ResourceLocation.tryBuild("spelunkery", "blocks/" + loot))).map(loot -> Spelunkery.res("injects/ores/tuff")).forEach(event::addTableReference);
 	}
 }
