@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "top": "spelunkery:block/nephrite",
-    "bottom": "spelunkery:block/nephrite",
-    "side": "spelunkery:block/nephrite"
-  }
-}

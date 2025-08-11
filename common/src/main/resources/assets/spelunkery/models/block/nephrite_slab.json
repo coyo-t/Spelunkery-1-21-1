@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "top": "spelunkery:block/nephrite",
-    "bottom": "spelunkery:block/nephrite",
-    "side": "spelunkery:block/nephrite"
-  }
-}

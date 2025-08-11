@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "spelunkery:granite_emerald_ore",
-    "spelunkery:diorite_emerald_ore",
-    "spelunkery:andesite_emerald_ore",
-    "spelunkery:tuff_emerald_ore"
-  ]
-}
