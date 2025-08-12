@@ -1,64 +1,50 @@
-package com.ordana.spelunkery.reg;
+package com.ordana.spelunkery.reg
 
-import com.ordana.spelunkery.Spelunkery;
-import com.ordana.spelunkery.blocks.entity.FallingLayerEntity;
-import com.ordana.spelunkery.entities.DustBunnyEntity;
-import com.ordana.spelunkery.entities.ThrownGlowstickEntity;
-import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
-import org.jetbrains.annotations.NotNull;
+import com.ordana.spelunkery.Spelunkery
+import com.ordana.spelunkery.blocks.entity.FallingLayerEntity
+import com.ordana.spelunkery.entities.ThrownGlowstickEntity
+import net.minecraft.core.registries.Registries
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.EntityType.EntityFactory
+import net.minecraft.world.entity.MobCategory
+import net.neoforged.neoforge.registries.DeferredRegister
 
-import java.util.function.Supplier;
-
-public class ModEntities
+object ModEntities
 {
-	public static void init ()
-	{
-	}
-	
-	private static @NotNull <T extends Entity> Supplier<EntityType<T>>
-	regEnt (String resName, EntityType.EntityFactory<T> factory, MobCategory category, float wide, float tall)
-	{
-		return RegHelper.registerEntityType(
-			Spelunkery.res(resName),
-			EntityType.Builder
-				.of(factory, category)
-				.sized(wide, tall)
-				.clientTrackingRange(10)
-				.setShouldReceiveVelocityUpdates(true)
-				.updateInterval(20)
-		);
-	}
-	
-	//Living Entities
-	public static Supplier<EntityType<DustBunnyEntity>>
-	DUST_BUNNY = regEnt(
-		"dust_bunny",
-		DustBunnyEntity::new,
-		MobCategory.CREATURE,
-		0.8f, 0.5f
-	);
-	
-	//Tile Entities
-	
+	@JvmField
+	val THINGS = DeferredRegister.create(Registries.ENTITY_TYPE, Spelunkery.MOD_ID)
+
 	//Thrown Entities
-	public static Supplier<EntityType<ThrownGlowstickEntity>>
-	GLOWSTICK = regEnt(
-		"glowstick",
-		ThrownGlowstickEntity::new,
-		MobCategory.MISC,
-		0.28F, 0.98F
-	);
-	
+	@JvmField
+	var GLOWSTICK = rg(
+		name     = "glowstick",
+		factory  = { t, w -> ThrownGlowstickEntity(t, w) },
+		category = MobCategory.MISC,
+		size     = 0.28f to 0.98f
+	)
+
 	//Other Entities
-	public static Supplier<EntityType<FallingLayerEntity>>
-	FALLING_LAYER = regEnt(
-		"falling_layer",
-		FallingLayerEntity::new,
-		MobCategory.MISC,
-		0.98F, 0.98F
-	);
-	
+	@JvmField
+	var FALLING_LAYER = rg(
+		name     = "falling_layer",
+		factory  = { t, w -> FallingLayerEntity(t, w) },
+		category = MobCategory.MISC,
+		size     = 0.98f to 0.98f
+	)
+
+	private fun <T : Entity> rg(
+		name: String,
+		factory: EntityFactory<T>,
+		category: MobCategory,
+		size: Pair<Float, Float>,
+	) = THINGS.register(name) { rs ->
+		EntityType.Builder
+			.of(factory, category)
+			.sized(size.first, size.second)
+			.clientTrackingRange(10)
+			.setShouldReceiveVelocityUpdates(true)
+			.updateInterval(20)
+			.build(rs.toString())
+	}
 }

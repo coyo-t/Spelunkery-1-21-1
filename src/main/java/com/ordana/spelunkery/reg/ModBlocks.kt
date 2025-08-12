@@ -5,7 +5,6 @@ import com.ordana.spelunkery.blocks.*
 import com.ordana.spelunkery.blocks.fungi.*
 import com.ordana.spelunkery.blocks.nephrite.RawNephriteBlock
 import com.ordana.spelunkery.blocks.rock_salt.*
-import com.ordana.spelunkery.reg.ModBlocks.always
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.util.ColorRGBA
@@ -17,25 +16,23 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.block.*
 import net.minecraft.world.level.block.state.BlockBehaviour
-import net.minecraft.world.level.block.state.BlockBehaviour.StateArgumentPredicate
-import net.minecraft.world.level.block.state.BlockBehaviour.StatePredicate
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.properties.BlockStateProperties
-import net.minecraft.world.level.material.FlowingFluid
-import net.minecraft.world.level.material.Fluid
 import net.minecraft.world.level.material.MapColor
 import net.neoforged.neoforge.registries.DeferredRegister
 import java.util.function.Supplier
-import java.util.function.ToIntFunction
+
 
 private typealias PropCB = BlockBehaviour.Properties.()->Unit
 
 object ModBlocks
 {
+	@JvmField
 	val BLOCKS: DeferredRegister.Blocks = DeferredRegister.createBlocks(Spelunkery.MOD_ID)
 
 	//#region theze whorez want my orez
 
+	@JvmField
 	val SMOOTH_BASALT_DIAMOND_ORE = regWithItem("smooth_basalt_diamond_ore") {
 		DropExperienceBlock(
 			UniformInt.of(3, 7),
@@ -46,6 +43,7 @@ object ModBlocks
 		)
 	}
 
+	@JvmField
 	val CALCITE_REDSTONE_ORE = regWithItem("calcite_redstone_ore") {
 		RedStoneOreBlock(
 			BlockBehaviour.Properties.ofFullCopy(Blocks.REDSTONE_ORE)
@@ -57,6 +55,7 @@ object ModBlocks
 		)
 	}
 
+	@JvmField
 	val SANDSTONE_LAPIS_ORE = regWithItem("sandstone_lapis_ore") {
 		DropExperienceBlock(
 			UniformInt.of(2, 5),
@@ -87,6 +86,7 @@ object ModBlocks
 	//#region scream
 
 	//rough gems
+	@JvmField
 	val ROUGH_CINNABAR_BLOCK = regWithItem("rough_cinnabar_block") {
 		RoughCinnabarBlock(
 			roughGemBloc(MapColor.COLOR_RED).apply {
@@ -95,19 +95,23 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val ROUGH_LAZURITE_BLOCK = regWithItem("rough_lazurite_block") {
 		Block(roughGemBloc(MapColor.LAPIS))
 	}
+	@JvmField
 	val ROUGH_EMERALD_BLOCK = regWithItem("rough_emerald_block") {
 		Block(roughGemBloc(MapColor.EMERALD))
 	}
+	@JvmField
 	val ROUGH_DIAMOND_BLOCK = regWithItem("rough_diamond_block") {
 		Block(roughGemBloc(MapColor.DIAMOND))
 	}
+	@JvmField
 	val ROUGH_QUARTZ_BLOCK = regWithItem("rough_quartz_block") {
 		RotatedPillarBlock(roughGemBloc(MapColor.QUARTZ))
 	}
-
+	@JvmField
 	val CINNABAR_BLOCK = regWithItem("cinnabar_block") {
 		PoweredBlock(
 			BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK).mapColor(MapColor.COLOR_RED)
@@ -147,122 +151,7 @@ object ModBlocks
 			)
 		)
 	}
-	val SALT_BLOCK = regWithItem("salt_block") {
-		SaltBlockBlock(
-			0xdedede, BlockBehaviour.Properties.ofFullCopy(
-				Blocks.SAND
-			).mapColor(MapColor.TERRACOTTA_PINK).strength(0.5f).sound(SoundType.SAND)
-		)
-	}
 
-	@JvmField
-	val ROCK_SALT_BLOCK = regWithItem("rock_salt_block") {
-		RockSaltBlock(
-			BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).apply {
-				mapColor(MapColor.TERRACOTTA_PINK)
-				requiresCorrectToolForDrops()
-				strength(3f, 2f)
-				sound(SoundType.CALCITE)
-				lightLevel(createLightLevelFromIlluminatedBlockState(1))
-				emissiveRendering(::ifIlluminated)
-			}
-		)
-	}
-	val ROCK_SALT_SLAB = regWithItem("rock_salt_slab") {
-		RockSaltSlab(
-			BlockBehaviour.Properties.ofFullCopy(
-				ROCK_SALT_BLOCK.get()
-			).lightLevel(createLightLevelFromIlluminatedBlockState(1))
-				.emissiveRendering(::ifIlluminated)
-		)
-	}
-	val ROCK_SALT_STAIRS = regWithItem("rock_salt_stairs") {
-		RockSaltStairs(
-			ROCK_SALT_BLOCK.get().defaultBlockState(),
-			BlockBehaviour.Properties.ofFullCopy(ROCK_SALT_BLOCK.get()).lightLevel(
-				createLightLevelFromIlluminatedBlockState(1)
-			).emissiveRendering(::ifIlluminated)
-		)
-	}
-	val ROCK_SALT_WALL = regWithItem("rock_salt_wall") {
-		RockSaltWall(
-			BlockBehaviour.Properties.ofFullCopy(
-				ROCK_SALT_BLOCK.get()
-			).lightLevel(createLightLevelFromIlluminatedBlockState(1))
-				.emissiveRendering(::ifIlluminated)
-		)
-	}
-
-	@JvmField
-	val POLISHED_ROCK_SALT = regWithItem("polished_rock_salt") {
-		RockSaltBlock(
-			BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_PINK)
-				.requiresCorrectToolForDrops().strength(3f, 2f).sound(SoundType.CALCITE).lightLevel(
-					createLightLevelFromIlluminatedBlockState(1)
-				).emissiveRendering(::ifIlluminated)
-		)
-	}
-	val POLISHED_ROCK_SALT_SLAB = regWithItem("polished_rock_salt_slab") {
-		RockSaltSlab(
-			BlockBehaviour.Properties.ofFullCopy(POLISHED_ROCK_SALT.get()).lightLevel(
-				createLightLevelFromIlluminatedBlockState(1)
-			).emissiveRendering(::ifIlluminated)
-		)
-	}
-	val POLISHED_ROCK_SALT_STAIRS = regWithItem("polished_rock_salt_stairs") {
-		RockSaltStairs(
-			POLISHED_ROCK_SALT.get().defaultBlockState(),
-			BlockBehaviour.Properties.ofFullCopy(POLISHED_ROCK_SALT.get()).lightLevel(
-				createLightLevelFromIlluminatedBlockState(1)
-			).emissiveRendering(::ifIlluminated)
-		)
-	}
-	val POLISHED_ROCK_SALT_WALL = regWithItem("polished_rock_salt_wall") {
-		RockSaltWall(
-			BlockBehaviour.Properties.ofFullCopy(POLISHED_ROCK_SALT.get()).lightLevel(
-				createLightLevelFromIlluminatedBlockState(1)
-			).emissiveRendering(::ifIlluminated)
-		)
-	}
-
-	@JvmField
-	val ROCK_SALT_BRICKS = regWithItem("rock_salt_bricks") {
-		RockSaltBlock(
-			propertiesFrom(Blocks.STONE) {
-				mapColor(MapColor.TERRACOTTA_PINK)
-				requiresCorrectToolForDrops()
-				strength(3f, 2f)
-				sound(SoundType.CALCITE)
-				lightLevel(createLightLevelFromIlluminatedBlockState(1))
-				emissiveRendering(::ifIlluminated)
-			}
-		)
-	}
-	val ROCK_SALT_BRICK_SLAB = regWithItem("rock_salt_brick_slab") {
-		RockSaltSlab(
-			propertiesFrom(ROCK_SALT_BRICKS.get()) {
-				lightLevel(createLightLevelFromIlluminatedBlockState(1))
-				emissiveRendering(::ifIlluminated)
-			}
-		)
-	}
-	val ROCK_SALT_BRICK_STAIRS = regWithItem("rock_salt_brick_stairs") {
-		RockSaltStairs(
-			ROCK_SALT_BRICKS.get().defaultBlockState(),
-			propertiesFrom(ROCK_SALT_BRICKS.get()) {
-				lightLevel(createLightLevelFromIlluminatedBlockState(1))
-				emissiveRendering(::ifIlluminated)
-			}
-		)
-	}
-	val ROCK_SALT_BRICK_WALL = regWithItem("rock_salt_brick_wall") {
-		RockSaltWall(
-			propertiesFrom(ROCK_SALT_BRICKS.get()) {
-				lightLevel(createLightLevelFromIlluminatedBlockState(1))
-				emissiveRendering(::ifIlluminated)
-			}
-		)
-	}
 
 	@JvmField
 	val POLISHED_QUARTZ_BLOCK = regWithItem("polished_quartz_block") {
@@ -275,7 +164,7 @@ object ModBlocks
 			}
 		)
 	}
-
+	@JvmField
 	val SALTPETER_BLOCK = regWithItem("saltpeter_block") {
 		ColoredFallingBlock(
 			ColorRGBA(0xdbd8d4),
@@ -286,6 +175,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val SULFUR_BLOCK = regWithItem("sulfur_block") {
 		ColoredFallingBlock(
 			ColorRGBA(0xe1bf89),
@@ -296,6 +186,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val SULFUR_GEYSER = regWithItem("sulfur_geyser") {
 		SulfuricVentBlock(
 			propertiesFrom(Blocks.STONE) {
@@ -305,6 +196,7 @@ object ModBlocks
 	}
 
 	//nephrite
+	@JvmField
 	val RAW_NEPHRITE = regWithItem("raw_nephrite") {
 		RawNephriteBlock(
 			propertiesFrom(Blocks.STONE) {
@@ -314,6 +206,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val NEPHRITE = regWithItem("nephrite") {
 		Block(
 			propertiesFrom(Blocks.STONE) {
@@ -342,7 +235,7 @@ object ModBlocks
 		)
 	}
 
-
+	@JvmField
 	val DUST_BLOCK = regWithItem("dust_block") {
 		DustBlockBlock(
 			propertiez {
@@ -353,6 +246,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val DUST = regWithItem("dust") {
 		DustBlock(
 			propertiez {
@@ -377,18 +271,6 @@ object ModBlocks
 	}
 
 	@JvmField
-	val TRUE_CROWN = regBlock("true_crown") {
-		BunnyEarsUtilBlock(
-			propertiez {
-				noCollission()
-				instabreak()
-				sound(SoundType.WOOL)
-				mapColor(MapColor.COLOR_GRAY)
-			}
-		)
-	}
-
-	@JvmField
 	val SULFUR = regWithItem("sulfur") {
 		FallingLayerBlock(
 			propertiez {
@@ -400,6 +282,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val SALTPETER = regWithItem("saltpeter") {
 		FallingLayerBlock(
 			BlockBehaviour.Properties.of().noCollission().instabreak().sound(
@@ -409,6 +292,7 @@ object ModBlocks
 	}
 
 	//plants
+	@JvmField
 	val TANGLE_ROOTS = regWithItem("tangle_roots") {
 		TangleRootsHeadBlock(
 			BlockBehaviour.Properties.ofFullCopy(Blocks.WEEPING_VINES).mapColor(MapColor.COLOR_BROWN).randomTicks()
@@ -417,6 +301,7 @@ object ModBlocks
 				)
 		)
 	}
+	@JvmField
 	val TANGLE_ROOTS_PLANT = regBlock("tangle_roots_plant") {
 		TangleRootsBodyBlock(
 			BlockBehaviour.Properties.ofFullCopy(Blocks.WEEPING_VINES_PLANT).mapColor(MapColor.COLOR_BROWN).randomTicks()
@@ -425,6 +310,7 @@ object ModBlocks
 				)
 		)
 	}
+	@JvmField
 	val TANGLE_ROOTS_BLOCK = regWithItem("tangle_roots_block") {
 		TangleRootsBlockBlock(
 			BlockBehaviour.Properties.of().mapColor(MapColor.PODZOL).strength(3f, 0.5f).randomTicks().sound(
@@ -432,7 +318,7 @@ object ModBlocks
 			).ignitedByLava()
 		)
 	}
-
+	@JvmField
 	val SPOROPHYTE = regWithItem("sporophyte") {
 		SporophyteBlock(
 			BlockBehaviour.Properties.ofFullCopy(
@@ -440,6 +326,7 @@ object ModBlocks
 			).noCollission().instabreak().sound(SoundType.MOSS).offsetType(BlockBehaviour.OffsetType.XZ)
 		)
 	}
+	@JvmField
 	val TALL_SPOROPHYTE = regWithItem("tall_sporophyte") {
 		DoublePlantBlock(
 			BlockBehaviour.Properties.ofFullCopy(Blocks.TALL_GRASS).noCollission().instabreak().sound(SoundType.MOSS)
@@ -449,6 +336,7 @@ object ModBlocks
 
 
 	//fungi
+	@JvmField
 	val CONK_FUNGUS = regWithItem("conk_fungus") {
 		ConkFungusBlock(
 			BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).noCollission().instabreak().sound(
@@ -477,6 +365,7 @@ object ModBlocks
 	val BUTTON_MUSHROOM = regBlock("button_mushroom") {
 		ModMushroomBlock(propertiesFrom(PORTABELLA.get()))
 	}
+	@JvmField
 	val INKCAP_MUSHROOM = regWithItem("inkcap_mushroom") {
 		GrowableMushroomBlock(
 			propertiesFrom(PORTABELLA.get()) {
@@ -484,6 +373,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val WHITE_INKCAP_MUSHROOM = regWithItem("white_inkcap_mushroom") {
 		GrowableMushroomBlock(
 			propertiesFrom(PORTABELLA.get()) {
@@ -491,6 +381,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val PHOSPHOR_FUNGUS = regWithItem("phosphor_fungus") {
 		FloorAndSidesMushroomBlock(
 			propertiesFrom(CONK_FUNGUS.get()) {
@@ -498,6 +389,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val MUSHGLOOM = regWithItem("mushgloom") {
 		FloorAndSidesMushroomBlock(
 			propertiesFrom(CONK_FUNGUS.get()) {
@@ -505,6 +397,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val MILLY_BUBCAP = regWithItem("milly_bubcap") {
 		MillyBubcapMushroomBlock(
 			propertiesFrom(Blocks.POPPY) {
@@ -515,42 +408,50 @@ object ModBlocks
 			}
 		)
 	}
-
+	@JvmField
 	val POTTED_PORTABELLA = regBlock("potted_portabella") {
 		fp(PORTABELLA, Blocks.POTTED_POPPY) {
 			instabreak()
 			noOcclusion()
 		}
 	}
+	@JvmField
 	val POTTED_CRIMINI = regBlock("potted_crimini") {
 		fp(CRIMINI, POTTED_PORTABELLA.get())
 	}
+	@JvmField
 	val POTTED_BUTTON_MUSHROOM = regBlock("potted_button_mushroom") {
 		fp(BUTTON_MUSHROOM, POTTED_PORTABELLA.get())
 	}
+	@JvmField
 	val POTTED_INKCAP_MUSHROOM = regBlock("potted_inkcap_mushroom") {
 		fp(INKCAP_MUSHROOM, POTTED_PORTABELLA.get())
 	}
+	@JvmField
 	val POTTED_WHITE_INKCAP_MUSHROOM = regBlock("potted_white_inkcap_mushroom") {
 		fp(WHITE_INKCAP_MUSHROOM, POTTED_PORTABELLA.get())
 	}
+	@JvmField
 	val POTTED_PHOSPHOR_FUNGUS = regBlock("potted_phosphor_fungus") {
 		fp(PHOSPHOR_FUNGUS, POTTED_PORTABELLA.get()) {
 			alwaysLuminescent(3)
 		}
 	}
+	@JvmField
 	val POTTED_MUSHGLOOM = regBlock("potted_mushgloom") {
 		fp(MUSHGLOOM, POTTED_PORTABELLA.get()) {
 			alwaysLuminescent(1)
 		}
 	}
+	@JvmField
 	val POTTED_MILLY_BUBCAP = regBlock("potted_milly_bubcap") {
 		fp(MILLY_BUBCAP, POTTED_PORTABELLA.get())
 	}
+	@JvmField
 	val POTTED_SPOROPHYTE = regBlock("potted_sporophyte") {
 		fp(SPOROPHYTE, POTTED_PORTABELLA.get())
 	}
-
+	@JvmField
 	val CONK_FUNGUS_BLOCK = regWithItem("conk_fungus_block") {
 		HugeMushroomBlock(
 			propertiesFrom(Blocks.RED_MUSHROOM_BLOCK) {
@@ -560,6 +461,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val PORTABELLA_BLOCK = regWithItem("portabella_block") {
 		HugeMushroomBlock(
 			propertiesFrom(Blocks.RED_MUSHROOM_BLOCK) {
@@ -569,6 +471,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val INKCAP_MUSHROOM_BLOCK = regWithItem("inkcap_mushroom_block") {
 		HugeMushroomBlock(
 			propertiesFrom(Blocks.RED_MUSHROOM_BLOCK) {
@@ -578,6 +481,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val WHITE_INKCAP_MUSHROOM_BLOCK = regWithItem("white_inkcap_mushroom_block") {
 		HugeMushroomBlock(
 			propertiesFrom(Blocks.RED_MUSHROOM_BLOCK) {
@@ -587,6 +491,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val MILLY_BUBCAP_BLOCK = regWithItem("milly_bubcap_block") {
 		HugeMushroomBlock(
 			propertiesFrom(Blocks.RED_MUSHROOM_BLOCK) {
@@ -596,6 +501,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val PHOSPHOR_FUNGUS_BLOCK = regWithItem("phosphor_fungus_block") {
 		PhosphorFungusBlock(
 			propertiesFrom(Blocks.RED_MUSHROOM_BLOCK) {
@@ -611,6 +517,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val PHOSPHOR_SHROOMLIGHT = regWithItem("phosphor_shroomlight") {
 		Block(
 			propertiesFrom(Blocks.SHROOMLIGHT) {
@@ -620,6 +527,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val MUSHGLOOM_BLOCK = regWithItem("mushgloom_block") {
 		HugeMushroomBlock(
 			propertiesFrom(Blocks.RED_MUSHROOM_BLOCK) {
@@ -630,6 +538,7 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val CAVE_MUSHROOM_STEM = regWithItem("cave_mushroom_stem") {
 		HugeMushroomBlock(
 			propertiesFrom(Blocks.MUSHROOM_STEM) {
@@ -671,9 +580,13 @@ object ModBlocks
 	@JvmField val LIGHT_GRAY_GLOWSTICK = gs("light_gray")
 
 	//fluids
+	// FIXME how 2 fluidz???
+	@JvmField
 	val PORTAL_FLUID = regBlock("portal_fluid") {
-		PortalFluidBlock(
-			ModFluids.PORTAL_FLUID, propertiesFrom(Blocks.WATER) {
+//		PortalFluidBlock(
+//			ModFluids.STILL_PORTAL_FLUID,
+		Block(
+			propertiesFrom(Blocks.WATER) {
 				noCollission()
 				strength(100f)
 				noLootTable()
@@ -681,9 +594,12 @@ object ModBlocks
 			}
 		)
 	}
+	@JvmField
 	val SPRING_WATER = regBlock("spring_water") {
-		SpringWaterBlock(
-			ModFluids.SPRING_WATER, propertiesFrom(Blocks.WATER) {
+//		SpringWaterBlock(
+//			ModFluids.STILL_SPRING_WATER,
+		Block(
+			propertiesFrom(Blocks.WATER) {
 				noCollission()
 				strength(100f)
 				noLootTable()

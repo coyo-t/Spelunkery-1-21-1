@@ -2,9 +2,6 @@ package com.ordana.spelunkery;
 
 import com.ordana.spelunkery.configs.ClientConfigs;
 import com.ordana.spelunkery.configs.CommonConfigs;
-import com.ordana.spelunkery.entities.DustBunnyEntity;
-import com.ordana.spelunkery.entities.DustBunnyModel;
-import com.ordana.spelunkery.entities.DustBunnyRenderer;
 import com.ordana.spelunkery.events.NetworkHandler;
 import com.ordana.spelunkery.items.magnetic_compass.MagneticCompassItemPropertyFunction;
 import com.ordana.spelunkery.loot_modifiers.ModLootInjects;
@@ -15,7 +12,6 @@ import net.mehvahdjukaar.moonlight.api.client.renderer.FallingBlockRendererGener
 import net.mehvahdjukaar.moonlight.api.platform.ClientHelper;
 import net.mehvahdjukaar.moonlight.api.platform.PlatHelper;
 import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.particle.ExplodeParticle;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -32,7 +28,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,6 +44,7 @@ public class Spelunkery
 		ev.addListener(this::commonInit);
 		ModBlocks.BLOCKS.register(ev);
 		ModItems.ITEMS.register(ev);
+		ModEntities.THINGS.register(ev);
 //		container.registerConfig(ModConfig.Type.COMMON, ModConfig.Type.);
 	}
 	
@@ -77,10 +73,6 @@ public class Spelunkery
 			
 		}
 		
-		RegHelper.addAttributeRegistration(event -> event.register(ModEntities.DUST_BUNNY.get(), DustBunnyEntity.createAttributes()));
-//		ModLootOverrides.INSTANCE.register();
-		ModFluids.init();
-		ModEntities.init();
 		ModParticles.init();
 		ModSoundEvents.init();
 		
@@ -91,17 +83,14 @@ public class Spelunkery
 	@EventBusSubscriber(modid = Spelunkery.MOD_ID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 	public static class Client
 	{
-		public static final ModelLayerLocation
-		DUST_BUNNY = new ModelLayerLocation(Spelunkery.res("dust_bunny"), "dust_bunny");
-		
 		@SubscribeEvent
 		static void onClientSetup (FMLClientSetupEvent ev)
 		{
 			ClientHelper.addClientSetup(() -> {
-				ClientHelper.registerFluidRenderType(ModFluids.FLOWING_PORTAL_FLUID.get(), RenderType.translucent());
-				ClientHelper.registerFluidRenderType(ModFluids.PORTAL_FLUID.get(), RenderType.translucent());
-				ClientHelper.registerFluidRenderType(ModFluids.FLOWING_SPRING_WATER.get(), RenderType.translucent());
-				ClientHelper.registerFluidRenderType(ModFluids.SPRING_WATER.get(), RenderType.translucent());
+//				ClientHelper.registerFluidRenderType(ModFluids.FLOWING_PORTAL_FLUID.get(), RenderType.translucent());
+//				ClientHelper.registerFluidRenderType(ModFluids.STILL_PORTAL_FLUID.get(), RenderType.translucent());
+//				ClientHelper.registerFluidRenderType(ModFluids.FLOWING_SPRING_WATER.get(), RenderType.translucent());
+//				ClientHelper.registerFluidRenderType(ModFluids.STILL_SPRING_WATER.get(), RenderType.translucent());
 				
 				ClientHelper.registerRenderType(ModBlocks.POLISHED_QUARTZ_BLOCK.get(), RenderType.translucent());
 				
@@ -136,13 +125,6 @@ public class Spelunkery
 				ClientHelper.registerRenderType(ModBlocks.PHOSPHOR_FUNGUS_BLOCK.get(), RenderType.translucent());
 				
 				ItemProperties.register(
-					ModItems.DEPTH_GAUGE.get(),
-					Spelunkery.res("depth"),
-					(stack, world, entity, seed)
-						-> entity != null ? (((float)entity.getBlockY() + 64) / 384) : 0
-				);
-				
-				ItemProperties.register(
 					ModItems.MAGNETIC_COMPASS.get(),
 					Spelunkery.res("angle"),
 					new MagneticCompassItemPropertyFunction(
@@ -151,10 +133,8 @@ public class Spelunkery
 					)
 				);
 			});
-			ClientHelper.addModelLayerRegistration(event1 -> event1.register(DUST_BUNNY, DustBunnyModel::createBodyLayer));
 			ClientHelper.addEntityRenderersRegistration(event -> {
 				event.register(ModEntities.FALLING_LAYER.get(), FallingBlockRendererGeneric::new);
-				event.register(ModEntities.DUST_BUNNY.get(), DustBunnyRenderer::new);
 				event.register(ModEntities.GLOWSTICK.get(), context -> new ThrownItemRenderer<>(context, 1, true));
 			});
 			ClientHelper.addParticleRegistration(event -> {

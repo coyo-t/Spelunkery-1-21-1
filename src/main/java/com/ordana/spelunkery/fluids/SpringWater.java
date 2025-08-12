@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -59,7 +58,7 @@ public class SpringWater extends ModFlowingFluid
 	@NotNull
 	public Fluid getSource ()
 	{
-		return ModFluids.SPRING_WATER.get();
+		return ModFluids.STILL_SPRING_WATER.get();
 	}
 	
 	@NotNull
