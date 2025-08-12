@@ -120,6 +120,7 @@ public class Spelunkery
 		se.register(ev);
 		
 		ModBlocks.BLOCKS.register(ev);
+		ModItems.inititiititititialliziaation();
 		ModItems.ITEMS.register(ev);
 		ModEntities.THINGS.register(ev);
 		

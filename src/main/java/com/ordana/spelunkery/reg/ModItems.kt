@@ -5,8 +5,10 @@ import com.ordana.spelunkery.items.EchoForkItem
 import com.ordana.spelunkery.items.GlowstickItem
 import com.ordana.spelunkery.items.PortalFluidBottleItem
 import net.minecraft.ChatFormatting
+import net.minecraft.client.renderer.item.ItemProperties
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
+import net.minecraft.util.Mth
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.InteractionResultHolder
@@ -21,6 +23,17 @@ import java.util.function.Supplier
 
 object ModItems
 {
+	@JvmStatic
+	fun inititiititititialliziaation ()
+	{
+		for (i in ModBlocks.ITEMZORNAMEZOR.indices)
+		{
+			val name = ModBlocks.ITEMZORNAMEZOR[i]
+			val thing = ModBlocks.SHOULD_ITEMITITIZE[i]
+			regItem(name) { BlockItem(thing.get(), Item.Properties()) }
+		}
+	}
+
 	@JvmField
 	val ITEMS = DeferredRegister.createItems(Spelunkery.MOD_ID)
 
@@ -110,7 +123,7 @@ object ModItems
 				val stack = player.getItemInHand(hand)
 				val co = player.position()
 				player.displayClientMessage(
-					Component.translatable("tooltip.spelunkery.player_pos", co.x, co.z).setStyle(
+					Component.translatable("tooltip.spelunkery.player_pos", Mth.floor(co.x), -Mth.floor(co.z)).setStyle(
 						Style.EMPTY.applyFormat(ChatFormatting.DARK_GREEN)
 					), true
 				)

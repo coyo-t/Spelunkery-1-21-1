@@ -25,7 +25,10 @@ private typealias PropCB = BlockBehaviour.Properties.()->Unit
 object ModBlocks
 {
 	@JvmField
-	val BLOCKS: DeferredRegister.Blocks = DeferredRegister.createBlocks(Spelunkery.MOD_ID)
+	val BLOCKS = DeferredRegister.createBlocks(Spelunkery.MOD_ID)
+
+	val SHOULD_ITEMITITIZE = mutableListOf<Supplier<out Block>>()
+	val ITEMZORNAMEZOR = mutableListOf<String>()
 
 	//#region theze whorez want my orez
 
@@ -663,6 +666,8 @@ object ModBlocks
 	private fun <T : Block> regWithItem(name: String, blockFactory: Supplier<T>): Supplier<T>
 	{
 		return regBlock(name, blockFactory).apply {
+			SHOULD_ITEMITITIZE += this
+			ITEMZORNAMEZOR += name
 			// FIXME
 //			RegHelper.registerItem(Spelunkery.res(name)) { BlockItem(this.get(), Item.Properties()) }
 		}

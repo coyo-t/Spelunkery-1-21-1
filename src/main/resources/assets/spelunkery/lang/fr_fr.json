@@ -31,7 +31,7 @@
 	"tooltip.spelunkery.echo_fork_1": "  Surbriller les entités vivantes dans rayon de %1$s blocks pour %2$s secondes",
 	"tooltip.spelunkery.echo_fork_2": "  Délai: %1$s secondes",
 	"tooltip.spelunkery.echo_fork_3": "  Utiliser en maintenant %1$s pour se retirer l'effet de surbrillance",
-	"tooltip.spelunkery.magnetite_pos": "Votre boussole est attirée vers la position %1$s, %2$s",
+	"tooltip.spelunkery.magnetite_pos": "Est: %1$s, Nord: %2$s",
 	"tooltip.spelunkery.player_pos": "Position actuelle: %1$s, %2$s",
 	"tooltip.spelunkery.magnetic_compass_2": "  Pointe toujours vers le Nord magnétique",
 	"tooltip.spelunkery.magnetic_compass_3": "  Sauf s'il est présente une forte interférence dans le champ magnétique",
