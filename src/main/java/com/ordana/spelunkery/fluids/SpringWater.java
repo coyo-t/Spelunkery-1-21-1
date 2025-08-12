@@ -1,7 +1,7 @@
 package com.ordana.spelunkery.fluids;
 
 import com.ordana.spelunkery.Spelunkery;
-import com.ordana.spelunkery.reg.ModFluids;
+//import com.ordana.spelunkery.reg.ModFluids;
 import com.ordana.spelunkery.reg.ModItems;
 import com.ordana.spelunkery.reg.ModSoundEvents;
 import com.ordana.spelunkery.reg.ModTags;
@@ -22,7 +22,9 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -52,19 +54,22 @@ public class SpringWater extends ModFlowingFluid
 	@NotNull
 	public Fluid getFlowing ()
 	{
-		return ModFluids.FLOWING_SPRING_WATER.get();
+		return Fluids.FLOWING_WATER;
+//		return ModFluids.FLOWING_SPRING_WATER.get();
 	}
 	
 	@NotNull
 	public Fluid getSource ()
 	{
-		return ModFluids.STILL_SPRING_WATER.get();
+		return Fluids.WATER;
+//		return ModFluids.STILL_SPRING_WATER.get();
 	}
 	
 	@NotNull
 	public Item getBucket ()
 	{
-		return ModItems.SPRING_WATER_BUCKET.get();
+		return Fluids.FLOWING_WATER.getBucket();
+//		return ModItems.SPRING_WATER_BUCKET.get();
 	}
 	
 	@NotNull

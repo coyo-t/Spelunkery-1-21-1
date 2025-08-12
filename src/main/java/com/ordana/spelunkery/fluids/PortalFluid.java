@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,19 +51,22 @@ public class PortalFluid extends ModFlowingFluid
 	@NotNull
 	public Fluid getFlowing ()
 	{
-		return ModFluids.FLOWING_PORTAL_FLUID.get();
+		return Fluids.FLOWING_WATER;
+//		return ModFluids.FLOWING_PORTAL_FLUID.get();
 	}
 	
 	@NotNull
 	public Fluid getSource ()
 	{
-		return ModFluids.PORTAL_FLUID.get();
+		return Fluids.WATER;
+//		return ModFluids.PORTAL_FLUID.get();
 	}
 	
 	@NotNull
 	public Item getBucket ()
 	{
-		return ModItems.PORTAL_FLUID_BUCKET.get();
+		return Fluids.FLOWING_WATER.getBucket();
+//		return ModItems.PORTAL_FLUID_BUCKET.get();
 	}
 	
 	@NotNull

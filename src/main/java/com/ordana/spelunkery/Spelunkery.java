@@ -51,7 +51,7 @@ public class Spelunkery
 	
 	public static ResourceLocation res (String name)
 	{
-		return ResourceLocation.tryBuild(MOD_ID, name);
+		return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
 	}
 	
 	
@@ -96,7 +96,6 @@ public class Spelunkery
 				
 				ClientHelper.registerRenderType(ModBlocks.PORTAL_FLUID.get(), RenderType.translucent());
 				ClientHelper.registerRenderType(ModBlocks.SPRING_WATER.get(), RenderType.translucent());
-				ClientHelper.registerRenderType(ModBlocks.SALT_LAMP.get(), RenderType.cutout());
 				ClientHelper.registerRenderType(ModBlocks.SALT.get(), RenderType.cutout());
 				ClientHelper.registerRenderType(ModBlocks.TANGLE_ROOTS.get(), RenderType.cutout());
 				ClientHelper.registerRenderType(ModBlocks.TANGLE_ROOTS_PLANT.get(), RenderType.cutout());

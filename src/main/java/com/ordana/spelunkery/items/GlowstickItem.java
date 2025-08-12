@@ -63,29 +63,29 @@ public class GlowstickItem extends BlockItem
 		return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
 	}
 	
-	Supplier<BiMap<Item, DyeColor>> ITEM_TO_DYE = Suppliers.memoize(() -> {
-		var builder = ImmutableBiMap.<Item, DyeColor>builder()
-				  .put(ModItems.RED_GLOWSTICK.get(), DyeColor.RED)
-				  .put(ModItems.ORANGE_GLOWSTICK.get(), DyeColor.ORANGE)
-				  .put(ModItems.YELLOW_GLOWSTICK.get(), DyeColor.YELLOW)
-				  .put(ModItems.LIME_GLOWSTICK.get(), DyeColor.LIME)
-				  .put(ModItems.GREEN_GLOWSTICK.get(), DyeColor.GREEN)
-				  .put(ModItems.CYAN_GLOWSTICK.get(), DyeColor.CYAN)
-				  .put(ModItems.LIGHT_BLUE_GLOWSTICK.get(), DyeColor.LIGHT_BLUE)
-				  .put(ModItems.BLUE_GLOWSTICK.get(), DyeColor.BLUE)
-				  .put(ModItems.PURPLE_GLOWSTICK.get(), DyeColor.PURPLE)
-				  .put(ModItems.MAGENTA_GLOWSTICK.get(), DyeColor.MAGENTA)
-				  .put(ModItems.PINK_GLOWSTICK.get(), DyeColor.PINK)
-				  .put(ModItems.BROWN_GLOWSTICK.get(), DyeColor.BROWN)
-				  .put(ModItems.BLACK_GLOWSTICK.get(), DyeColor.BLACK)
-				  .put(ModItems.WHITE_GLOWSTICK.get(), DyeColor.WHITE)
-				  .put(ModItems.GRAY_GLOWSTICK.get(), DyeColor.GRAY)
-				  .put(ModItems.LIGHT_GRAY_GLOWSTICK.get(), DyeColor.LIGHT_GRAY);
-		return builder.build();
-	});
+//	Supplier<BiMap<Item, DyeColor>> ITEM_TO_DYE = Suppliers.memoize(() -> {
+//		var builder = ImmutableBiMap.<Item, DyeColor>builder()
+//				  .put(ModItems.RED_GLOWSTICK.get(), DyeColor.RED)
+//				  .put(ModItems.ORANGE_GLOWSTICK.get(), DyeColor.ORANGE)
+//				  .put(ModItems.YELLOW_GLOWSTICK.get(), DyeColor.YELLOW)
+//				  .put(ModItems.LIME_GLOWSTICK.get(), DyeColor.LIME)
+//				  .put(ModItems.GREEN_GLOWSTICK.get(), DyeColor.GREEN)
+//				  .put(ModItems.CYAN_GLOWSTICK.get(), DyeColor.CYAN)
+//				  .put(ModItems.LIGHT_BLUE_GLOWSTICK.get(), DyeColor.LIGHT_BLUE)
+//				  .put(ModItems.BLUE_GLOWSTICK.get(), DyeColor.BLUE)
+//				  .put(ModItems.PURPLE_GLOWSTICK.get(), DyeColor.PURPLE)
+//				  .put(ModItems.MAGENTA_GLOWSTICK.get(), DyeColor.MAGENTA)
+//				  .put(ModItems.PINK_GLOWSTICK.get(), DyeColor.PINK)
+//				  .put(ModItems.BROWN_GLOWSTICK.get(), DyeColor.BROWN)
+//				  .put(ModItems.BLACK_GLOWSTICK.get(), DyeColor.BLACK)
+//				  .put(ModItems.WHITE_GLOWSTICK.get(), DyeColor.WHITE)
+//				  .put(ModItems.GRAY_GLOWSTICK.get(), DyeColor.GRAY)
+//				  .put(ModItems.LIGHT_GRAY_GLOWSTICK.get(), DyeColor.LIGHT_GRAY);
+//		return builder.build();
+//	});
 	
 	public Optional<DyeColor> getGlowstick (Item item)
 	{
-		return Optional.ofNullable(ITEM_TO_DYE.get().get(item));
+		return Optional.empty();
 	}
 }

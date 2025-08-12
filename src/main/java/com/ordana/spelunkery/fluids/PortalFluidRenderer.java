@@ -99,7 +99,8 @@ public class PortalFluidRenderer extends ModFluidRenderProperties
 	
 	private boolean isPortalFluid (FluidState state)
 	{
-		return state.is(ModFluids.PORTAL_FLUID.get()) || state.is(ModFluids.FLOWING_PORTAL_FLUID.get());
+		return false;
+//		return state.is(ModFluids.PORTAL_FLUID.get()) || state.is(ModFluids.FLOWING_PORTAL_FLUID.get());
 	}
 	
 	private boolean isRandomPos (BlockPos pos, int rarity)
@@ -339,7 +340,7 @@ public class PortalFluidRenderer extends ModFluidRenderProperties
 	
 	public TextureAtlasSprite[] getFluidSprites (@Nullable BlockAndTintGetter view, @Nullable BlockPos pos, FluidState state)
 	{
-		if (pos == null) return portalFluidSpriteNESW;
+		if (isABoolean(pos)) return portalFluidSpriteNESW;
 		
 		var texture = portalFluidSpriteNONE;
 		if (isRandomPos(pos, 10)) texture = portalFluidSpriteUncommon;
@@ -438,6 +439,11 @@ public class PortalFluidRenderer extends ModFluidRenderProperties
 		}
 		
 		return texture;
+	}
+	
+	private static boolean isABoolean (@Nullable BlockPos pos)
+	{
+		return pos == null;
 	}
 	
 	@Nullable

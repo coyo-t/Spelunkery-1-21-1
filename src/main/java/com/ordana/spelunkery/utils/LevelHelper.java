@@ -87,30 +87,5 @@ public class LevelHelper
 		entity.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT.get());
 	}
 
-    /*
-    public static void portalFluidBehavior(BlockState state, Level level, BlockPos pos, Entity entity, int tickCounter) {
-        if (!entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions() && !pos.equals(level.getSharedSpawnPos())) {
-            if (entity.isInWater()) {
-                tickCounter++;
-                if (tickCounter < 1) {
-                    entity.playSound(ModSoundEvents.PORTAL_FLUID_SUBMERGE, 1.0f, 1.0f);
-                }
-                level.scheduleTick(pos, this, 120);
-                if (tickCounter >= 100) {
 
-                    setTickCounter(0);
-
-                    if (entity instanceof ServerPlayer player) {
-                        if (player.isSecondaryUseActive()) return;
-                        LevelHelper.teleportToSpawnPosition(player);
-                    } else {
-                        LevelHelper.teleportToWorldspawn(level, entity);
-                        entity.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT, 1.0f, 1.0f);
-                    }
-                }
-            }
-        }
-    }
-     */
-	
 }

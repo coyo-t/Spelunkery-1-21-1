@@ -8,7 +8,7 @@
 		"MossBlockMixin",
 		"NetherPortalBlockMixin",
 		"OreBlockMixin",
-		"RedstoneOreBlockMixin",
+		"RedstoneOreBlockMixin"
 	],
 	"client": [],
 	"server": [],

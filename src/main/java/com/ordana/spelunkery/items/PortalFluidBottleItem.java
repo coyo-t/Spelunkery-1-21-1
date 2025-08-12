@@ -21,8 +21,6 @@ import static net.minecraft.core.component.DataComponents.LODESTONE_TRACKER;
 
 public class PortalFluidBottleItem extends HoneyBottleItem
 {
-	
-	
 	public PortalFluidBottleItem (Properties properties)
 	{
 		super(properties);
@@ -39,8 +37,6 @@ public class PortalFluidBottleItem extends HoneyBottleItem
 	{
 		return true;
 	}
-	
-	public static final FoodProperties PORTAL_FLUID = (new FoodProperties.Builder()).nutrition(0).saturationModifier(0F).alwaysEdible().build();
 	
 	@Override
 	@NotNull
@@ -63,8 +59,10 @@ public class PortalFluidBottleItem extends HoneyBottleItem
 	{
 		if (livingEntity instanceof Player player)
 		{
-			ItemStack itemStack2 = ItemUtils.createFilledResult(stack, player, Items.GLASS_BOTTLE.getDefaultInstance());
-			player.setItemInHand(player.getUsedItemHand(), itemStack2);
+			player.setItemInHand(
+				player.getUsedItemHand(),
+				ItemUtils.createFilledResult(stack, player, Items.GLASS_BOTTLE.getDefaultInstance())
+			);
 			
 		}
 		if (livingEntity instanceof ServerPlayer serverPlayer && CommonConfigs.PORTAL_FLUID_DRINKING.get())
@@ -79,24 +77,8 @@ public class PortalFluidBottleItem extends HoneyBottleItem
 			}
 			else
 			{
-				final var fuck = uhh.target();
-				if (fuck.isPresent())
-				{
-					LevelHelper.teleportToAnchorPosition(serverPlayer, fuck.get());
-				}
+				uhh.target().ifPresent(globalPos -> LevelHelper.teleportToAnchorPosition(serverPlayer, globalPos));
 			}
-			
-			
-//			CompoundTag compoundTag = stack.getOrCreateTag();
-//			boolean bl = compoundTag.contains("anchorPos");
-//			boolean bl2 = compoundTag.contains("anchorDimension");
-//			PortalFluidBottleItem.getDimension(compoundTag);
-//
-//			if (bl && bl2)
-//			{
-//				LevelHelper.teleportToAnchorPosition(serverPlayer, getAnchorPos(compoundTag));
-//			}
-//			else LevelHelper.teleportToSpawnPosition(serverPlayer);
 		}
 		return stack;
 	}

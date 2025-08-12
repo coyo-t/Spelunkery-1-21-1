@@ -34,12 +34,18 @@ public class EchoForkItem extends Item
 	public InteractionResultHolder<ItemStack> use (@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand)
 	{
 		ItemStack stack = player.getItemInHand(hand);
-		if (player.isSecondaryUseActive()) removeGlow(player, stack, level);
+		if (player.isSecondaryUseActive())
+		{
+			removeGlow(player, stack, level);
+		}
 		else
 		{
 			tollFork(player, stack, level);
 			player.getCooldowns().addCooldown(this, CommonConfigs.ECHO_COOLDOWN.get());
-			if (player instanceof ServerPlayer serverPlayer) CriteriaTriggers.USING_ITEM.trigger(serverPlayer, stack);
+			if (player instanceof ServerPlayer serverPlayer)
+			{
+				CriteriaTriggers.USING_ITEM.trigger(serverPlayer, stack);
+			}
 		}
 		return new InteractionResultHolder<>(InteractionResult.SUCCESS, stack);
 	}
@@ -51,12 +57,10 @@ public class EchoForkItem extends Item
 			level.playSound(null, player.blockPosition(), SoundEvents.SCULK_CLICKING, SoundSource.BLOCKS, 1.0f, 1.0f);
 			level.playSound(null, player.blockPosition(), SoundEvents.BELL_RESONATE, SoundSource.BLOCKS, 1.0f, 1.0f);
 			
-			AABB area = (new AABB(player.blockPosition())).inflate(CommonConfigs.ECHO_FORK_RANGE.get());
-			List<LivingEntity> entities = level.getEntities(EntityTypeTest.forClass(LivingEntity.class), area,
-					  LivingEntity::isAlive
-			);
-			
-			entities.forEach(item -> item.addEffect(new MobEffectInstance(MobEffects.GLOWING, CommonConfigs.ECHO_DURRATION.get(), 0, true, false, true)));
+			final var area = (new AABB(player.blockPosition())).inflate(CommonConfigs.ECHO_FORK_RANGE.get());
+			level
+			.getEntities(EntityTypeTest.forClass(LivingEntity.class), area,LivingEntity::isAlive)
+			.forEach(item -> item.addEffect(new MobEffectInstance(MobEffects.GLOWING, CommonConfigs.ECHO_DURRATION.get(), 0, true, false, true)));
 		}
 	}
 	
@@ -66,12 +70,10 @@ public class EchoForkItem extends Item
 		{
 			level.playSound(null, player.blockPosition(), SoundEvents.BEACON_DEACTIVATE, SoundSource.BLOCKS, 1.0f, 2.0f);
 			
-			AABB area = (new AABB(player.blockPosition())).inflate(CommonConfigs.ECHO_FORK_RANGE.get() + 4);
-			List<LivingEntity> entities = level.getEntities(EntityTypeTest.forClass(LivingEntity.class), area,
-					  LivingEntity::isAlive
-			);
-			
-			entities.forEach(item -> item.removeEffect(MobEffects.GLOWING));
+			final var area = (new AABB(player.blockPosition())).inflate(CommonConfigs.ECHO_FORK_RANGE.get() + 4);
+			level
+			.getEntities(EntityTypeTest.forClass(LivingEntity.class), area, LivingEntity::isAlive)
+			.forEach(item -> item.removeEffect(MobEffects.GLOWING));
 		}
 	}
 }

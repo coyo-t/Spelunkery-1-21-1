@@ -39,15 +39,16 @@ public class SpringWaterBlock extends LiquidBlock
 	@Override
 	public void tick (BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
 	{
-		var aboveState = level.getBlockState(pos.above());
-		var belowState = level.getBlockState(pos.below());
-		var fluidState = level.getFluidState(pos);
-		if (fluidState.isSource() && (belowState.is(ModTags.SPRING_GEYSER_SOURCE) || (aboveState.is(ModTags.SPRING_GEYSER_BREAKABLE) && !aboveState.isAir())))
-		{
-			level.setBlockAndUpdate(pos.above(), ModBlocks.SPRING_WATER.get().defaultBlockState());
-			level.setBlockAndUpdate(pos, ModFluids.FLOWING_SPRING_WATER.get().defaultFluidState().createLegacyBlock());
-			
-		}
+		// FIXME
+//		var aboveState = level.getBlockState(pos.above());
+//		var belowState = level.getBlockState(pos.below());
+//		var fluidState = level.getFluidState(pos);
+//		if (fluidState.isSource() && (belowState.is(ModTags.SPRING_GEYSER_SOURCE) || (aboveState.is(ModTags.SPRING_GEYSER_BREAKABLE) && !aboveState.isAir())))
+//		{
+//			level.setBlockAndUpdate(pos.above(), ModBlocks.SPRING_WATER.get().defaultBlockState());
+//			level.setBlockAndUpdate(pos, ModFluids.FLOWING_SPRING_WATER.get().defaultFluidState().createLegacyBlock());
+//
+//		}
 	}
 	
 	public void neighborChanged (BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)

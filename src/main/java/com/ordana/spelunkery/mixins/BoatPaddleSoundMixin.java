@@ -45,31 +45,32 @@ public class BoatPaddleSoundMixin extends Entity
 	// FIXME maybe replacable with 'in fluid' func? i know that exists generically. or it did >:/
 	private boolean isInPortalFluid ()
 	{
-		AABB aabb = this.getBoundingBox();
-		int i = Mth.floor(aabb.minX);
-		int j = Mth.ceil(aabb.maxX);
-		int k = Mth.floor(aabb.minY);
-		int l = Mth.ceil(aabb.minY + 0.001D);
-		int i1 = Mth.floor(aabb.minZ);
-		int j1 = Mth.ceil(aabb.maxZ);
-		boolean flag = false;
-		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-		
-		for (int k1 = i; k1 < j; ++k1)
-		{
-			for (int l1 = k; l1 < l; ++l1)
-			{
-				for (int i2 = i1; i2 < j1; ++i2)
-				{
-					blockpos$mutableblockpos.set(k1, l1, i2);
-					FluidState fluidstate = this.level().getFluidState(blockpos$mutableblockpos);
-					return fluidstate.is(ModFluids.PORTAL_FLUID.get()) || fluidstate.is(ModFluids.FLOWING_PORTAL_FLUID.get());
-					
-				}
-			}
-		}
-		
-		return flag;
+		return false;
+//		AABB aabb = this.getBoundingBox();
+//		int i = Mth.floor(aabb.minX);
+//		int j = Mth.ceil(aabb.maxX);
+//		int k = Mth.floor(aabb.minY);
+//		int l = Mth.ceil(aabb.minY + 0.001D);
+//		int i1 = Mth.floor(aabb.minZ);
+//		int j1 = Mth.ceil(aabb.maxZ);
+//		boolean flag = false;
+//		BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+//
+//		for (int k1 = i; k1 < j; ++k1)
+//		{
+//			for (int l1 = k; l1 < l; ++l1)
+//			{
+//				for (int i2 = i1; i2 < j1; ++i2)
+//				{
+//					blockpos$mutableblockpos.set(k1, l1, i2);
+//					FluidState fluidstate = this.level().getFluidState(blockpos$mutableblockpos);
+//					return fluidstate.is(ModFluids.PORTAL_FLUID.get()) || fluidstate.is(ModFluids.FLOWING_PORTAL_FLUID.get());
+//
+//				}
+//			}
+//		}
+//
+//		return flag;
 	}
 	
 

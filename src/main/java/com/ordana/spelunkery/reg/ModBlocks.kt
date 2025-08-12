@@ -5,14 +5,11 @@ import com.ordana.spelunkery.blocks.*
 import com.ordana.spelunkery.blocks.fungi.*
 import com.ordana.spelunkery.blocks.nephrite.RawNephriteBlock
 import com.ordana.spelunkery.blocks.rock_salt.*
-import net.mehvahdjukaar.moonlight.api.platform.RegHelper
 import net.minecraft.core.BlockPos
 import net.minecraft.util.ColorRGBA
 import net.minecraft.util.valueproviders.IntProvider
 import net.minecraft.util.valueproviders.UniformInt
 import net.minecraft.world.entity.EntityType
-import net.minecraft.world.item.BlockItem
-import net.minecraft.world.item.Item
 import net.minecraft.world.level.BlockGetter
 import net.minecraft.world.level.block.*
 import net.minecraft.world.level.block.state.BlockBehaviour
@@ -69,7 +66,7 @@ object ModBlocks
 	val ironFamily = createRockFamily("iron_ore", Blocks.IRON_ORE)
 	val copperFamily = createRockFamily("copper_ore", Blocks.COPPER_ORE)
 	val goldFamily = createRockFamily("gold_ore", Blocks.GOLD_ORE)
-	val redstoneFamily = createRockFamily("redstone_ore", Blocks.REDSTONE_ORE) {
+	val redstoneFamily = createREDSTONERockFamily("redstone_ore", Blocks.REDSTONE_ORE) {
 		randomTicks()
 		lightLevel(createLightLevelFromLitBlockState(9))
 	}
@@ -90,6 +87,7 @@ object ModBlocks
 	val ROUGH_CINNABAR_BLOCK = regWithItem("rough_cinnabar_block") {
 		RoughCinnabarBlock(
 			roughGemBloc(MapColor.COLOR_RED).apply {
+				// FIXME
 				lightLevel(createLightLevelFromLitBlockState(9))
 				randomTicks()
 			}
@@ -117,27 +115,6 @@ object ModBlocks
 			BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK).mapColor(MapColor.COLOR_RED)
 				.requiresCorrectToolForDrops().strength(5.0f, 6.0f).sound(SoundType.METAL)
 				.isRedstoneConductor(::never)
-		)
-	}
-
-	//rock salt
-	@JvmField
-	val ROCK_SALT = regBlock("rock_salt") {
-		RockSaltCrystalBlock(
-			BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_PINK)
-				.requiresCorrectToolForDrops().strength(3f, 2f).sound(SoundType.CALCITE).lightLevel(
-					createLightLevelFromIlluminatedBlockState(1)
-				).emissiveRendering(::ifIlluminated).noOcclusion()
-		)
-	}
-
-	@JvmField
-	val SALT_LAMP = regWithItem("salt_lamp") {
-		SaltLampBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_PINK)
-				.strength(0.5f, 2f).sound(SoundType.CALCITE).lightLevel(createLightLevelFromLitBlockState(7))
-				.emissiveRendering(::ifLit)
-				.noOcclusion()
 		)
 	}
 
@@ -628,50 +605,38 @@ object ModBlocks
 	private fun <T:Block> fp (thing: Supplier<T>, bhBase: Block)
 		= fp(thing, bhBase) {}
 
-	private fun createRockFamily (name: String, base: Block, xp: IntProvider): Supplier<DropExperienceBlock>
+	private fun FUCKINGROCKS (base: Block, p: PropCB) = propertiesFrom(base) {
+		requiresCorrectToolForDrops()
+		strength(3f, 3f)
+		p(this)
+	}
+
+	private fun <T:Block> rockFamilyBullshit (name:String, base: Block, p: PropCB, mkBloc:(BlockBehaviour.Properties)->T): Supplier<T>
 	{
 		val r = regWithItem("granite_${name}") {
-			DropExperienceBlock(xp, propertiesFrom(base) {
-					requiresCorrectToolForDrops()
-					strength(3f, 3f)
-				}
-			)
+			mkBloc(FUCKINGROCKS(base, p))
 		}
-		val rb = r.get()
 		regWithItem("andesite_${name}") {
-			DropExperienceBlock(xp, propertiesFrom(rb))
+			mkBloc(FUCKINGROCKS(base, p))
 		}
 		regWithItem("diorite_${name}") {
-			DropExperienceBlock(xp, propertiesFrom(rb))
+			mkBloc(FUCKINGROCKS(base, p))
 		}
 		regWithItem("tuff_${name}") {
-			DropExperienceBlock(xp, propertiesFrom(rb) { sound(SoundType.TUFF) })
+			mkBloc(FUCKINGROCKS(base) { sound(SoundType.TUFF); p() })
 		}
 		return r
 	}
 
-	private fun createRockFamily (name: String, base: Block, p: PropCB ): Supplier<Block>
-	{
-		val r = regWithItem("granite_${name}") {
-			Block(propertiesFrom(base) {
-				requiresCorrectToolForDrops()
-				strength(3f, 3f)
-				p(this)
-			})
-		}
-		regWithItem("andesite_${name}") {
-			Block(propertiesFrom(r.get()))
-		}
-		regWithItem("diorite_${name}") {
-			Block(propertiesFrom(r.get()))
-		}
-		regWithItem("tuff_${name}") {
-			Block(propertiesFrom(r.get()) {
-				sound(SoundType.TUFF)
-			})
-		}
-		return r
-	}
+	private fun createRockFamily (name: String, base: Block, xp: IntProvider)
+		= rockFamilyBullshit(name, base, {}) { DropExperienceBlock(xp, it) }
+
+	private fun createRockFamily (name: String, base: Block, p: PropCB )
+		= rockFamilyBullshit(name, base, p) { Block(it) }
+
+	private fun createREDSTONERockFamily (name: String, base: Block, p: PropCB )
+		= rockFamilyBullshit(name, base, p) { RedStoneOreBlock(it) }
+
 
 	private fun createRockFamily (name: String, base: Block): Supplier<Block>
 	{
@@ -689,17 +654,8 @@ object ModBlocks
 		entityType: EntityType<*>?
 	) = false
 
-	private fun ifIlluminated(state: BlockState, blockGetter: BlockGetter, pos: BlockPos)
-		= state.getValue(ModBlockProperties.ILLUMINATED)
-
-	private fun ifLit(state: BlockState, blockGetter: BlockGetter, pos: BlockPos)
-		= state.getValue(BlockStateProperties.LIT)
-
-	private fun createLightLevelFromIlluminatedBlockState(litLevel: Int)
-		= { state: BlockState? -> if (state!!.getValue(ModBlockProperties.ILLUMINATED) as Boolean) litLevel else 0 }
-
 	private fun createLightLevelFromLitBlockState(lightValue: Int)
-		= { blockState: BlockState? -> if (blockState!!.getValue(BlockStateProperties.LIT) as Boolean) lightValue else 0 }
+		= { blockState: BlockState? -> if (blockState?.getValue(BlockStateProperties.LIT) == true) lightValue else 0 }
 
 	private fun <T : Block> regBlock(name: String, block: Supplier<T>)
 		= BLOCKS.register<T>(name, block)
@@ -707,7 +663,8 @@ object ModBlocks
 	private fun <T : Block> regWithItem(name: String, blockFactory: Supplier<T>): Supplier<T>
 	{
 		return regBlock(name, blockFactory).apply {
-			RegHelper.registerItem(Spelunkery.res(name)) { BlockItem(this.get(), Item.Properties()) }
+			// FIXME
+//			RegHelper.registerItem(Spelunkery.res(name)) { BlockItem(this.get(), Item.Properties()) }
 		}
 	}
 

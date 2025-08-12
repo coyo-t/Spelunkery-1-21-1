@@ -102,8 +102,7 @@ public class ModLootInjects
 		lootChests.stream().filter(loot -> name.equals(ResourceLocation.tryBuild("minecraft", "chests/" + loot))).map(loot -> Spelunkery.res("injects/" + loot)).forEach(event::addTableReference);
 		
 		if (PlatHelper.getPlatform() == PlatHelper.Platform.FORGE) return;
-		if (!CommonConfigs.ORE_STONE_DROPS.get()) return;
-		
+
 		if (PlatHelper.isModLoaded("ditr"))
 		{
 			if (name.equals(ResourceLocation.tryBuild("ditr", "blocks/obsidian_diamond_ore")))
