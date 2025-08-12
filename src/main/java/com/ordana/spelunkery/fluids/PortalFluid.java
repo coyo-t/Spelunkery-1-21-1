@@ -1,9 +1,6 @@
 package com.ordana.spelunkery.fluids;
 
 import com.ordana.spelunkery.Spelunkery;
-import com.ordana.spelunkery.reg.ModFluids;
-import com.ordana.spelunkery.reg.ModItems;
-import com.ordana.spelunkery.reg.ModParticles;
 import com.ordana.spelunkery.reg.ModSoundEvents;
 import net.mehvahdjukaar.moonlight.api.client.ModFluidRenderProperties;
 import net.mehvahdjukaar.moonlight.api.fluids.ModFlowingFluid;
@@ -105,7 +102,7 @@ public class PortalFluid extends ModFlowingFluid
 				double d = (double)pos.getX() + random.nextDouble();
 				double e = (double)pos.getY() + 1.0D;
 				double f = (double)pos.getZ() + random.nextDouble();
-				level.addParticle(ModParticles.PORTAL_FLAME.get(), d, e + 0.2, f, 0.0D, 0.0D, 0.0D);
+				level.addParticle(ParticleTypes.DRIPPING_OBSIDIAN_TEAR, d, e + 0.2, f, 0.0D, 0.0D, 0.0D);
 				//level.playLocalSound(d, e, f, SoundEvents.LAVA_POP, SoundSource.BLOCKS, 0.2F + random.nextFloat() * 0.2F, 0.9F + random.nextFloat() * 0.15F, false);
 			}
 			

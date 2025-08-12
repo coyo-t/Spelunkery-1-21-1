@@ -2,10 +2,8 @@ package com.ordana.spelunkery.reg
 
 import com.ordana.spelunkery.Spelunkery
 import com.ordana.spelunkery.items.EchoForkItem
-import com.ordana.spelunkery.items.GlowstickItem
 import com.ordana.spelunkery.items.PortalFluidBottleItem
 import net.minecraft.ChatFormatting
-import net.minecraft.client.renderer.item.ItemProperties
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
 import net.minecraft.util.Mth
@@ -45,7 +43,6 @@ object ModItems
 	@JvmField val BASALT_PEBBLE = regItem("basalt_pebble")
 	@JvmField val END_STONE_PEBBLE = regItem("end_stone_pebble")
 
-	@JvmField val SALT = regItem("salt") { BlockItem(ModBlocks.SALT.get(), Item.Properties()) }
 	@JvmField val NEPHRITE_CHUNK = regItem("nephrite_chunk")
 	@JvmField val RAW_MAGNETITE = regItem("raw_magnetite")
 	@JvmField val RAW_IRON_NUGGET = regItem("raw_iron_nugget")
@@ -154,15 +151,6 @@ object ModItems
 //		{ SpringWaterBucketItem(ModFluids.STILL_SPRING_WATER.get(), (Item.Properties().stacksTo(1))) })
 	@JvmField
 	val ECHO_FORK = regItem("echo_fork") { EchoForkItem(Item.Properties().stacksTo(1)) }
-
-	@JvmField
-	val GLOWSTICK = regItem("glowstick") { GlowstickItem(null, ModBlocks.GLOWSTICK.get(), Item.Properties()) }
-
-
-//	fun rb(name: String, it: Block)
-//	{
-//		return ITEMS.register(name) { BlockItem(it, Item.Properties()) }
-//	}
 
 	fun regItem (name:String) = regItem(name) { Item(Item.Properties()) }
 

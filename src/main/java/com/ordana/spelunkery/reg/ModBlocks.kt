@@ -3,8 +3,6 @@ package com.ordana.spelunkery.reg
 import com.ordana.spelunkery.Spelunkery
 import com.ordana.spelunkery.blocks.*
 import com.ordana.spelunkery.blocks.fungi.*
-import com.ordana.spelunkery.blocks.nephrite.RawNephriteBlock
-import com.ordana.spelunkery.blocks.rock_salt.*
 import net.minecraft.core.BlockPos
 import net.minecraft.util.ColorRGBA
 import net.minecraft.util.valueproviders.IntProvider
@@ -122,18 +120,6 @@ object ModBlocks
 	}
 
 	@JvmField
-	val SALT = regBlock("salt") {
-		SaltBlock(
-			BlockBehaviour.Properties.ofFullCopy(
-				Blocks.REDSTONE_WIRE
-			).mapColor(MapColor.TERRACOTTA_PINK).instabreak().randomTicks().noCollission().sound(
-				SoundType.SAND
-			)
-		)
-	}
-
-
-	@JvmField
 	val POLISHED_QUARTZ_BLOCK = regWithItem("polished_quartz_block") {
 		Block(
 			propertiesFrom(Blocks.STONE) {
@@ -166,19 +152,11 @@ object ModBlocks
 			}
 		)
 	}
-	@JvmField
-	val SULFUR_GEYSER = regWithItem("sulfur_geyser") {
-		SulfuricVentBlock(
-			propertiesFrom(Blocks.STONE) {
-				mapColor(MapColor.SAND)
-			}
-		)
-	}
 
 	//nephrite
 	@JvmField
 	val RAW_NEPHRITE = regWithItem("raw_nephrite") {
-		RawNephriteBlock(
+		Block(
 			propertiesFrom(Blocks.STONE) {
 				mapColor(MapColor.EMERALD)
 				requiresCorrectToolForDrops()
@@ -216,43 +194,9 @@ object ModBlocks
 	}
 
 	@JvmField
-	val DUST_BLOCK = regWithItem("dust_block") {
-		DustBlockBlock(
-			propertiez {
-				noCollission()
-				instabreak()
-				sound(SoundType.WOOL)
-				mapColor(MapColor.COLOR_GRAY)
-			}
-		)
-	}
-	@JvmField
-	val DUST = regWithItem("dust") {
-		DustBlock(
-			propertiez {
-				noCollission()
-				instabreak()
-				sound(SoundType.WOOL)
-				mapColor(MapColor.COLOR_GRAY)
-			}
-		)
-	}
-
-	@JvmField
-	val BUNNY_EARS = regBlock("bunny_ears") {
-		BunnyEarsUtilBlock(
-			propertiez {
-				noCollission()
-				instabreak()
-				sound(SoundType.WOOL)
-				mapColor(MapColor.COLOR_GRAY)
-			}
-		)
-	}
-
-	@JvmField
 	val SULFUR = regWithItem("sulfur") {
-		FallingLayerBlock(
+		ColoredFallingBlock(
+			ColorRGBA(0xFFFF00),
 			propertiez {
 
 				noCollission()
@@ -264,10 +208,14 @@ object ModBlocks
 	}
 	@JvmField
 	val SALTPETER = regWithItem("saltpeter") {
-		FallingLayerBlock(
-			BlockBehaviour.Properties.of().noCollission().instabreak().sound(
-				SoundType.SAND
-			).mapColor(MapColor.TERRACOTTA_WHITE)
+		ColoredFallingBlock(
+			ColorRGBA(0xF0F0F0),
+			propertiez {
+				noCollission()
+				instabreak()
+				sound(SoundType.SAND)
+				mapColor(MapColor.TERRACOTTA_WHITE)
+			}
 		)
 	}
 
@@ -530,7 +478,7 @@ object ModBlocks
 	}
 
 	@JvmField
-	val GLOWSTICK = regBlock("glowstick") {
+	val GLOWSTICK = regWithItem("glowstick") {
 		GlowstickBlock(
 			propertiesFrom(Blocks.END_ROD) {
 				instabreak()
@@ -541,23 +489,6 @@ object ModBlocks
 			}
 		)
 	}
-
-	@JvmField val RED_GLOWSTICK = gs("red")
-	@JvmField val ORANGE_GLOWSTICK = gs("orange")
-	@JvmField val YELLOW_GLOWSTICK = gs("yellow")
-	@JvmField val LIME_GLOWSTICK = gs("lime")
-	@JvmField val GREEN_GLOWSTICK = gs("green")
-	@JvmField val CYAN_GLOWSTICK = gs("cyan")
-	@JvmField val LIGHT_BLUE_GLOWSTICK = gs("light_blue")
-	@JvmField val BLUE_GLOWSTICK = gs("blue")
-	@JvmField val PURPLE_GLOWSTICK = gs("purple")
-	@JvmField val MAGENTA_GLOWSTICK = gs("magenta")
-	@JvmField val PINK_GLOWSTICK = gs("pink")
-	@JvmField val BROWN_GLOWSTICK = gs("brown")
-	@JvmField val BLACK_GLOWSTICK = gs("black")
-	@JvmField val WHITE_GLOWSTICK = gs("white")
-	@JvmField val GRAY_GLOWSTICK = gs("gray")
-	@JvmField val LIGHT_GRAY_GLOWSTICK = gs("light_gray")
 
 	//fluids
 	// FIXME how 2 fluidz???

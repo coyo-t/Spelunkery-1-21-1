@@ -5,10 +5,7 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"BoatPaddleSoundMixin",
-		"MossBlockMixin",
-		"NetherPortalBlockMixin",
-		"OreBlockMixin",
-		"RedstoneOreBlockMixin"
+		"NetherPortalBlockMixin"
 	],
 	"client": [],
 	"server": [],

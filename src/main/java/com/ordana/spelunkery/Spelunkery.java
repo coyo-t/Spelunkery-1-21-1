@@ -1,18 +1,10 @@
 package com.ordana.spelunkery;
 
-import com.ordana.spelunkery.events.NetworkHandler;
 import com.ordana.spelunkery.items.magnetic_compass.MagneticCompassItemPropertyFunction;
-import com.ordana.spelunkery.loot_modifiers.ModLootInjects;
-import com.ordana.spelunkery.particles.PortalFluidFlameParticle;
-import com.ordana.spelunkery.particles.SulfurParticle;
 import com.ordana.spelunkery.reg.*;
-import net.mehvahdjukaar.moonlight.api.client.renderer.FallingBlockRendererGeneric;
 import net.mehvahdjukaar.moonlight.api.platform.ClientHelper;
-import net.mehvahdjukaar.moonlight.api.platform.RegHelper;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.particle.ExplodeParticle;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -122,8 +114,6 @@ public class Spelunkery
 		ModBlocks.BLOCKS.register(ev);
 		ModItems.inititiititititialliziaation();
 		ModItems.ITEMS.register(ev);
-		ModEntities.THINGS.register(ev);
-		
 //		container.registerConfig(ModConfig.Type.COMMON, ModConfig.Type.);
 	}
 	
@@ -142,19 +132,8 @@ public class Spelunkery
 		}
 		
 		GameRulez.init();
-		
-		NetworkHandler.registerMessages();
-//		CommonConfigs.init();
 
-//		if (PlatHelper.getPhysicalSide().isClient())
-//		{
-//			ClientConfigs.init();
-//			ClientHelper.registerOptionalTexturePack(Spelunkery.res("better_vanilla_gems"), Component.literal("Better Vanilla Gems"), false);
-//		}
-		
-		ModParticles.init();
-		
-		RegHelper.addLootTableInjects(ModLootInjects::onLootInject);
+//		RegHelper.addLootTableInjects(ModLootInjects::onLootInject);
 		initiated = true;
 	}
 	
@@ -174,7 +153,6 @@ public class Spelunkery
 				
 				ClientHelper.registerRenderType(ModBlocks.PORTAL_FLUID.get(), RenderType.translucent());
 				ClientHelper.registerRenderType(ModBlocks.SPRING_WATER.get(), RenderType.translucent());
-				ClientHelper.registerRenderType(ModBlocks.SALT.get(), RenderType.cutout());
 				ClientHelper.registerRenderType(ModBlocks.TANGLE_ROOTS.get(), RenderType.cutout());
 				ClientHelper.registerRenderType(ModBlocks.TANGLE_ROOTS_PLANT.get(), RenderType.cutout());
 				ClientHelper.registerRenderType(ModBlocks.SPOROPHYTE.get(), RenderType.cutout());
@@ -209,16 +187,6 @@ public class Spelunkery
 							-> clientLevel.dimensionType().natural() ? GlobalPos.of(clientLevel.dimension(), new BlockPos(0, 0, -10000000)) : null
 					)
 				);
-			});
-			ClientHelper.addEntityRenderersRegistration(event -> {
-				event.register(ModEntities.FALLING_LAYER.get(), FallingBlockRendererGeneric::new);
-				event.register(ModEntities.GLOWSTICK.get(), context -> new ThrownItemRenderer<>(context, 1, true));
-			});
-			ClientHelper.addParticleRegistration(event -> {
-				event.register(ModParticles.SULFUR.get(), SulfurParticle.Provider::new);
-				event.register(ModParticles.SULFUR_DUSTING.get(), SulfurParticle.Provider::new);
-				event.register(ModParticles.PORTAL_FLAME.get(), PortalFluidFlameParticle.Provider::new);
-				event.register(ModParticles.DUST_POOF.get(), ExplodeParticle.Provider::new);
 			});
 		}
 	}
