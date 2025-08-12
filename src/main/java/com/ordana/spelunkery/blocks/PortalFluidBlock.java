@@ -1,28 +1,19 @@
 package com.ordana.spelunkery.blocks;
 
-import com.ordana.spelunkery.configs.CommonConfigs;
+import com.ordana.spelunkery.reg.GameRulez;
 import com.ordana.spelunkery.reg.ModSoundEvents;
 import com.ordana.spelunkery.reg.ModTags;
 import com.ordana.spelunkery.utils.LevelHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.material.FlowingFluid;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class PortalFluidBlock extends LiquidBlock
@@ -45,19 +36,6 @@ public class PortalFluidBlock extends LiquidBlock
 		return tickCounter = tick;
 	}
 	
-	@Override
-	public ItemStack pickupBlock (@Nullable Player player, LevelAccessor level, BlockPos pos, BlockState state)
-	{
-		Optional<? extends Registry<DimensionType>> registry = level.registryAccess().registry(Registries.DIMENSION_TYPE);
-		
-		if (registry.isPresent() && level.dimensionType() == registry.get().get(BuiltinDimensionTypes.END) && level.getMinBuildHeight() + 3 >= pos.getY() && !CommonConfigs.END_OCEAN_BUCKETABLE.get())
-		{
-			return ItemStack.EMPTY;
-		}
-		
-		return super.pickupBlock(player, level, pos, state);
-	}
-	
 	public void entityInside (BlockState state, Level level, BlockPos pos, Entity entity)
 	{
 		
@@ -69,11 +47,11 @@ public class PortalFluidBlock extends LiquidBlock
 				  || pos.equals(level.getSharedSpawnPos())) return;
 		if (entity instanceof ServerPlayer player && player.isSecondaryUseActive()) return;
 		
-		if (CommonConfigs.INSTANT_TELEPORTATION.get())
+		if (level.getGameRules().getBoolean(GameRulez.INSTAPORTAL))
 		{
 			if (entity instanceof ServerPlayer player) LevelHelper.teleportToSpawnPosition(player);
 			else LevelHelper.teleportToWorldspawn(level, entity);
-			entity.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT.get(), 0.5f, 1.0f);
+			entity.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT, 0.5f, 1.0f);
 		}
 		else
 		{
@@ -81,7 +59,7 @@ public class PortalFluidBlock extends LiquidBlock
 			
 			if (this.tickCounter < 1)
 			{
-				entity.playSound(ModSoundEvents.PORTAL_FLUID_SUBMERGE.get(), 1.0f, 1.0f);
+				entity.playSound(ModSoundEvents.PORTAL_FLUID_SUBMERGE, 1.0f, 1.0f);
 			}
 			level.scheduleTick(pos, this, 120);
 			if (this.tickCounter >= 100)
@@ -90,7 +68,7 @@ public class PortalFluidBlock extends LiquidBlock
 				
 				if (entity instanceof ServerPlayer player) LevelHelper.teleportToSpawnPosition(player);
 				else LevelHelper.teleportToWorldspawn(level, entity);
-				entity.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT.get(), 0.5f, 1.0f);
+				entity.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT, 0.5f, 1.0f);
 				
 				
 				setTickCounter(0);

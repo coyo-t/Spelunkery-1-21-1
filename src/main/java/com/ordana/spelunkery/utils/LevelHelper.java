@@ -69,14 +69,14 @@ public class LevelHelper
 		ServerLevel serverLevel = spawnData.getSecond();
 		
 		player.teleportTo(serverLevel, spawnPosition.x, spawnPosition.y, spawnPosition.z, player.getYRot(), player.getXRot());
-		player.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT.get(), 1.0f, 1.0f);
+		player.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT, 1.0f, 1.0f);
 	}
 	
 	public static void teleportToAnchorPosition (ServerPlayer player, GlobalPos pos)
 	{
 		
 		player.teleportTo(Objects.requireNonNull(player.server.getLevel(pos.dimension())), pos.pos().getX() + 0.5, pos.pos().getY() + 1, pos.pos().getZ() + 0.5, player.getYRot(), player.getXRot());
-		player.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT.get(), 1.0f, 1.0f);
+		player.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT, 1.0f, 1.0f);
 	}
 	
 	public static void teleportToWorldspawn (Level level, Entity entity)
@@ -84,7 +84,7 @@ public class LevelHelper
 		Vec3 spawnPosition = Vec3.atCenterOf(level.getSharedSpawnPos());
 		
 		entity.teleportTo(spawnPosition.x, spawnPosition.y, spawnPosition.z);
-		entity.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT.get());
+		entity.playSound(ModSoundEvents.PORTAL_FLUID_TELEPORT);
 	}
 
 

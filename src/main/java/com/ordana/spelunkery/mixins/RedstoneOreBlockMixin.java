@@ -1,7 +1,5 @@
 package com.ordana.spelunkery.mixins;
 
-import com.ordana.spelunkery.configs.CommonConfigs;
-import com.ordana.spelunkery.reg.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;

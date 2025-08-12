@@ -1,7 +1,6 @@
 package com.ordana.spelunkery.configs;
 
 import com.ordana.spelunkery.Spelunkery;
-import net.mehvahdjukaar.moonlight.api.platform.PlatHelper;
 import net.mehvahdjukaar.moonlight.api.platform.configs.ConfigBuilder;
 import net.mehvahdjukaar.moonlight.api.platform.configs.ConfigType;
 import net.mehvahdjukaar.moonlight.api.platform.configs.ModConfigHolder;
@@ -40,15 +39,15 @@ public class CommonConfigs
 		final var builder = ConfigBuilder.create(Spelunkery.res("common"), ConfigType.COMMON);
 
 		builder.push("utilities");
-		ECHO_FORK_RANGE = builder.define("echo_fork_range", 16, 1, 256);
-		ECHO_COOLDOWN = builder.define("echo_fork_cooldown", 600, 1, 72000);
-		ECHO_DURRATION = builder.define("echo_glow_duration", 1200, 1, 72000);
+//		ECHO_FORK_RANGE = builder.define("echo_fork_range", 16, 1, 256);
+//		ECHO_COOLDOWN = builder.define("echo_fork_cooldown", 600, 1, 72000);
+//		ECHO_DURRATION = builder.define("echo_glow_duration", 1200, 1, 72000);
 		builder.pop();
 		
 		builder.push("worldgen");
-		STONE_STRIPE_FEATURES = builder.define("stone_stripe_features", true);
-		ENABLE_SPOROPHYTES = builder.define("sporophytes_in_lush_caves", true);
-		DARK_FOREST_PORTABELLAS = builder.define("dark_forest_portabellas", true);
+//		STONE_STRIPE_FEATURES = builder.define("stone_stripe_features", true);
+//		ENABLE_SPOROPHYTES = builder.define("sporophytes_in_lush_caves", true);
+//		DARK_FOREST_PORTABELLAS = builder.define("dark_forest_portabellas", true);
 		builder.pop();
 		
 		SERVER_SPEC = builder.build();

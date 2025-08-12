@@ -1,0 +1,68 @@
+{
+	"cave_mushroom_stem": {
+		"chance": 0.85
+	},
+	"inkcap_mushroom_block": {
+		"chance": 0.85
+	},
+	"white_inkcap_mushroom_block": {
+		"chance": 0.85
+	},
+	"phosphor_fungus_block": {
+		"chance": 0.85
+	},
+	"phosphor_shroomlight": {
+		"chance": 0.65
+	},
+	"conk_fungus_block": {
+		"chance": 0.85
+	},
+	"portabella_block": {
+		"chance": 0.85
+	},
+	"milly_bubcap_block": {
+		"chance": 0.85
+	},
+	"grilled_portabella": {
+		"chance": 0.85
+	},
+	"sporophyte": {
+		"chance": 0.5
+	},
+	"tall_sporophyte": {
+		"chance": 0.5
+	},
+	"portabella": {
+		"chance": 0.85
+	},
+	"crimini": {
+		"chance": 0.65
+	},
+	"button_mushroom": {
+		"chance": 0.5
+	},
+	"inkcap_mushroom": {
+		"chance": 0.65
+	},
+	"white_inkcap_mushroom": {
+		"chance": 0.65
+	},
+	"phosphor_fungus": {
+		"chance": 0.65
+	},
+	"mushgloom_block": {
+		"chance": 0.65
+	},
+	"conk_fungus": {
+		"chance": 0.5
+	},
+	"tangle_roots": {
+		"chance": 0.5
+	},
+	"tangle_roots_block": {
+		"chance": 0.85
+	},
+	"milly_bubcap": {
+		"chance": 0.0
+	}
+}

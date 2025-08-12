@@ -39,7 +39,7 @@ public class BoatPaddleSoundMixin extends Entity
 	@Inject(method="getPaddleSound", at=@At("HEAD"), cancellable=true)
 	public void insertFluidTick (CallbackInfoReturnable<SoundEvent> cir)
 	{
-		if (isInPortalFluid()) cir.setReturnValue(ModSoundEvents.BOAT_PADDLE_PORTAL_FLUID.get());
+		if (isInPortalFluid()) cir.setReturnValue(ModSoundEvents.BOAT_PADDLE_PORTAL_FLUID);
 	}
 	
 	// FIXME maybe replacable with 'in fluid' func? i know that exists generically. or it did >:/

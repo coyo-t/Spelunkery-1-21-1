@@ -1,8 +1,9 @@
 package com.ordana.spelunkery.mixins;
 
-import com.ordana.spelunkery.configs.CommonConfigs;
+import com.ordana.spelunkery.reg.GameRulez;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -21,7 +22,7 @@ public class NetherPortalBlockMixin
 	@Inject(method="updateShape", at=@At("HEAD"))
 	public void bringToTears (BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos, CallbackInfoReturnable<BlockState> cir)
 	{
-		if (CommonConfigs.PORTAL_DESTRUCTION_CRYING_OBSIDIAN.get() && !level.isClientSide())
+		if (level instanceof ServerLevel server && server.getGameRules().getBoolean(GameRulez.SHATTER_TEARS))
 		{
 			Direction.Axis axis2 = state.getValue(NetherPortalBlock.AXIS);
 			RandomSource random = level.getRandom();

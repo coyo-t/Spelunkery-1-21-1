@@ -1,9 +1,7 @@
 package com.ordana.spelunkery.fluids;
 
 import com.ordana.spelunkery.Spelunkery;
-import com.ordana.spelunkery.configs.ClientConfigs;
 import com.ordana.spelunkery.reg.ModBlocks;
-import com.ordana.spelunkery.reg.ModFluids;
 import net.mehvahdjukaar.moonlight.api.client.ModFluidRenderProperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -14,7 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
@@ -27,6 +24,8 @@ public class PortalFluidRenderer extends ModFluidRenderProperties
 	private final ResourceLocation overlay;
 	private final ResourceLocation renderOverlay;
 	private final Vec3 fogColor;
+	public int portalSeed = 0;
+	
 	
 	public PortalFluidRenderer (ResourceLocation still, ResourceLocation flowing, int tint, ResourceLocation overlay, ResourceLocation renderOverlay, Vec3 fogColor)
 	{
@@ -105,7 +104,8 @@ public class PortalFluidRenderer extends ModFluidRenderProperties
 	
 	private boolean isRandomPos (BlockPos pos, int rarity)
 	{
-		Random random = new Random((long)(Mth.getSeed(pos) * ClientConfigs.PORTAL_FLUID_SEED.get()));
+		var random = new Random((long)(Mth.getSeed(pos) * 1));
+//		var random = new Random((long)(Mth.getSeed(pos) * ClientConfigs.PORTAL_FLUID_SEED.get()));
 		return random.nextInt(rarity) == 0;
 	}
 	

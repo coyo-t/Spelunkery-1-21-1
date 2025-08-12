@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -47,8 +48,8 @@ public class CompressionBlastMiner extends DirectionalBlock
 		return CODEC;
 	}
 	
-	
-	public InteractionResult use (BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+	@Override
+	protected ItemInteractionResult useItemOn (ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult)
 	{
 		ItemStack itemStack = player.getItemInHand(hand);
 		if (itemStack.is(Items.TNT) && !state.getValue(PRIMED))
@@ -56,17 +57,19 @@ public class CompressionBlastMiner extends DirectionalBlock
 			level.setBlockAndUpdate(pos, state.setValue(PRIMED, true));
 			level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			if (!player.getAbilities().instabuild) itemStack.shrink(1);
-			return InteractionResult.SUCCESS;
+			return ItemInteractionResult.SUCCESS;
 		}
 		if (player.isSecondaryUseActive() && state.getValue(PRIMED))
 		{
 			level.setBlockAndUpdate(pos, state.setValue(PRIMED, false));
 			level.playSound(null, pos, SoundEvents.GRASS_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
-			Block.popResourceFromFace(level, pos, hit.getDirection(), Items.TNT.getDefaultInstance());
-			return InteractionResult.SUCCESS;
+			Block.popResourceFromFace(level, pos, hitResult.getDirection(), Items.TNT.getDefaultInstance());
+			return ItemInteractionResult.SUCCESS;
 		}
 		else
-			return itemStack.getItem() instanceof BlockItem && (new BlockPlaceContext(player, hand, itemStack, hit)).canPlace() ? InteractionResult.PASS : InteractionResult.SUCCESS;
+		{
+			return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+		}
 	}
 	
 	protected void createBlockStateDefinition (StateDefinition.Builder<Block, BlockState> builder)
