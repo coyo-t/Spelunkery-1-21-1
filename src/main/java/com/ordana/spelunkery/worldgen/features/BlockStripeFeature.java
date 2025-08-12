@@ -1,7 +1,6 @@
 package com.ordana.spelunkery.worldgen.features;
 
 import com.mojang.serialization.Codec;
-import com.ordana.spelunkery.configs.CommonConfigs;
 import com.ordana.spelunkery.worldgen.feature_configs.BlockStripeFeatureConfig;
 import com.ordana.spelunkery.worldgen.feature_configs.util.FastNoiseLite;
 import com.ordana.spelunkery.worldgen.feature_configs.util.StoneEntry;
@@ -32,9 +31,6 @@ public class BlockStripeFeature extends Feature<BlockStripeFeatureConfig>
 	@Override
 	public boolean place (FeaturePlaceContext<BlockStripeFeatureConfig> context)
 	{
-		if (!CommonConfigs.STONE_STRIPE_FEATURES.get()) return false;
-		
-		
 		BlockStripeFeatureConfig config = context.config();
 		BlockPos originPos = context.origin();
 		WorldGenLevel worldGenLevel = context.level();
@@ -106,12 +102,6 @@ public class BlockStripeFeature extends Feature<BlockStripeFeatureConfig>
 					Random patchRandom = new Random((long)seed);
 					boolean isBlankPatch = (patchRandom.nextFloat() < config.blankPatchChance) || cellBufferNoise.GetNoise(domainWarpedVector.x, domainWarpedVector.y, domainWarpedVector.z) > -0.1;
 
-                    /*
-                    if (CommonConfigs.CROSS_SECTION.get()) {
-                        if (z < 0 && y < 128)
-                            cachedChunk.setBlockState(currentPos, Blocks.BARRIER.defaultBlockState(), false);
-                    }
-                     */
 					if (!isBlankPatch)
 					{
 						if (!config.useHeightFilter || (y > (cachedChunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z) - config.bottomOffset)))
