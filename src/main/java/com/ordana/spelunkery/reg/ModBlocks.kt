@@ -494,9 +494,9 @@ object ModBlocks
 	// FIXME how 2 fluidz???
 	@JvmField
 	val PORTAL_FLUID = regBlock("portal_fluid") {
-//		PortalFluidBlock(
-//			ModFluids.STILL_PORTAL_FLUID,
-		Block(
+		PortalFluidBlock(
+			ModFluids.FLOWING_PORTAL_FLUID,
+//		Block(
 			propertiesFrom(Blocks.WATER) {
 				noCollission()
 				strength(100f)
@@ -507,9 +507,9 @@ object ModBlocks
 	}
 	@JvmField
 	val SPRING_WATER = regBlock("spring_water") {
-//		SpringWaterBlock(
-//			ModFluids.STILL_SPRING_WATER,
-		Block(
+		SpringWaterBlock(
+			ModFluids.FLOWING_SPRING_WATER,
+//		Block(
 			propertiesFrom(Blocks.WATER) {
 				noCollission()
 				strength(100f)

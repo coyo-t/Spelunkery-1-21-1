@@ -111,9 +111,11 @@ public class Spelunkery
 		ModSoundEvents.init(se);
 		se.register(ev);
 		
+		ModFluids.THINGS.register(ev);
 		ModBlocks.BLOCKS.register(ev);
 		ModItems.inititiititititialliziaation();
 		ModItems.ITEMS.register(ev);
+		ModWorldgenFeatures.FEATS.register(ev);
 //		container.registerConfig(ModConfig.Type.COMMON, ModConfig.Type.);
 	}
 	
