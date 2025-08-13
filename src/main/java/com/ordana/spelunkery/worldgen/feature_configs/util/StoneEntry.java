@@ -11,7 +11,7 @@ public class StoneEntry
 {
 	private final BlockStateProvider primaryStoneType;
 	private final BlockStateProvider secondaryStoneType;
-	private StonePattern stonePattern;
+	private final StonePattern stonePattern;
 	
 	public StoneEntry (BlockStateProvider primaryStoneType, BlockStateProvider secondaryStoneType, StonePattern stonePattern)
 	{

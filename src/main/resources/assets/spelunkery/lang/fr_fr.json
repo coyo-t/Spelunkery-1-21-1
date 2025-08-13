@@ -19,12 +19,16 @@
 	"tooltip.spelunkery.rope_ladder_3": "  Interagir avec l'échelle du haut en maintenant %1$s pour enrouler",
 	"tooltip.spelunkery.wooden_rail_1": "  Utiliser sur d'autres rails similaires pour les prolonger",
 	"tooltip.spelunkery.wooden_rail_2": "  Peut s'étendre à travers l'air pour traverser des creux",
+
+
+	"tooltip.spelunkery.portal_fluid_target": "(Nord: %1$s, Est: %2$s, Altitude: %3$s) dans %4$s",
 	"tooltip.spelunkery.portal_fluid_1": "  Boire pour retourner à votre point de spawn",
 	"tooltip.spelunkery.portal_fluid_2": "  Peut être utilisé pour allumer un Portail du Nether",
 	"tooltip.spelunkery.portal_fluid_3": "  Utiliser une Fiole sur de l'Obsidienne Pleureuse ou une Ancre de Réapparition pour obtenir",
 	"tooltip.spelunkery.portal_fluid_bucket_1": "  Contacte avec ce liquide téléporte les joueurs jusqu'à leur Point de Spawn",
 	"tooltip.spelunkery.portal_fluid_bucket_2": "  Toute autre entité sera téléportée au Point de Spawn du monde",
 	"tooltip.spelunkery.portal_fluid_bucket_3": "  Obtenu en remplissant un Chaudron avec des Fioles de Larme Dimensionnelle",
+
 	"tooltip.spelunkery.crying_obsidian": "Utiliser une Fiole vide pour obtenir un extrait de Larme Dimensionnelle",
 	"tooltip.spelunkery.redstone": "Peut être obtenue en polissant du Cinabre brut sur une Meule",
 	"tooltip.spelunkery.depth_gauge_depth": "Altitude actuelle: Y = %1$s",

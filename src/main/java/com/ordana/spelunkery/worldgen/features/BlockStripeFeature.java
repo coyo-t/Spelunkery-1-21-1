@@ -1,6 +1,5 @@
 package com.ordana.spelunkery.worldgen.features;
 
-import com.mojang.serialization.Codec;
 import com.ordana.spelunkery.worldgen.feature_configs.BlockStripeFeatureConfig;
 import com.ordana.spelunkery.worldgen.feature_configs.util.FastNoiseLite;
 import com.ordana.spelunkery.worldgen.feature_configs.util.StoneEntry;
@@ -23,9 +22,9 @@ import java.util.Random;
 public class BlockStripeFeature extends Feature<BlockStripeFeatureConfig>
 {
 	
-	public BlockStripeFeature (Codec<BlockStripeFeatureConfig> codec)
+	public BlockStripeFeature ()
 	{
-		super(codec);
+		super(BlockStripeFeatureConfig.CODEC);
 	}
 	
 	@Override

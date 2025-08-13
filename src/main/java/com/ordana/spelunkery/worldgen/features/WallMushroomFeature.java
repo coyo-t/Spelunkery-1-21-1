@@ -1,6 +1,5 @@
 package com.ordana.spelunkery.worldgen.features;
 
-import com.mojang.serialization.Codec;
 import com.ordana.spelunkery.blocks.fungi.FloorAndSidesMushroomBlock;
 import com.ordana.spelunkery.worldgen.feature_configs.WallMushroomFeatureConfig;
 import net.minecraft.core.BlockPos;
@@ -14,9 +13,9 @@ import java.util.Collection;
 
 public class WallMushroomFeature extends Feature<WallMushroomFeatureConfig>
 {
-	public WallMushroomFeature (Codec<WallMushroomFeatureConfig> codec)
+	public WallMushroomFeature ()
 	{
-		super(codec);
+		super(WallMushroomFeatureConfig.CODEC);
 	}
 	
 	public boolean place (FeaturePlaceContext<WallMushroomFeatureConfig> context)

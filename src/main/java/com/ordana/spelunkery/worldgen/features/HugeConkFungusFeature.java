@@ -1,7 +1,5 @@
 package com.ordana.spelunkery.worldgen.features;
 
-import com.google.common.collect.Sets;
-import com.mojang.serialization.Codec;
 import com.ordana.spelunkery.reg.ModBlocks;
 import com.ordana.spelunkery.worldgen.feature_configs.HugeConkFungusFeatureConfig;
 import net.minecraft.core.BlockPos;
@@ -18,14 +16,13 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.material.Fluids;
 
-import java.util.Set;
 import java.util.function.BiConsumer;
 
 public class HugeConkFungusFeature extends Feature<HugeConkFungusFeatureConfig>
 {
-	public HugeConkFungusFeature (Codec<HugeConkFungusFeatureConfig> codec)
+	public HugeConkFungusFeature ()
 	{
-		super(codec);
+		super(HugeConkFungusFeatureConfig.CODEC);
 	}
 	
 	public boolean place (FeaturePlaceContext<HugeConkFungusFeatureConfig> context)
@@ -34,22 +31,25 @@ public class HugeConkFungusFeature extends Feature<HugeConkFungusFeatureConfig>
 		WorldGenLevel level = context.level();
 		RandomSource random = level.getRandom();
 		BlockPos blockPos = context.origin();
-		HugeConkFungusFeatureConfig config = context.config();
-		Set<BlockPos> set = Sets.newHashSet();
+		var config = context.config();
+//		Set<BlockPos> set = Sets.newHashSet();
 		BiConsumer<BlockPos, BlockState> blockSetter = (blockPosx, blockState) -> {
-			set.add(blockPosx.immutable());
+//			set.add(blockPosx.immutable());
 			level.setBlock(blockPosx, blockState, 19);
 		};
 		
 		BiConsumer<BlockPos, BlockState> blockSetter2 = (blockPosx, blockState) -> {
-			set.add(blockPosx.immutable());
+//			set.add(blockPosx.immutable());
 			level.setBlock(blockPosx, blockState.setValue(PipeBlock.NORTH, false).setValue(PipeBlock.SOUTH, false).setValue(PipeBlock.EAST, false).setValue(PipeBlock.WEST, false), 19);
 		};
 		
 		int radius = random.nextInt(2) + (config.radius);
 		
 		int i = 0;
-		if (config.largeChance > 0) i = random.nextInt(0, config.largeChance);
+		if (config.largeChance > 0)
+		{
+			i = random.nextInt(0, config.largeChance);
+		}
 		boolean large = i == 1;
 		
 		this.placeLeavesRow(level, blockSetter2, random, config, blockPos, radius - 1, 0, large);

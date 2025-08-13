@@ -1,85 +1,85 @@
-package com.ordana.spelunkery.items;
+package com.ordana.spelunkery.items
 
-import com.ordana.spelunkery.reg.GameRulez;
-import com.ordana.spelunkery.utils.LevelHelper;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.HoneyBottleItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
+import com.ordana.spelunkery.reg.GameRulez
+import com.ordana.spelunkery.utils.LevelHelper
+import net.minecraft.ChatFormatting
+import net.minecraft.advancements.CriteriaTriggers
+import net.minecraft.core.component.DataComponents
+import net.minecraft.core.component.DataComponents.LODESTONE_TRACKER
+import net.minecraft.network.chat.Component
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.sounds.SoundEvents
+import net.minecraft.stats.Stats
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.HoneyBottleItem
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.ItemUtils
+import net.minecraft.world.item.Items
+import net.minecraft.world.item.TooltipFlag
+import net.minecraft.world.level.Level
 
-import static net.minecraft.core.component.DataComponents.LODESTONE_TRACKER;
-
-public class PortalFluidBottleItem extends HoneyBottleItem
+class PortalFluidBottleItem(properties: Properties) : HoneyBottleItem(properties)
 {
-	public PortalFluidBottleItem (Properties properties)
+	override fun shouldCauseReequipAnimation(oldStack: ItemStack, newStack: ItemStack, slotChanged: Boolean)
+		= false
+
+	override fun isFoil(stack: ItemStack) = true
+
+	override fun getDrinkingSound() = SoundEvents.HONEY_DRINK
+
+	override fun getEatingSound() = SoundEvents.HONEY_DRINK
+
+	override fun appendHoverText(
+		stack: ItemStack,
+		context: TooltipContext,
+		tooltipComponents: MutableList<Component?>,
+		tooltipFlag: TooltipFlag
+	)
 	{
-		super(properties);
-	}
-	
-	//Override
-	public boolean shouldCauseReequipAnimation (ItemStack oldStack, ItemStack newStack, boolean slotChanged)
-	{
-		return false;
-	}
-	
-	@Override
-	public boolean isFoil (@NotNull ItemStack stack)
-	{
-		return true;
-	}
-	
-	@Override
-	@NotNull
-	public SoundEvent getDrinkingSound ()
-	{
-		return SoundEvents.HONEY_DRINK;
-	}
-	
-	@Override
-	@NotNull
-	public SoundEvent getEatingSound ()
-	{
-		return SoundEvents.HONEY_DRINK;
-	}
-	
-	
-	@Override
-	@NotNull
-	public ItemStack finishUsingItem (@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity)
-	{
-		if (livingEntity instanceof Player player)
+		if (tooltipFlag.hasShiftDown())
 		{
-			player.setItemInHand(
-				player.getUsedItemHand(),
-				ItemUtils.createFilledResult(stack, player, Items.GLASS_BOTTLE.getDefaultInstance())
-			);
-			
+			stack.get(LODESTONE_TRACKER)?.target?.ifPresent {
+				val co = it.pos
+				val dim = it.dimension
+				val cal = Component.translatable(
+					"tooltip.spelunkery.portal_fluid_target",
+					-co.z,
+					+co.x,
+					+co.y,
+					dim.toString(),
+				)
+				cal.withStyle(ChatFormatting.GRAY)
+				tooltipComponents += cal
+			}
 		}
-		if (livingEntity instanceof ServerPlayer serverPlayer && level.getGameRules().getBoolean(GameRulez.BADLANDS_CHUGS_PORTALS))
+		super.appendHoverText(stack, context, tooltipComponents, tooltipFlag)
+	}
+
+	override fun finishUsingItem(stack: ItemStack, level: Level, livingEntity: LivingEntity): ItemStack
+	{
+		if (livingEntity is Player)
 		{
-			CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);
-			serverPlayer.awardStat(Stats.ITEM_USED.get(this));
-			
-			var uhh = stack.get(LODESTONE_TRACKER);
+			livingEntity.setItemInHand(
+				livingEntity.usedItemHand,
+				ItemUtils.createFilledResult(stack, livingEntity, Items.GLASS_BOTTLE.defaultInstance)
+			)
+		}
+		if (livingEntity is ServerPlayer && level.gameRules.getBoolean(GameRulez.BADLANDS_CHUGS_PORTALS))
+		{
+			CriteriaTriggers.CONSUME_ITEM.trigger(livingEntity, stack)
+			livingEntity.awardStat(Stats.ITEM_USED.get(this))
+
+			val uhh = stack.get(LODESTONE_TRACKER)
 			if (uhh == null)
 			{
-				LevelHelper.teleportToSpawnPosition(serverPlayer);
+				LevelHelper.teleportToSpawnPosition(livingEntity)
 			}
 			else
 			{
-				uhh.target().ifPresent(globalPos -> LevelHelper.teleportToAnchorPosition(serverPlayer, globalPos));
+				uhh.target.ifPresent { LevelHelper.teleportToAnchorPosition(livingEntity, it) }
 			}
 		}
-		return stack;
+		return stack
 	}
-	
 }

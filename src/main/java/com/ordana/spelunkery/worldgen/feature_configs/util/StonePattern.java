@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 
 public class StonePattern
 {
-	private FastNoiseLite noise;
+	private final FastNoiseLite noise;
 	private final int noiseSeed;
 	private final float primaryMin;
 	private final float primaryMax;

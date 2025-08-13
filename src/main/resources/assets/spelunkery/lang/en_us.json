@@ -78,8 +78,11 @@
 	"tooltip.spelunkery.rope_ladder_3": "  Interact with the top ladder holding %1$s to roll up",
 	"tooltip.spelunkery.wooden_rail_1": "  Using this item on itself places at end of rail",
 	"tooltip.spelunkery.wooden_rail_2": "  Can extend above air blocks to cross gaps",
+
 	"tooltip.spelunkery.rhymes_with_tears_0": "Rhymes with \"FEARS\"",
 	"tooltip.spelunkery.rhymes_with_tears_1": "Rhymes with \"SCARES\"",
+
+	"tooltip.spelunkery.portal_fluid_target": "(North: %1$s, East: %2$s, Up: %3$s) in %4$s",
 	"tooltip.spelunkery.portal_fluid_pos": "  Linked to: %1$s, %2$s, %3$s",
 	"tooltip.spelunkery.portal_fluid_1": "  Drink to return to your spawnpoint or worldspawn",
 	"tooltip.spelunkery.portal_fluid_2": "  Can be used to ignite Nether Portals",
@@ -89,6 +92,7 @@
 	"tooltip.spelunkery.portal_fluid_bucket_1": "  Contact with this fluid teleports players to their spawnpoint",
 	"tooltip.spelunkery.portal_fluid_bucket_2": "  Any other entity will be teleported to worldspawn",
 	"tooltip.spelunkery.portal_fluid_bucket_3": "  Obtain by filling a cauldron with Dimensional Tear Bottles",
+
 	"tooltip.spelunkery.crying_obsidian": "Use empty bottle on to obtain Dimensional Tears",
 	"tooltip.spelunkery.redstone": "Can be obtained by polishing Rough Cinnabar on a Grindstone",
 	"tooltip.spelunkery.depth_gauge_depth": "Current Elevation: Y = %1$s",

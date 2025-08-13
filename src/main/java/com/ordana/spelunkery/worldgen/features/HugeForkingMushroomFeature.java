@@ -1,7 +1,6 @@
 package com.ordana.spelunkery.worldgen.features;
 
 import com.google.common.collect.Sets;
-import com.mojang.serialization.Codec;
 import com.ordana.spelunkery.worldgen.feature_configs.HugeForkingMushroomFeatureConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,9 +17,9 @@ import java.util.function.BiConsumer;
 
 public class HugeForkingMushroomFeature extends Feature<HugeForkingMushroomFeatureConfig>
 {
-	public HugeForkingMushroomFeature (Codec<HugeForkingMushroomFeatureConfig> codec)
+	public HugeForkingMushroomFeature ()
 	{
-		super(codec);
+		super(HugeForkingMushroomFeatureConfig.CODEC);
 	}
 	
 	public boolean place (FeaturePlaceContext<HugeForkingMushroomFeatureConfig> context)
