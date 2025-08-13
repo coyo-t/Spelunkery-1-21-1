@@ -97,6 +97,12 @@ dependencies {
 	implementation "net.neoforged:neoforge:${neo_version}"
 	implementation "curse.maven:selene-499980:6818413"
 	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+	implementation 'party.iroiro.luajava:luajava:4.0.2'
+	implementation 'party.iroiro.luajava:lua54:4.0.2'
+	runtimeOnly 'party.iroiro.luajava:lua54-platform:4.0.2:natives-desktop'
+
+
 	// Example optional mod dependency with JEI
 	// The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
 	// compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"

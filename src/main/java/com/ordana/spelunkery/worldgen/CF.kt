@@ -2,7 +2,6 @@ package com.ordana.spelunkery.worldgen
 
 import net.minecraft.data.worldgen.BootstrapContext
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature
-import net.neoforged.neoforge.common.world.BiomeModifier
 
 object CF
 {
