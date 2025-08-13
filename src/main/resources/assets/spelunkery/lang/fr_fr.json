@@ -21,7 +21,7 @@
 	"tooltip.spelunkery.wooden_rail_2": "  Peut s'étendre à travers l'air pour traverser des creux",
 
 
-	"tooltip.spelunkery.portal_fluid_target": "(Nord: %1$s, Est: %2$s, Altitude: %3$s) dans %4$s",
+	"tooltip.spelunkery.portal_fluid_target": "(Nord: %1$s, Est: %2$s, Altitude: %3$s) dans «%4$s»",
 	"tooltip.spelunkery.portal_fluid_1": "  Boire pour retourner à votre point de spawn",
 	"tooltip.spelunkery.portal_fluid_2": "  Peut être utilisé pour allumer un Portail du Nether",
 	"tooltip.spelunkery.portal_fluid_3": "  Utiliser une Fiole sur de l'Obsidienne Pleureuse ou une Ancre de Réapparition pour obtenir",
