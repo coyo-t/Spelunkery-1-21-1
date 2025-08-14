@@ -79,7 +79,7 @@ class Spelunkery(ev: IEventBus, container: ModContainer)
 			try
 			{
 				val game = Minecraft.getInstance()
-				initialize(game.resourceManager)
+				initialize(game.textureManager, game.resourceManager)
 			}
 			catch (e: Throwable)
 			{

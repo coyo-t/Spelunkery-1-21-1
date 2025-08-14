@@ -6,6 +6,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +26,8 @@ public abstract class ItemDecoMixin implements IGuiGraphicsExtension
 {
 	
 	@Shadow public abstract void fill (RenderType renderType, int minX, int minY, int maxX, int maxY, int color);
+	
+	@Shadow public abstract void blit (ResourceLocation atlasLocation, int x, int y, int width, int height, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight);
 	
 	@ModifyExpressionValue(
 		method="renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",

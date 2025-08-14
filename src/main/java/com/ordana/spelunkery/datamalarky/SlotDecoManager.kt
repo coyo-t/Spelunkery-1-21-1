@@ -1,11 +1,12 @@
 package com.ordana.spelunkery.datamalarky
 
-import com.ordana.spelunkery.Spelunkery
 import com.ordana.spelunkery.utils.LuaCoyote
+import net.minecraft.client.renderer.texture.TextureManager
 import net.minecraft.resources.FileToIdConverter
+import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.packs.resources.ResourceManager
-import org.apache.logging.log4j.Level
-import org.lwjgl.BufferUtils
+import party.iroiro.luajava.value.LuaTableValue
+import party.iroiro.luajava.value.LuaValue
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -14,8 +15,14 @@ object SlotDecoManager
 
 	private lateinit var rm: ResourceManager
 
+	private val thingz = mutableMapOf<ResourceLocation, Thingzor>()
 
-	fun initialize (rm: ResourceManager)
+	class Thingzor
+	{
+
+	}
+
+	fun initialize (tm: TextureManager, rm: ResourceManager)
 	{
 		this.rm = rm
 
@@ -24,6 +31,7 @@ object SlotDecoManager
 		{
 			LuaCoyote().use { L ->
 				L.openLibraries()
+
 				listMatchingResources(rm).forEach { location, resource ->
 					val thing = fileToId(location)
 					println("<MACHINE WITNESS> \"$thing\" \"$resource\"")
@@ -34,7 +42,37 @@ object SlotDecoManager
 							val srcBytes = f.readAllBytes()
 							val data = ByteBuffer.allocateDirect(srcBytes.size).order(ByteOrder.nativeOrder())
 							L.run(data.put(srcBytes).flip(), "wow")
-							val maybeRes = L.get()
+							val maybeRes = L.toAbsoluteIndex(-1)
+							if (L.isTable(maybeRes))
+							{
+								L.getField(maybeRes, "path")
+								val sprPath = L.toString(-1)?.let {
+									ResourceLocation.tryParse(it)
+								}
+								L.pop(1)
+								if (sprPath == null)
+								{
+									println("<MACHINE WITNESS> MALFORMED RESOURCE LOCATION")
+								}
+								else
+								{
+									println("<MACHINE WITNESS> $sprPath")
+								}
+								L.getField(maybeRes, "points")
+								val ptIndex = L.toAbsoluteIndex(-1)
+								if (L.isTable(ptIndex))
+								{
+									val size = L.rawLength(ptIndex)
+									for (i in 1..size)
+									{
+										L.rawGetI(ptIndex, i)
+										val uhh = L.get()
+										println("<MACHINE WITNESS> $i - $uhh")
+									}
+								}
+								L.pop(1)
+
+							}
 							println("$maybeRes")
 						}
 					}
