@@ -1,9 +1,11 @@
 package com.ordana.spelunkery;
 
+import com.ordana.spelunkery.datamalarky.SlotDecoManager;
 import com.ordana.spelunkery.items.magnetic_compass.MagneticCompassItemPropertyFunction;
 import com.ordana.spelunkery.reg.*;
 import net.mehvahdjukaar.moonlight.api.platform.ClientHelper;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
@@ -106,6 +108,8 @@ public class Spelunkery
 	public Spelunkery (IEventBus ev, ModContainer container)
 	{
 		ev.addListener(this::commonInit);
+		ev.addListener(this::clientSetup);
+		
 		NeoForge.EVENT_BUS.addListener(Spelunkery::obsidianDraining);
 		final var se = DeferredRegister.create(Registries.SOUND_EVENT, MOD_ID);
 		ModSoundEvents.init(se);
@@ -125,6 +129,20 @@ public class Spelunkery
 		return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
 	}
 	
+	public void clientSetup (FMLClientSetupEvent ev)
+	{
+		ev.enqueueWork(() -> {
+			try {
+				final var game = Minecraft.getInstance();
+				SlotDecoManager.INSTANCE.initialize(game.getResourceManager());
+			}
+			catch (Throwable e)
+			{
+				System.out.println("MACHINE WITNESS: no game?");
+				throw e;
+			}
+		});
+	}
 	
 	public void commonInit (FMLCommonSetupEvent ev)
 	{
