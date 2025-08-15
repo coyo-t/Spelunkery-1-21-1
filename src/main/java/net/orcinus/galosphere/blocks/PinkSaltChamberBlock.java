@@ -23,88 +23,105 @@ import net.orcinus.galosphere.init.GBlockEntityTypes;
 import net.orcinus.galosphere.init.GBlocks;
 import org.jetbrains.annotations.Nullable;
 
-public class PinkSaltChamberBlock extends BaseEntityBlock {
-    public static final MapCodec<PinkSaltChamberBlock> CODEC = PinkSaltChamberBlock.simpleCodec(PinkSaltChamberBlock::new);
-    public static final EnumProperty<ChamberPhase> PHASE = EnumProperty.create("chamber_phase", ChamberPhase.class);
-
-    public PinkSaltChamberBlock(Properties properties) {
-        super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(PHASE, ChamberPhase.INACTIVE));
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    public BlockState updateShape(BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2) {
-        boolean flag2 = false;
-        for (Direction dir : Direction.values()) {
-            BlockState relativeState = levelAccessor.getBlockState(blockPos.relative(dir));
-            boolean flag = relativeState.is(GBlocks.PINK_SALT_CLUSTER.get()) && relativeState.getValue(PinkSaltClusterBlock.FACING) == dir;
-            if (flag) {
-                flag2 = true;
-                break;
-            }
-        }
-        if (blockState.getValue(PHASE) == ChamberPhase.COOLDOWN) {
-            return blockState;
-        }
-        ChamberPhase phase = flag2 ? ChamberPhase.CHARGED : ChamberPhase.INACTIVE;
-        return blockState.setValue(PHASE, phase);
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(PHASE);
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new PinkSaltChamberBlockEntity(blockPos, blockState);
-    }
-
-    @Override
-    public void setPlacedBy(Level world, BlockPos pos, BlockState blockState, @Nullable LivingEntity entity, ItemStack itemStack) {
-        super.setPlacedBy(world, pos, blockState, entity, itemStack);
-        if (entity instanceof Player player && player.getAbilities().instabuild && world.getBlockEntity(pos) instanceof PinkSaltChamberBlockEntity pinkSaltChamberBlockEntity) {
-            pinkSaltChamberBlockEntity.setCooldown(pinkSaltChamberBlockEntity.maxCooldown);
-        }
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : PinkSaltChamberBlock.createTickerHelper(blockEntityType, GBlockEntityTypes.PINK_SALT_CHAMBER.get(), PinkSaltChamberBlockEntity::tick);
-    }
-
-    @Override
-    public RenderShape getRenderShape(BlockState blockState) {
-        return RenderShape.MODEL;
-    }
-
-    public enum ChamberPhase implements StringRepresentable {
-        INACTIVE("inactive"),
-        CHARGED("charged"),
-        COOLDOWN("cooldown");
-
-        private final String name;
-
-        ChamberPhase(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-
-        @Override
-        public String getSerializedName() {
-            return this.name;
-        }
-    }
-
+public class PinkSaltChamberBlock extends BaseEntityBlock
+{
+	public static final MapCodec<PinkSaltChamberBlock> CODEC = PinkSaltChamberBlock.simpleCodec(PinkSaltChamberBlock::new);
+	public static final EnumProperty<ChamberPhase> PHASE = EnumProperty.create("chamber_phase", ChamberPhase.class);
+	
+	public PinkSaltChamberBlock (Properties properties)
+	{
+		super(properties);
+		this.registerDefaultState(this.stateDefinition.any().setValue(PHASE, ChamberPhase.INACTIVE));
+	}
+	
+	@Override
+	protected MapCodec<? extends BaseEntityBlock> codec ()
+	{
+		return CODEC;
+	}
+	
+	@Override
+	public BlockState updateShape (BlockState blockState, Direction direction, BlockState blockState2, LevelAccessor levelAccessor, BlockPos blockPos, BlockPos blockPos2)
+	{
+		boolean flag2 = false;
+		for (Direction dir: Direction.values())
+		{
+			BlockState relativeState = levelAccessor.getBlockState(blockPos.relative(dir));
+			boolean flag = relativeState.is(GBlocks.PINK_SALT_CLUSTER.get()) && relativeState.getValue(PinkSaltClusterBlock.FACING) == dir;
+			if (flag)
+			{
+				flag2 = true;
+				break;
+			}
+		}
+		if (blockState.getValue(PHASE) == ChamberPhase.COOLDOWN)
+		{
+			return blockState;
+		}
+		ChamberPhase phase = flag2 ? ChamberPhase.CHARGED : ChamberPhase.INACTIVE;
+		return blockState.setValue(PHASE, phase);
+	}
+	
+	@Override
+	protected void createBlockStateDefinition (StateDefinition.Builder<Block, BlockState> builder)
+	{
+		builder.add(PHASE);
+	}
+	
+	@Nullable
+	@Override
+	public BlockEntity newBlockEntity (BlockPos blockPos, BlockState blockState)
+	{
+		return new PinkSaltChamberBlockEntity(blockPos, blockState);
+	}
+	
+	@Override
+	public void setPlacedBy (Level world, BlockPos pos, BlockState blockState, @Nullable LivingEntity entity, ItemStack itemStack)
+	{
+		super.setPlacedBy(world, pos, blockState, entity, itemStack);
+		if (entity instanceof Player player && player.getAbilities().instabuild && world.getBlockEntity(pos) instanceof PinkSaltChamberBlockEntity pinkSaltChamberBlockEntity)
+		{
+			pinkSaltChamberBlockEntity.setCooldown(pinkSaltChamberBlockEntity.maxCooldown);
+		}
+	}
+	
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker (Level level, BlockState blockState, BlockEntityType<T> blockEntityType)
+	{
+		return level.isClientSide ? null : PinkSaltChamberBlock.createTickerHelper(blockEntityType, GBlockEntityTypes.PINK_SALT_CHAMBER.get(), PinkSaltChamberBlockEntity::tick);
+	}
+	
+	@Override
+	public RenderShape getRenderShape (BlockState blockState)
+	{
+		return RenderShape.MODEL;
+	}
+	
+	public enum ChamberPhase implements StringRepresentable
+	{
+		INACTIVE("inactive"),
+		CHARGED("charged"),
+		COOLDOWN("cooldown");
+		
+		private final String name;
+		
+		ChamberPhase (String name)
+		{
+			this.name = name;
+		}
+		
+		@Override
+		public String toString ()
+		{
+			return this.name;
+		}
+		
+		@Override
+		public String getSerializedName ()
+		{
+			return this.name;
+		}
+	}
+	
 }

@@ -5,10 +5,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.orcinus.galosphere.init.GBlockEntityTypes;
 
-public class GildedBeadsBlockEntity extends BlockEntity {
-
-    public GildedBeadsBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(GBlockEntityTypes.GILDED_BEADS.get(), blockPos, blockState);
-    }
-
+public class GildedBeadsBlockEntity extends BlockEntity
+{
+	
+	public GildedBeadsBlockEntity (BlockPos blockPos, BlockState blockState)
+	{
+		super(GBlockEntityTypes.GILDED_BEADS.get(), blockPos, blockState);
+	}
+	
 }

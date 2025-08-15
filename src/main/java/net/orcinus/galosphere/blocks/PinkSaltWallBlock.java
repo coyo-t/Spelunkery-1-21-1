@@ -6,20 +6,24 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class PinkSaltWallBlock extends WallBlock implements PinkSalt {
-
-    public PinkSaltWallBlock(Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public boolean isRandomlyTicking(BlockState blockState) {
-        return PinkSalt.getNext(blockState.getBlock()).isPresent();
-    }
-
-    @Override
-    public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-        this.burningRandomTick(blockState, serverLevel, blockPos);
-    }
-
+public class PinkSaltWallBlock extends WallBlock implements PinkSalt
+{
+	
+	public PinkSaltWallBlock (Properties properties)
+	{
+		super(properties);
+	}
+	
+	@Override
+	public boolean isRandomlyTicking (BlockState blockState)
+	{
+		return PinkSalt.getNext(blockState.getBlock()).isPresent();
+	}
+	
+	@Override
+	public void randomTick (BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource)
+	{
+		this.burningRandomTick(blockState, serverLevel, blockPos);
+	}
+	
 }

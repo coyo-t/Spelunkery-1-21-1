@@ -29,70 +29,83 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.ToIntFunction;
 
-public class GlowInkClumpsBlock extends MultifaceBlock implements SimpleWaterloggedBlock, EntityBlock {
-    public static final MapCodec<GlowInkClumpsBlock> CODEC = GlowInkClumpsBlock.simpleCodec(GlowInkClumpsBlock::new);
-    private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    private static final IntegerProperty AGE = BlockStateProperties.AGE_15;
-    private final MultifaceSpreader spreader = new MultifaceSpreader(this);
-
-    public GlowInkClumpsBlock(Properties properties) {
-        super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false).setValue(AGE, 0));
-    }
-
-    @Override
-    protected MapCodec<? extends MultifaceBlock> codec() {
-        return CODEC;
-    }
-
-    public static ToIntFunction<BlockState> emission(int light, int diminished) {
-        return (state) -> state.getValue(WATERLOGGED) && MultifaceBlock.hasAnyFace(state) ? light : diminished;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(WATERLOGGED, AGE);
-    }
-
-    @Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState p_153304_, LevelAccessor world, BlockPos pos, BlockPos p_153307_) {
-        if (state.getValue(WATERLOGGED)) {
-            world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
-        }
-        return super.updateShape(state, direction, p_153304_, world, pos, p_153307_);
-    }
-
-    @Override
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext ctx) {
-        return !ctx.getItemInHand().is(GBlocks.GLOW_INK_CLUMPS.get().asItem()) || super.canBeReplaced(state, ctx);
-    }
-
-    @Override
-    public FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
-
-    @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter world, BlockPos blockPos) {
-        return state.getFluidState().isEmpty();
-    }
-
-    @Override
-    public MultifaceSpreader getSpreader() {
-        return this.spreader;
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new GlowInkClumpsBlockEntity(pos, state);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level world, BlockState p_153213_, BlockEntityType<T> type) {
-        return world.isClientSide ? null : type == GBlockEntityTypes.GLOW_INK_CLUMPS.get() ? (level, pos, state, te) -> GlowInkClumpsBlockEntity.serverTick(level, pos, state, (GlowInkClumpsBlockEntity) te) : null;
-    }
-
+public class GlowInkClumpsBlock extends MultifaceBlock implements SimpleWaterloggedBlock, EntityBlock
+{
+	public static final MapCodec<GlowInkClumpsBlock> CODEC = GlowInkClumpsBlock.simpleCodec(GlowInkClumpsBlock::new);
+	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	private static final IntegerProperty AGE = BlockStateProperties.AGE_15;
+	private final MultifaceSpreader spreader = new MultifaceSpreader(this);
+	
+	public GlowInkClumpsBlock (Properties properties)
+	{
+		super(properties);
+		this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false).setValue(AGE, 0));
+	}
+	
+	@Override
+	protected MapCodec<? extends MultifaceBlock> codec ()
+	{
+		return CODEC;
+	}
+	
+	public static ToIntFunction<BlockState> emission (int light, int diminished)
+	{
+		return (state) -> state.getValue(WATERLOGGED) && MultifaceBlock.hasAnyFace(state) ? light : diminished;
+	}
+	
+	@Override
+	protected void createBlockStateDefinition (StateDefinition.Builder<Block, BlockState> builder)
+	{
+		super.createBlockStateDefinition(builder);
+		builder.add(WATERLOGGED, AGE);
+	}
+	
+	@Override
+	public BlockState updateShape (BlockState state, Direction direction, BlockState p_153304_, LevelAccessor world, BlockPos pos, BlockPos p_153307_)
+	{
+		if (state.getValue(WATERLOGGED))
+		{
+			world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
+		}
+		return super.updateShape(state, direction, p_153304_, world, pos, p_153307_);
+	}
+	
+	@Override
+	public boolean canBeReplaced (BlockState state, BlockPlaceContext ctx)
+	{
+		return !ctx.getItemInHand().is(GBlocks.GLOW_INK_CLUMPS.get().asItem()) || super.canBeReplaced(state, ctx);
+	}
+	
+	@Override
+	public FluidState getFluidState (BlockState state)
+	{
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+	
+	@Override
+	public boolean propagatesSkylightDown (BlockState state, BlockGetter world, BlockPos blockPos)
+	{
+		return state.getFluidState().isEmpty();
+	}
+	
+	@Override
+	public MultifaceSpreader getSpreader ()
+	{
+		return this.spreader;
+	}
+	
+	@Nullable
+	@Override
+	public BlockEntity newBlockEntity (BlockPos pos, BlockState state)
+	{
+		return new GlowInkClumpsBlockEntity(pos, state);
+	}
+	
+	@Nullable
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker (Level world, BlockState p_153213_, BlockEntityType<T> type)
+	{
+		return world.isClientSide ? null : type == GBlockEntityTypes.GLOW_INK_CLUMPS.get() ? (level, pos, state, te) -> GlowInkClumpsBlockEntity.serverTick(level, pos, state, (GlowInkClumpsBlockEntity)te) : null;
+	}
+	
 }
