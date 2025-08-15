@@ -99,9 +99,24 @@ dependencies {
 	provided 'party.iroiro.luajava:lua54-platform:4.0.2:natives-desktop'
 }
 
+var dissonancePath = "C:/Users/Chymic/AppData/Roaming/PrismLauncher/instances/dissonance 2.5 dev 121 update/minecraft/mods"
+var jarFileName = "${base.archivesName.get()}.jar"
+
+
+
 jar {
+	doNotTrackState "aaaaa FFRHHj"
+	project.logger.lifecycle "MACHINE WITNESS - $jarFileName"
 	// Include all of the jars from the bundled configuration in our jar
 	from configurations.provided.asFileTree.files.collect { zipTree(it) }
+}
+
+tasks.register("mjajrjrjfFUCK") {
+	it.doNotTrackState "god it just always needs to be copied you FUCK"
+	copy {
+		from("build/libs/$jarFileName")
+		into dissonancePath
+	}
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -121,11 +136,6 @@ tasks.withType(ProcessResources).configureEach {
 
 	filesMatching(['META-INF/neoforge.mods.toml']) {
 		expand replaceProperties
-	}
-}
-
-tasks.named("jarJar") {
-	dependencies {
 	}
 }
 

@@ -3,8 +3,12 @@ package com.ordana.spelunkery.mixins;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.ordana.spelunkery.datamalarky.SlotDecoManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiSpriteManager;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -15,6 +19,7 @@ import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.extensions.IGuiGraphicsExtension;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,8 +31,23 @@ public abstract class ItemDecoMixin implements IGuiGraphicsExtension
 {
 	
 	@Shadow public abstract void fill (RenderType renderType, int minX, int minY, int maxX, int maxY, int color);
+
+	@Shadow abstract void innerBlit (
+		ResourceLocation atlasLocation,
+		int x1,
+		int x2,
+		int y1,
+		int y2,
+		int blitOffset,
+		float minU,
+		float maxU,
+		float minV,
+		float maxV
+	);
 	
-	@Shadow public abstract void blit (ResourceLocation atlasLocation, int x, int y, int width, int height, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight);
+	@Shadow @Final private GuiSpriteManager sprites;
+	
+	@Shadow public abstract void blitSprite (ResourceLocation sprite, int textureWidth, int textureHeight, int uPosition, int vPosition, int x, int y, int uWidth, int vHeight);
 	
 	@ModifyExpressionValue(
 		method="renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
@@ -40,6 +60,50 @@ public abstract class ItemDecoMixin implements IGuiGraphicsExtension
 		@Local(argsOnly=true, ordinal=1) int y
 	)
 	{
+		final var maybeThing = SlotDecoManager.getThing(stack);
+	
+		if (maybeThing != null)
+		{
+			final double fac;
+			final var maybeVSrc = stack.get(maybeThing.getCurrentValueSource());
+			final var maybeVMax = stack.get(maybeThing.getMaxValueSource());
+			
+			if (maybeVSrc instanceof Integer vs && maybeVMax instanceof Integer vm)
+			{
+				fac = Mth.clamp((double)vs / (double)vm, 0.0, 1.0);
+			}
+			else
+			{
+				fac = 0.5;
+			}
+			final var p = maybeThing.getAt();
+			final var xx = x + p.x;
+			final var yy = y + p.y;
+			final var sub = maybeThing.getSubImage(fac);
+			System.out.println(sub);
+			final var bs = maybeThing.getBaseSize();
+			// fucks sake
+			
+			blitSprite(sub, bs.width, bs.height, 0, 0, xx, yy, bs.width, bs.height);
+			
+//			final var fuck = sprites.getSprite(sub);
+//			final var cont = fuck.contents();
+//			innerBlit(
+//				sub,
+//				xx,
+//				xx + cont.width(),
+//				yy,
+//				yy + cont.height(),
+//				-100,
+//				fuck.getU0(),
+//				fuck.getU1(),
+//				fuck.getV0(),
+//				fuck.getV1()
+//			);
+//			fill(RenderType.GUI_OVERLAY, x, yy, x + 8, yy + 8, 0xFF_FF0000);
+			return false;
+		}
+	
 		if (stack.is(Items.BUNDLE))
 		{
 			final var C_PARTIAL = 0xFF_7F7FFF;

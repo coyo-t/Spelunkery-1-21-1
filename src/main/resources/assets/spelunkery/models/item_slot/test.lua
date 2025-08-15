@@ -1,27 +1,20 @@
-local fwide, ftall = 13, 2
-local pwide, ptall = 13, 514
-local direction_x, direction_y = 0, 1
+local frame_name = 'spelunkery:textures/gui/slot/bar/durability/retro%s'
+local frame_count = 257
 
-local fc = 27
 local points = {}
-local x, y = 0, 0
-for _ = 1, fc do
-	table.insert(points, { x, y, fwide, ftall })
-	x = x + (fwide * direction_x)
-	y = y + (ftall * direction_y)
+for i = 1, frame_count do
+	local n = frame_name:format(i)
+	print(n)
+	table.insert(points, n)
 end
 
 return {
 	at = { 2, 13 },
-	source = {
-		path = 'spelunkery:slot/bar/durability',
-		full = -1,
-		points = points,
+	base_size = { 13, 2 },
+	sub_images = points,
+	applies_to   = {
+		'minecraft:golden_shovel',
 	},
-	applies_to = 'minecraft:golden_shovel',
-	value = {
-		--type = 'component',
-		source = 'minecraft:damage',
-		max    = 'minecraft:max_damage',
-	},
+	value_source = 'minecraft:damage',
+	value_max    = 'minecraft:max_damage',
 }
