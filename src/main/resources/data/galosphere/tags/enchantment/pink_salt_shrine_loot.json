@@ -1,0 +1,17 @@
+{
+  "values": [
+    {
+      "id": "galosphere:enfeeble",
+      "required": false
+    },
+    {
+      "id": "galosphere:sustain",
+      "required": false
+    },
+    {
+      "id": "galosphere:rupture",
+      "required": false
+    },
+    "minecraft:unbreaking"
+  ]
+}

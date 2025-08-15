@@ -1,14 +1,36 @@
 {
 	"required": true,
 	"minVersion": "0.8",
-	"package": "com.ordana.spelunkery.mixins",
+	"package": "dissonance.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"BoatPaddleSoundMixin",
-		"NetherPortalBlockMixin"
+		"NetherPortalBlockMixin",
+		"BlockStateBaseMixin",
+		"BuiltStateMixin",
+		"ChorusFruitItemMixin",
+		"CrossbowItemMixin",
+		"EntityMixin",
+		"InventoryMixin",
+		"LightningBoltMixin",
+		"LivingEntityMixin",
+		"LootTableAccessor",
+		"OverworldBiomeBuilderMixin",
+		"PlayerMixin",
+		"PowderSnowBlockMixin",
+		"ServerItemCooldownsMixin",
+		"ShulkerBoxBlockEntityMixin"
 	],
 	"client": [
-		"ItemDecoMixin"
+		"ClientLevelMixin",
+		"FogRendererMixin",
+		"GuiMixin",
+		"ItemModelShaperMixin",
+		"ItemRendererMixin",
+		"LivingEntityRendererMixin",
+		"ModelBakeryMixin",
+		"PlayerItemInHandLayerMixin",
+		"PlayerRendererMixin"
 	],
 	"server": [],
 	"injectors": {

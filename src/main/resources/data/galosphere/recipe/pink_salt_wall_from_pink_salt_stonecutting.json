@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "galosphere:pink_salt"
+  },
+  "result": {
+    "count": 1,
+    "id": "galosphere:pink_salt_wall"
+  }
+}

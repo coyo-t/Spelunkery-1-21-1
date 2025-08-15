@@ -1,0 +1,43 @@
+{
+  "type": "galosphere:simple_waterlogged_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "galosphere:bowl_lichen",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 4
+        },
+        {
+          "data": {
+            "Name": "galosphere:lichen_roots",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 14
+        },
+        {
+          "data": {
+            "Name": "minecraft:glow_lichen",
+            "Properties": {
+              "down": "true",
+              "east": "false",
+              "north": "false",
+              "south": "false",
+              "up": "false",
+              "waterlogged": "false",
+              "west": "false"
+            }
+          },
+          "weight": 2
+        }
+      ]
+    }
+  }
+}

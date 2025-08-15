@@ -1,0 +1,26 @@
+{
+  "parent": "galosphere:adventure/silver_ingot",
+  "criteria": {
+    "warped_teleport": {
+      "trigger": "galosphere:warped_teleport"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.galosphere.warped_teleport.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "minecraft:ender_pearl"
+    },
+    "title": {
+      "translate": "advancements.galosphere.warped_teleport.title"
+    }
+  },
+  "requirements": [
+    [
+      "warped_teleport"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

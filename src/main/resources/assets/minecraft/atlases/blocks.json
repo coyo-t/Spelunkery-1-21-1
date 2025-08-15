@@ -7,6 +7,14 @@
 		{
 			"type": "single",
 			"resource": "spelunkery:block/portal_fluid_s"
+		},
+		{
+			"type": "minecraft:single",
+			"resource": "galosphere:entity/gilded_beads/gilded_beads_body"
+		},
+		{
+			"type": "minecraft:single",
+			"resource": "galosphere:entity/gilded_beads/gilded_beads_head"
 		}
 	]
 }

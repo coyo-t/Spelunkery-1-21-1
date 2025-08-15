@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "crystal_lamps": {
+      "conditions": {
+        "items": [
+          {
+            "items": "galosphere:allurite_lamp"
+          },
+          {
+            "items": "galosphere:lumiere_lamp"
+          },
+          {
+            "items": "galosphere:amethyst_lamp"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.galosphere.crystal_lamps.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "galosphere:amethyst_lamp"
+    },
+    "title": {
+      "translate": "advancements.galosphere.crystal_lamps.title"
+    }
+  },
+  "requirements": [
+    [
+      "crystal_lamps"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

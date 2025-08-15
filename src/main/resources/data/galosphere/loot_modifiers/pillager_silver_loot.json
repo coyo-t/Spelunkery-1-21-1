@@ -1,0 +1,14 @@
+{
+  "type": "galosphere:pillager_silver_loot",
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "type": "minecraft:pillager"
+      }
+    }
+  ],
+  "max": 2,
+  "min": 0
+}

@@ -1,0 +1,46 @@
+{
+  "parent": "galosphere:adventure/silver_ingot",
+  "criteria": {
+    "sterling_armor": {
+      "conditions": {
+        "items": [
+          {
+            "items": "galosphere:sterling_helmet"
+          },
+          {
+            "items": "galosphere:sterling_chestplate"
+          },
+          {
+            "items": "galosphere:sterling_leggings"
+          },
+          {
+            "items": "galosphere:sterling_boots"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.galosphere.sterling_armor.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "galosphere:sterling_helmet"
+    },
+    "title": {
+      "translate": "advancements.galosphere.sterling_armor.title"
+    }
+  },
+  "requirements": [
+    [
+      "sterling_armor"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

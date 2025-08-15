@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "tag": "forge:ingots/silver"
+  },
+  "base": {
+    "item": "minecraft:leather_horse_armor"
+  },
+  "result": {
+    "count": 1,
+    "id": "galosphere:sterling_horse_armor"
+  },
+  "template": {
+    "item": "galosphere:silver_upgrade_smithing_template"
+  }
+}

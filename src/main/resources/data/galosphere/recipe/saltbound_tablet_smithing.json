@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "galosphere:pink_salt_shard"
+  },
+  "base": {
+    "item": "galosphere:preserved_flesh"
+  },
+  "result": {
+    "count": 1,
+    "id": "galosphere:saltbound_tablet"
+  },
+  "template": {
+    "item": "galosphere:preserved_template"
+  }
+}

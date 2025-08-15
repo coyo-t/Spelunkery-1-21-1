@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "light_spread": {
+      "trigger": "galosphere:light_spread"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.galosphere.light_spread.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "galosphere:glow_flare"
+    },
+    "title": {
+      "translate": "advancements.galosphere.light_spread.title"
+    }
+  },
+  "requirements": [
+    [
+      "light_spread"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

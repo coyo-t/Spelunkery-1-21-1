@@ -1,0 +1,26 @@
+{
+  "parent": "galosphere:adventure/find_pink_salt_shrine",
+  "criteria": {
+    "activate_pink_salt_chamber": {
+      "trigger": "galosphere:activate_pink_salt_chamber"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.galosphere.activate_pink_salt_chamber.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "galosphere:pink_salt_chamber"
+    },
+    "title": {
+      "translate": "advancements.galosphere.activate_pink_salt_chamber.title"
+    }
+  },
+  "requirements": [
+    [
+      "activate_pink_salt_chamber"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

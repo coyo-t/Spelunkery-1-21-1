@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[39,)"
+license="All Rights Reserved"
+[[mods]]
+modId="galosphere"
+version="1.21-1.4.2"
+displayName="Galosphere"
+logoFile= "galosphere.png"
+authors="Orcinus"
+description='''
+Galosphere is a mod that aims to overhaul the underground
+
+Author:
+- Orcinus
+
+Contributors:
+- Ninni
+- bunten
+
+'''
+[[dependencies.galosphere]]
+    modId="forge"
+    mandatory=true
+    versionRange="[39,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.galosphere]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.21,1.22)"
+    ordering="NONE"
+    side="BOTH"

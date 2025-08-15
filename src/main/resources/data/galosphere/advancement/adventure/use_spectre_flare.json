@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "use_spectre_flare": {
+      "trigger": "galosphere:use_spectre_flare"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.galosphere.use_spectre_flare.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "galosphere:spectre_flare"
+    },
+    "title": {
+      "translate": "advancements.galosphere.use_spectre_flare.title"
+    }
+  },
+  "requirements": [
+    [
+      "use_spectre_flare"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

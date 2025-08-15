@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "galosphere:silver_block"
+  },
+  "result": {
+    "count": 4,
+    "id": "galosphere:silver_tiles_slab"
+  }
+}

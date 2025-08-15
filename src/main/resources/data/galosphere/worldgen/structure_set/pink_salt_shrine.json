@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 9237591,
+    "separation": 8,
+    "spacing": 15
+  },
+  "structures": [
+    {
+      "structure": "galosphere:pink_salt_shrine",
+      "weight": 1
+    }
+  ]
+}

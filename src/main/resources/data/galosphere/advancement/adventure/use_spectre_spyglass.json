@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "use_spectre_spyglass": {
+      "trigger": "galosphere:use_spectre_spyglass"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.galosphere.use_spectre_spyglass.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "galosphere:spectre_bound_spyglass"
+    },
+    "title": {
+      "translate": "advancements.galosphere.use_spectre_spyglass.title"
+    }
+  },
+  "requirements": [
+    [
+      "use_spectre_spyglass"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

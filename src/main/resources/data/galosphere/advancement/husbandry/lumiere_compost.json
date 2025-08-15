@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:husbandry/plant_seed",
+  "criteria": {
+    "lumiere_compost": {
+      "trigger": "galosphere:lumiere_compost"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.galosphere.lumiere_compost.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "galosphere:lumiere_shard"
+    },
+    "title": {
+      "translate": "advancements.galosphere.lumiere_compost.title"
+    }
+  },
+  "requirements": [
+    [
+      "lumiere_compost"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

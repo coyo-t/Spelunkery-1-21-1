@@ -1,0 +1,6 @@
+{
+  "parent": "galosphere:block/template_warped_anchor",
+  "textures": {
+    "0": "galosphere:block/warped_anchor"
+  }
+}

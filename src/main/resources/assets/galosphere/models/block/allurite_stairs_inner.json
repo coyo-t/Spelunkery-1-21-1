@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "galosphere:block/allurite_block",
+    "side": "galosphere:block/allurite_block",
+    "top": "galosphere:block/allurite_block"
+  }
+}

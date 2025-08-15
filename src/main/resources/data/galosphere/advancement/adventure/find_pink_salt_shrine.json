@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "pink_salt_shrine": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structures": "galosphere:pink_salt_shrine"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.galosphere.find_pink_salt_shrine.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "galosphere:pink_salt_bricks",
+      "count": 1
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.galosphere.find_pink_salt_shrine.title"
+    }
+  },
+  "requirements": [
+    [
+      "pink_salt_shrine"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
