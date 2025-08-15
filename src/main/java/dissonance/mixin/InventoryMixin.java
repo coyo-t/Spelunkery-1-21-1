@@ -8,11 +8,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Inventory.class)
-public class InventoryMixin {
-
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z"), method = "dropAll")
-    private boolean G$isEmpty(ItemStack instance) {
-        return instance.has(GDataComponents.PRESERVED.get());
-    }
-
+public class InventoryMixin
+{
+	
+	@Redirect(at=@At(value="INVOKE", target="Lnet/minecraft/world/item/ItemStack;isEmpty()Z"), method="dropAll")
+	private boolean G$isEmpty (ItemStack instance)
+	{
+		return instance.has(GDataComponents.PRESERVED.get());
+	}
+	
 }

@@ -11,27 +11,32 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ShulkerBoxBlockEntity.class)
-public class ShulkerBoxBlockEntityMixin implements PreservedShulkerBox {
-    @Unique
-    private boolean preserved;
-
-    @Inject(at = @At("TAIL"), method = "loadAdditional")
-    private void G$load(CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci) {
-        this.setPreserved(tag.getBoolean("Preserved"));
-    }
-
-    @Inject(at = @At("TAIL"), method = "saveAdditional")
-    private void G$saveAdditional(CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci) {
-        tag.putBoolean("Preserved", this.isPreserved());
-    }
-
-    @Override
-    public void setPreserved(boolean preserved) {
-        this.preserved = preserved;
-    }
-
-    @Override
-    public boolean isPreserved() {
-        return this.preserved;
-    }
+public class ShulkerBoxBlockEntityMixin implements PreservedShulkerBox
+{
+	@Unique
+	private boolean preserved;
+	
+	@Inject(at=@At("TAIL"), method="loadAdditional")
+	private void G$load (CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci)
+	{
+		this.setPreserved(tag.getBoolean("Preserved"));
+	}
+	
+	@Inject(at=@At("TAIL"), method="saveAdditional")
+	private void G$saveAdditional (CompoundTag tag, HolderLookup.Provider provider, CallbackInfo ci)
+	{
+		tag.putBoolean("Preserved", this.isPreserved());
+	}
+	
+	@Override
+	public void setPreserved (boolean preserved)
+	{
+		this.preserved = preserved;
+	}
+	
+	@Override
+	public boolean isPreserved ()
+	{
+		return this.preserved;
+	}
 }

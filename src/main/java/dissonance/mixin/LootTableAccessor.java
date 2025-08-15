@@ -8,7 +8,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.List;
 
 @Mixin(LootTable.class)
-public interface LootTableAccessor {
-    @Accessor
-    List<LootPool> getPools();
+public interface LootTableAccessor
+{
+	@Accessor
+	List<LootPool> getPools ();
 }

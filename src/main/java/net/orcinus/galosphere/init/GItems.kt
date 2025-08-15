@@ -1,72 +1,156 @@
-package net.orcinus.galosphere.init;
+package net.orcinus.galosphere.init
 
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.AnimalArmorItem;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-import net.orcinus.galosphere.Galosphere;
-import net.orcinus.galosphere.items.ChandelierItem;
-import net.orcinus.galosphere.items.GlowFlareItem;
-import net.orcinus.galosphere.items.GoldenLichenCordycepsItem;
-import net.orcinus.galosphere.items.IconItem;
-import net.orcinus.galosphere.items.LichenCordycepsItem;
-import net.orcinus.galosphere.items.PreservedFleshItem;
-import net.orcinus.galosphere.items.PreservedSmithingTemplateItem;
-import net.orcinus.galosphere.items.SaltboundTabletItem;
-import net.orcinus.galosphere.items.SilverBombItem;
-import net.orcinus.galosphere.items.SilverSmithingTemplateItem;
-import net.orcinus.galosphere.items.SpectreBottleItem;
-import net.orcinus.galosphere.items.SpectreBoundSpyglassItem;
-import net.orcinus.galosphere.items.SpectreFlareItem;
-import net.orcinus.galosphere.items.SterlingArmorItem;
+import net.minecraft.world.food.FoodProperties
+import net.minecraft.world.item.AnimalArmorItem
+import net.minecraft.world.item.ArmorItem
+import net.minecraft.world.item.Item
+import net.neoforged.neoforge.common.DeferredSpawnEggItem
+import net.neoforged.neoforge.registries.DeferredRegister
+import net.orcinus.galosphere.Galosphere
+import net.orcinus.galosphere.items.ChandelierItem
+import net.orcinus.galosphere.items.GlowFlareItem
+import net.orcinus.galosphere.items.GoldenLichenCordycepsItem
+import net.orcinus.galosphere.items.IconItem
+import net.orcinus.galosphere.items.LichenCordycepsItem
+import net.orcinus.galosphere.items.PreservedFleshItem
+import net.orcinus.galosphere.items.PreservedSmithingTemplateItem
+import net.orcinus.galosphere.items.SaltboundTabletItem
+import net.orcinus.galosphere.items.SilverBombItem
+import net.orcinus.galosphere.items.SilverSmithingTemplateItem
+import net.orcinus.galosphere.items.SpectreBottleItem
+import net.orcinus.galosphere.items.SpectreBoundSpyglassItem
+import net.orcinus.galosphere.items.SpectreFlareItem
+import net.orcinus.galosphere.items.SterlingArmorItem
+import java.util.function.Supplier
 
-@Mod.EventBusSubscriber(modid = Galosphere.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class GItems {
+object GItems
+{
+	@JvmField
+	val ITEMS = DeferredRegister.createItems(Galosphere.MODID)
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Galosphere.MODID);
+	@JvmField
+	val ICON_ITEM = regIt("icon_item") { IconItem(Item.Properties().stacksTo(0)) }
 
-    public static final RegistryObject<Item> ICON_ITEM = ITEMS.register("icon_item", () -> new IconItem(new Item.Properties().stacksTo(0)));
+	@JvmField
+	val SPARKLE_SPAWN_EGG = regIt("sparkle_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.SPARKLE, 0xF0F5F4, 0x24F6D8, Item.Properties()) }
 
-    public static final RegistryObject<Item> SPARKLE_SPAWN_EGG = ITEMS.register("sparkle_spawn_egg", () -> new ForgeSpawnEggItem(GEntityTypes.SPARKLE, 0xF0F5F4, 0x24F6D8, new Item.Properties()));
-    public static final RegistryObject<Item> SPECTRE_SPAWN_EGG = ITEMS.register("spectre_spawn_egg", () -> new ForgeSpawnEggItem(GEntityTypes.SPECTRE, 0xFFF3DD, 0x9CCDB6, new Item.Properties()));
-    public static final RegistryObject<Item> SPECTERPILLAR_SPAWN_EGG = ITEMS.register("specterpillar_spawn_egg", () -> new ForgeSpawnEggItem(GEntityTypes.SPECTERPILLAR, 0xFFF3DD, 0xF7CF7B, new Item.Properties()));
-    public static final RegistryObject<Item> BERSERKER_SPAWN_EGG = ITEMS.register("berserker_spawn_egg", () -> new ForgeSpawnEggItem(GEntityTypes.BERSERKER, 15568753, 6057047, new Item.Properties()));
-    public static final RegistryObject<Item> PRESERVED_SPAWN_EGG = ITEMS.register("preserved_spawn_egg", () -> new ForgeSpawnEggItem(GEntityTypes.PRESERVED, 15703431, 7246179, new Item.Properties()));
-    public static final RegistryObject<Item> BOTTLE_OF_SPECTRE = ITEMS.register("bottle_of_spectre", () -> new SpectreBottleItem(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> ALLURITE_SHARD = registerBaseItem("allurite_shard");
-    public static final RegistryObject<Item> LUMIERE_SHARD = registerBaseItem("lumiere_shard");
-    public static final RegistryObject<Item> PINK_SALT_SHARD = registerBaseItem("pink_salt_shard");
-    public static final RegistryObject<Item> RAW_SILVER = registerBaseItem("raw_silver");
-    public static final RegistryObject<Item> SILVER_INGOT = registerBaseItem("silver_ingot");
-    public static final RegistryObject<Item> SILVER_NUGGET = registerBaseItem("silver_nugget");
-    public static final RegistryObject<Item> SILVER_UPGRADE_SMITHING_TEMPLATE = ITEMS.register("silver_upgrade_smithing_template", SilverSmithingTemplateItem::new);
-    public static final RegistryObject<Item> BAROMETER = registerBaseItem("barometer");
-    public static final RegistryObject<Item> SILVER_BOMB = ITEMS.register("silver_bomb", () -> new SilverBombItem(new Item.Properties().stacksTo(16)));
-    public static final RegistryObject<Item> STERLING_HELMET = ITEMS.register("sterling_helmet", () -> new SterlingArmorItem(ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> STERLING_CHESTPLATE = ITEMS.register("sterling_chestplate", () -> new SterlingArmorItem(ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> STERLING_LEGGINGS = ITEMS.register("sterling_leggings", () -> new SterlingArmorItem(ArmorItem.Type.LEGGINGS, new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> STERLING_BOOTS = ITEMS.register("sterling_boots", () -> new SterlingArmorItem(ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> STERLING_HORSE_ARMOR = ITEMS.register("sterling_horse_armor", () -> new AnimalArmorItem(GArmorMaterials.STERLING, AnimalArmorItem.BodyType.EQUESTRIAN, false, new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> SALTED_JERKY = ITEMS.register("salted_jerky", () -> new Item(new Item.Properties().food(GFoods.SALTED_JERKY)));
-    public static final RegistryObject<Item> CURED_MEMBRANE = registerBaseItem("cured_membrane");
-    public static final RegistryObject<Item> LICHEN_CORDYCEPS = ITEMS.register("lichen_cordyceps", () -> new LichenCordycepsItem(GBlocks.LICHEN_CORDYCEPS.get(), new Item.Properties().food(GFoods.LICHEN_CORDYCEPS)));
-    public static final RegistryObject<Item> GOLDEN_LICHEN_CORDYCEPS = ITEMS.register("golden_lichen_cordyceps", () -> new GoldenLichenCordycepsItem(new Item.Properties().food(GFoods.GOLDEN_LICHEN_CORDYCEPS)));
-    public static final RegistryObject<Item> GLOW_FLARE = ITEMS.register("glow_flare", () -> new GlowFlareItem(new Item.Properties()));
-    public static final RegistryObject<Item> SPECTRE_FLARE = ITEMS.register("spectre_flare", () -> new SpectreFlareItem(new Item.Properties()));
-    public static final RegistryObject<Item> SPECTRE_BOUND_SPYGLASS = ITEMS.register("spectre_bound_spyglass", () -> new SpectreBoundSpyglassItem(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> CHANDELIER = ITEMS.register("chandelier", () -> new ChandelierItem(GBlocks.CHANDELIER.get(), new Item.Properties()));
+	@JvmField
+	val SPECTRE_SPAWN_EGG = regIt("spectre_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.SPECTRE, 0xFFF3DD, 0x9CCDB6, Item.Properties()) }
 
-    public static final RegistryObject<Item> SALTBOUND_TABLET = ITEMS.register("saltbound_tablet", () -> new SaltboundTabletItem(new Item.Properties().stacksTo(1).durability(432)));
-    public static final RegistryObject<Item> PRESERVED_TEMPLATE = ITEMS.register("preserved_template", PreservedSmithingTemplateItem::new);
-    public static final RegistryObject<Item> PRESERVED_FLESH = ITEMS.register("preserved_flesh", () -> new PreservedFleshItem(new Item.Properties().stacksTo(1).durability(180).food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.1f).build())));
+	@JvmField
+	val SPECTERPILLAR_SPAWN_EGG = regIt("specterpillar_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.SPECTERPILLAR, 0xFFF3DD, 0xF7CF7B, Item.Properties()) }
 
-    public static RegistryObject<Item> registerBaseItem(String name) {
-        return ITEMS.register(name, () -> new Item(new Item.Properties()));
-    }
+	@JvmField
+	val BERSERKER_SPAWN_EGG = regIt("berserker_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.BERSERKER, 15568753, 6057047, Item.Properties()) }
 
+	@JvmField
+	val PRESERVED_SPAWN_EGG = regIt("preserved_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.PRESERVED, 15703431, 7246179, Item.Properties()) }
+
+	@JvmField
+	val BOTTLE_OF_SPECTRE = regIt("bottle_of_spectre") { SpectreBottleItem(Item.Properties().stacksTo(1)) }
+
+	@JvmField
+	val ALLURITE_SHARD = regIt("allurite_shard")
+
+	@JvmField
+	val LUMIERE_SHARD = regIt("lumiere_shard")
+
+	@JvmField
+	val PINK_SALT_SHARD = regIt("pink_salt_shard")
+
+	@JvmField
+	val RAW_SILVER = regIt("raw_silver")
+
+	@JvmField
+	val SILVER_INGOT = regIt("silver_ingot")
+
+	@JvmField
+	val SILVER_NUGGET = regIt("silver_nugget")
+
+	@JvmField
+	val SILVER_UPGRADE_SMITHING_TEMPLATE = regIt("silver_upgrade_smithing_template") { SilverSmithingTemplateItem() }
+
+	@JvmField
+	val BAROMETER = regIt("barometer")
+
+	@JvmField
+	val SILVER_BOMB = regIt("silver_bomb") { SilverBombItem(Item.Properties().stacksTo(16)) }
+
+	@JvmField
+	val STERLING_HELMET = regIt("sterling_helmet") { SterlingArmorItem(ArmorItem.Type.HELMET, Item.Properties().stacksTo(1)) }
+
+	@JvmField
+	val STERLING_CHESTPLATE = regIt("sterling_chestplate") { SterlingArmorItem(ArmorItem.Type.CHESTPLATE, Item.Properties().stacksTo(1)) }
+
+	@JvmField
+	val STERLING_LEGGINGS = regIt("sterling_leggings") { SterlingArmorItem(ArmorItem.Type.LEGGINGS, Item.Properties().stacksTo(1)) }
+
+	@JvmField
+	val STERLING_BOOTS = regIt("sterling_boots") { SterlingArmorItem(ArmorItem.Type.BOOTS, Item.Properties().stacksTo(1)) }
+
+	@JvmField
+	val STERLING_HORSE_ARMOR = regIt("sterling_horse_armor") {
+		AnimalArmorItem(
+			GArmorMaterials.STERLING,
+			AnimalArmorItem.BodyType.EQUESTRIAN,
+			false,
+			Item.Properties().stacksTo(1)
+		)
+	}
+
+	@JvmField
+	val SALTED_JERKY = regIt("salted_jerky") { Item(Item.Properties().food(GFoods.SALTED_JERKY)) }
+
+	@JvmField
+	val CURED_MEMBRANE = regIt("cured_membrane")
+
+	@JvmField
+	val LICHEN_CORDYCEPS = regIt("lichen_cordyceps") { LichenCordycepsItem(GBlocks.LICHEN_CORDYCEPS.get(), Item.Properties().food(GFoods.LICHEN_CORDYCEPS)) }
+
+	@JvmField
+	val GOLDEN_LICHEN_CORDYCEPS = regIt("golden_lichen_cordyceps") {
+		GoldenLichenCordycepsItem(
+			Item.Properties().food(GFoods.GOLDEN_LICHEN_CORDYCEPS)
+		)
+	}
+
+	@JvmField
+	val GLOW_FLARE = regIt("glow_flare") { GlowFlareItem(Item.Properties()) }
+
+	@JvmField
+	val SPECTRE_FLARE = regIt("spectre_flare") { SpectreFlareItem(Item.Properties()) }
+
+	@JvmField
+	val SPECTRE_BOUND_SPYGLASS = regIt("spectre_bound_spyglass") {
+		SpectreBoundSpyglassItem(
+			Item.Properties().stacksTo(1)
+		)
+	}
+
+	@JvmField
+	val CHANDELIER = regIt("chandelier") { ChandelierItem(GBlocks.CHANDELIER.get(), Item.Properties()) }
+
+	@JvmField
+	val SALTBOUND_TABLET = regIt("saltbound_tablet") { SaltboundTabletItem(Item.Properties().stacksTo(1).durability(432)) }
+
+	@JvmField
+	val PRESERVED_TEMPLATE = regIt("preserved_template") { PreservedSmithingTemplateItem() }
+
+	@JvmField
+	val PRESERVED_FLESH = regIt("preserved_flesh") {
+		PreservedFleshItem(
+			Item.Properties().stacksTo(1).durability(180)
+				.food(FoodProperties.Builder().nutrition(4).saturationModifier(0.1f).build())
+		)
+	}
+
+	fun <T : Item> regIt(name: String, thing: Supplier<T>): Supplier<T>
+	{
+		return ITEMS.register(name, thing)
+	}
+
+	fun regIt(name: String): Supplier<Item>
+	{
+		return regIt(name) { Item(Item.Properties()) }
+	}
 }

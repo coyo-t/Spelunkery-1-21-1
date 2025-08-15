@@ -26,31 +26,39 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockBehaviour.BlockStateBase.class)
-public class BlockStateBaseMixin {
-
-    @Inject(at = @At("RETURN"), method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", cancellable = true)
-    private void G$getCollisionShape(BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext, CallbackInfoReturnable<VoxelShape> cir) {
-        if (collisionContext instanceof EntityCollisionContext entityCollisionContext && entityCollisionContext.getEntity() instanceof LivingEntity livingEntity && ((BlockBehaviour.BlockStateBase)(Object)this).isSolid()) {
-            boolean above = livingEntity.getY() > blockPos.getY() + cir.getReturnValue().max(Direction.Axis.Y) - (livingEntity.onGround() ? 0.5F : 0.001F);
-            boolean flag = !above || livingEntity.isShiftKeyDown();
-            if (livingEntity.hasEffect(ForgeRegistries.MOB_EFFECTS.getHolder(GMobEffects.ASTRAL.get()).orElseThrow()) && flag && !blockGetter.getBlockState(blockPos).is(GBlockTags.OMIT_ASTRAL)) {
-                cir.setReturnValue(Shapes.empty());
-            }
-        }
-    }
-
-    @Inject(at = @At("RETURN"), method = "entityInside", cancellable = true)
-    private void G$entityInside(Level level, BlockPos blockPos, Entity entity, CallbackInfo ci) {
-        if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(ForgeRegistries.MOB_EFFECTS.getHolder(GMobEffects.ASTRAL.get()).orElseThrow()) && !level.getBlockState(blockPos).is(GBlockTags.OMIT_ASTRAL)) {
-            ci.cancel();
-            if (level instanceof ServerLevel serverLevel && ((BlockBehaviour.BlockStateBase)(Object)this).isSolid()) {
-                boolean bl = entity.xOld != entity.getX() || entity.zOld != entity.getZ();
-                RandomSource randomSource = level.getRandom();
-                if (bl && randomSource.nextBoolean()) {
-                    serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, level.getBlockState(blockPos)), entity.getX(), blockPos.getY() + 1, entity.getZ(), 1, Mth.randomBetween(randomSource, -1.0f, 1.0f) * 0.083333336f, 0.05f, Mth.randomBetween(randomSource, -1.0f, 1.0f) * 0.083333336f, 0);
-                }
-            }
-        }
-    }
-
+public class BlockStateBaseMixin
+{
+	
+	@Inject(at=@At("RETURN"), method="getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", cancellable=true)
+	private void G$getCollisionShape (BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext, CallbackInfoReturnable<VoxelShape> cir)
+	{
+		if (collisionContext instanceof EntityCollisionContext entityCollisionContext && entityCollisionContext.getEntity() instanceof LivingEntity livingEntity && ((BlockBehaviour.BlockStateBase)(Object)this).isSolid())
+		{
+			boolean above = livingEntity.getY() > blockPos.getY() + cir.getReturnValue().max(Direction.Axis.Y) - (livingEntity.onGround() ? 0.5F : 0.001F);
+			boolean flag = !above || livingEntity.isShiftKeyDown();
+			if (livingEntity.hasEffect(ForgeRegistries.MOB_EFFECTS.getHolder(GMobEffects.ASTRAL.get()).orElseThrow()) && flag && !blockGetter.getBlockState(blockPos).is(GBlockTags.OMIT_ASTRAL))
+			{
+				cir.setReturnValue(Shapes.empty());
+			}
+		}
+	}
+	
+	@Inject(at=@At("RETURN"), method="entityInside", cancellable=true)
+	private void G$entityInside (Level level, BlockPos blockPos, Entity entity, CallbackInfo ci)
+	{
+		if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(ForgeRegistries.MOB_EFFECTS.getHolder(GMobEffects.ASTRAL.get()).orElseThrow()) && !level.getBlockState(blockPos).is(GBlockTags.OMIT_ASTRAL))
+		{
+			ci.cancel();
+			if (level instanceof ServerLevel serverLevel && ((BlockBehaviour.BlockStateBase)(Object)this).isSolid())
+			{
+				boolean bl = entity.xOld != entity.getX() || entity.zOld != entity.getZ();
+				RandomSource randomSource = level.getRandom();
+				if (bl && randomSource.nextBoolean())
+				{
+					serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, level.getBlockState(blockPos)), entity.getX(), blockPos.getY() + 1, entity.getZ(), 1, Mth.randomBetween(randomSource, -1.0f, 1.0f) * 0.083333336f, 0.05f, Mth.randomBetween(randomSource, -1.0f, 1.0f) * 0.083333336f, 0);
+				}
+			}
+		}
+	}
+	
 }

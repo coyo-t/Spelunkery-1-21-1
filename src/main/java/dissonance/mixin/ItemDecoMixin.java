@@ -14,24 +14,29 @@ import org.spongepowered.asm.mixin.Shadow;
 public abstract class ItemDecoMixin implements IGuiGraphicsExtension
 {
 	
-	@Shadow public abstract void fill (RenderType renderType, int minX, int minY, int maxX, int maxY, int color);
-
-	@Shadow abstract void innerBlit (
-		ResourceLocation atlasLocation,
-		int x1,
-		int x2,
-		int y1,
-		int y2,
-		int blitOffset,
-		float minU,
-		float maxU,
-		float minV,
-		float maxV
+	@Shadow
+	public abstract void fill (RenderType renderType, int minX, int minY, int maxX, int maxY, int color);
+	
+	@Shadow
+	abstract void innerBlit (
+			  ResourceLocation atlasLocation,
+			  int x1,
+			  int x2,
+			  int y1,
+			  int y2,
+			  int blitOffset,
+			  float minU,
+			  float maxU,
+			  float minV,
+			  float maxV
 	);
 	
-	@Shadow @Final private GuiSpriteManager sprites;
+	@Shadow
+	@Final
+	private GuiSpriteManager sprites;
 	
-	@Shadow public abstract void blitSprite (ResourceLocation sprite, int textureWidth, int textureHeight, int uPosition, int vPosition, int x, int y, int uWidth, int vHeight);
+	@Shadow
+	public abstract void blitSprite (ResourceLocation sprite, int textureWidth, int textureHeight, int uPosition, int vPosition, int x, int y, int uWidth, int vHeight);
 	
 	/*
 	@ModifyExpressionValue(
