@@ -11,25 +11,28 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.orcinus.galosphere.blocks.MonstrometerBlock;
 
-public class MonstrometerDispenseItemBehavior extends OptionalDispenseItemBehavior {
-
-    @Override
-    public ItemStack execute(BlockSource source, ItemStack stack) {
-        Direction direction = source.state().getValue(DispenserBlock.FACING);
-        BlockPos pos = source.pos().relative(direction);
-        Level world = source.level();
-        BlockState state = world.getBlockState(pos);
-
-        setSuccess(false);
-
-        if (state.getBlock() instanceof MonstrometerBlock && !MonstrometerBlock.isCharged(state)) {
-            MonstrometerBlock.setCharged(state, world, pos);
-            world.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
-            setSuccess(true);
-            stack.shrink(1);
-        }
-
-        return stack;
-    }
-
+public class MonstrometerDispenseItemBehavior extends OptionalDispenseItemBehavior
+{
+	
+	@Override
+	public ItemStack execute (BlockSource source, ItemStack stack)
+	{
+		Direction direction = source.state().getValue(DispenserBlock.FACING);
+		BlockPos pos = source.pos().relative(direction);
+		Level world = source.level();
+		BlockState state = world.getBlockState(pos);
+		
+		setSuccess(false);
+		
+		if (state.getBlock() instanceof MonstrometerBlock && !MonstrometerBlock.isCharged(state))
+		{
+			MonstrometerBlock.setCharged(state, world, pos);
+			world.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(state));
+			setSuccess(true);
+			stack.shrink(1);
+		}
+		
+		return stack;
+	}
+	
 }

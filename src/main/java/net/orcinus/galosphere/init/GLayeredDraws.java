@@ -1,8 +1,8 @@
 package net.orcinus.galosphere.init;
 
 import net.minecraft.client.gui.LayeredDraw;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.orcinus.galosphere.client.gui.GoldenBreathOverlay;
 
 @OnlyIn(Dist.CLIENT)

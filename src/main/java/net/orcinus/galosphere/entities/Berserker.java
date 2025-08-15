@@ -64,401 +64,538 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class Berserker extends Monster {
-    protected static final ImmutableList<? extends SensorType<? extends Sensor<? super Berserker>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY, GSensorTypes.BLIGHTED_ENTITY_SENSOR.get());
-    protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.AVOID_TARGET, MemoryModuleType.HURT_BY, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, GMemoryModuleTypes.IMPALING_COOLDOWN.get(), GMemoryModuleTypes.IMPALING_COUNT.get(), GMemoryModuleTypes.IS_SMASHING.get(), GMemoryModuleTypes.IS_IMPALING.get(), GMemoryModuleTypes.IS_SUMMONING.get(), GMemoryModuleTypes.SUMMONING_COOLDOWN.get(), GMemoryModuleTypes.SUMMON_COUNT.get(), GMemoryModuleTypes.SMASHING_COOLDOWN.get(), GMemoryModuleTypes.HURT_COUNT.get(), GMemoryModuleTypes.RAMPAGE_TICKS.get(), MemoryModuleType.ROAR_SOUND_COOLDOWN, MemoryModuleType.ROAR_SOUND_DELAY, GMemoryModuleTypes.IS_SHAKING.get());
-    private static final EntityDataAccessor<String> PHASE = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.STRING);
-    private static final EntityDataAccessor<Integer> STATIONARY_TICKS = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> SHEDDING = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.BOOLEAN);
-    private final List<Holder<MobEffect>> selectedEffects = Util.make(Lists.newArrayList(), list -> {
-        list.add(GMobEffects.BLOCK_BANE.getHolder().orElseThrow());
-        list.add(MobEffects.DIG_SLOWDOWN);
-    });
-    public AnimationState roarAnimationState = new AnimationState();
-    public AnimationState attackAnimationState = new AnimationState();
-    public AnimationState punchAnimationState = new AnimationState();
-    public AnimationState impalingAnimationState = new AnimationState();
-    public AnimationState summoningAnimationState = new AnimationState();
-
-    public Berserker(EntityType<? extends Monster> entityType, Level level) {
-        super(entityType, level);
-        this.lookControl = new BerserkerLookControl(this);
-    }
-
-    @Override
-    public boolean isInvulnerableTo(DamageSource damageSource) {
-        if (damageSource.getEntity() instanceof Player player && !player.getAbilities().instabuild && this.getStationaryTicks() > 0) {
-            return true;
-        }
-        return super.isInvulnerableTo(damageSource);
-    }
-
-    @Override
-    public float maxUpStep() {
-        return 1.0F;
-    }
-
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(PHASE, Phase.IDLING.name());
-        builder.define(STATIONARY_TICKS, 0);
-        builder.define(SHEDDING, false);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag compoundTag) {
-        super.readAdditionalSaveData(compoundTag);
-        String phase = compoundTag.getString("Phase");
-        if (!phase.isEmpty()) {
-            this.setPhase(Phase.valueOf(phase));
-        }
-        this.setStationaryTicks(compoundTag.getInt("StationaryTicks"));
-        this.setShedding(compoundTag.getBoolean("Shedding"));
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compoundTag) {
-        super.addAdditionalSaveData(compoundTag);
-        compoundTag.putString("Phase", this.getPhase().name());
-        compoundTag.putInt("StationaryTicks", this.getStationaryTicks());
-        compoundTag.putBoolean("Shedding", this.isShedding());
-    }
-
-    public boolean shouldAttack() {
-        return this.getPhase() == Phase.IDLING && !this.isStationary();
-    }
-
-    public int getStage() {
-        float health = this.getHealth() / this.getMaxHealth();
-        if (this.isStationary()) {
-            return 3;
-        } else if (health > 0.66F) {
-            return 0;
-        } else if (health <= 0.66F && health > 0.33F) {
-            return 1;
-        } else {
-            return 2;
-        }
-    }
-
-    public void setShedding(boolean shedding) {
-        this.entityData.set(SHEDDING, shedding);
-    }
-
-    public boolean isShedding() {
-        return this.entityData.get(SHEDDING);
-    }
-
-    public void setStationaryTicks(int stationaryTicks) {
-        this.entityData.set(STATIONARY_TICKS, stationaryTicks);
-    }
-
-    public int getStationaryTicks() {
-        return this.entityData.get(STATIONARY_TICKS);
-    }
-
-    public void setPhase(Phase phase) {
-        if (phase == Phase.IDLING) {
-            this.setPose(Pose.STANDING);
-        } else if (phase == Phase.SMASH) {
-            this.level().broadcastEntityEvent(this, (byte)4);
-        } else if (phase == Phase.UNDERMINE) {
-            this.level().broadcastEntityEvent(this, (byte)6);
-        } else if (phase == Phase.SUMMONING) {
-            this.level().broadcastEntityEvent(this, (byte)7);
-        }
-        this.entityData.set(PHASE, phase.name());
-    }
-
-    @Override
-    public void handleEntityEvent(byte b) {
-        if (b == 4) {
-            this.attackAnimationState.start(this.tickCount);
-        } else if (b == 5) {
-            this.punchAnimationState.start(this.tickCount);
-        } else if (b == 6) {
-            this.impalingAnimationState.start(this.tickCount);
-        } else if (b == 7) {
-            this.summoningAnimationState.start(this.tickCount);
-        } else if (b == 32) {
-            BlockPos blockPos = this.getOnPos();
-            this.level().addParticle(GParticleTypes.IMPACT.get(), blockPos.getX() + 0.5D, blockPos.getY() + 1.15, blockPos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-        } else {
-            super.handleEntityEvent(b);
-        }
-    }
-
-    public Phase getPhase() {
-        String s = this.entityData.get(PHASE);
-        return Phase.valueOf(s);
-    }
-
-    @Override
-    public void aiStep() {
-        super.aiStep();
-        double range = 0.75D;
-        double threshold = range - 0.6D;
-        double increment = 0.2D;
-        if (!this.level().isClientSide) {
-            int count = 250;
-            boolean stationary = this.isStationary();
-            boolean shedding = this.isShedding();
-            if (this.getHealth() < this.getMaxHealth() && this.tickCount % count == 0) {
-                this.heal(10.0f);
-            }
-            if (stationary) {
-                this.getBrain().getMemories().keySet().stream().filter(memoryModuleType -> {
-                    return memoryModuleType.equals(MemoryModuleType.WALK_TARGET) || memoryModuleType.equals(MemoryModuleType.LOOK_TARGET);
-                }).forEach(this.getBrain()::eraseMemory);
-                List<Player> list = this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(3.0D)).stream().filter(p -> !p.isCreative() && p.isAlive()).toList();
-                Optional<Player> player = list.stream().findAny();
-                if (!shedding) {
-                    player.ifPresent(this::setTarget);
-                } else {
-                    list.stream().filter(ServerPlayer.class::isInstance).map(ServerPlayer.class::cast).forEach(serverPlayer -> CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayer, this));
-                    if (this.getStationaryTicks() == 32) {
-                        this.getBrain().setMemory(GMemoryModuleTypes.IS_SHAKING.get(), Unit.INSTANCE);
-                    }
-                    this.setStationaryTicks(this.getStationaryTicks() - 1);
-                    this.addParticles(range, increment, threshold);
-                }
-            } else {
-                if (shedding) {
-                    this.setShedding(false);
-                    this.setPersistenceRequired();
-                }
-            }
-        }
-    }
-
-    private void addParticles(double range, double increment, double threshold) {
-        if (this.tickCount % 20 == 0) {
-            for (double y = 0; y <= 1.95D; y += 0.35D) {
-                for (double x = -range; x <= range; x += increment) {
-                    for (double z = -range; z <= range; z += increment) {
-                        if (x >= -threshold && x <= threshold || z >= -threshold && z <= threshold) {
-                            continue;
-                        }
-                        ((ServerLevel) this.level()).sendParticles(GParticleTypes.PINK_SALT_FALLING_DUST.get(), this.getX() + x, this.getY() + y, this.getZ() + z, 1, 0.0, 0.0, 0.0, 0.0);
-                    }
-                }
-            }
-        }
-    }
-
-    public boolean isStationary() {
-        return this.getStationaryTicks() > 0;
-    }
-
-    private void setTarget(Player player) {
-        Brain<Berserker> brain = this.getBrain();
-        brain.setMemory(MemoryModuleType.ATTACK_TARGET, player);
-        this.setShedding(true);
-    }
-
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData) {
-        if (mobSpawnType == MobSpawnType.STRUCTURE) {
-            this.setStationaryTicks(100);
-        }
-        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
-    }
-
-    @Nullable
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return this.isStationary() ? null : GSoundEvents.BERSERKER_IDLE.get();
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return GSoundEvents.BERSERKER_HURT.get();
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        return GSoundEvents.BERSERKER_DEATH.get();
-    }
-
-    protected SoundEvent getStepSound() {
-        return GSoundEvents.BERSERKER_STEP.get();
-    }
-
-    @Override
-    protected void playStepSound(BlockPos blockPos, BlockState blockState) {
-        playSound(getStepSound(), 1, 1);
-    }
-
-    public boolean canTargetEntity(@Nullable Entity entity) {
-        if (!(entity instanceof LivingEntity livingEntity)) {
-            return false;
-        }
-        Predicate<LivingEntity> predicate = e -> e.getType().is(GEntityTypeTags.BERSERKER_INVALID_TARGETS);
-        if (livingEntity.isInvulnerable() || livingEntity.isDeadOrDying() || predicate.test(livingEntity)) {
-            return false;
-        }
-        DamageSource lastSource = this.getLastDamageSource();
-        Entity e;
-        if (lastSource != null && (e = lastSource.getEntity()) instanceof LivingEntity living && e == livingEntity && !predicate.test(living)) {
-            return true;
-        }
-        if (this.level() != entity.level() || !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) || this.isAlliedTo(entity) || !this.level().getWorldBorder().isWithinBounds(livingEntity.getBoundingBox())) {
-            return false;
-        }
-        return livingEntity instanceof Player || livingEntity instanceof AbstractVillager || livingEntity instanceof IronGolem || livingEntity instanceof Turtle;
-    }
-
-    @Override
-    protected void updateWalkAnimation(float f) {
-        float g = Math.min(f * 10.0F, 1.0f);
-        this.walkAnimation.update(g, 0.2f);
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> entityDataAccessor) {
-        if (DATA_POSE.equals(entityDataAccessor)) {
-            if (this.getPose() == Pose.EMERGING) {
-                this.roarAnimationState.start(this.tickCount);
-            }
-        }
-        super.onSyncedDataUpdated(entityDataAccessor);
-    }
-
-    public boolean shouldUseMeleeAttack() {
-        Optional<LivingEntity> memory = this.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
-        return memory.filter(livingEntity ->
-                this.isWithinMeleeAttackRange(livingEntity) &&
-                        this.getPhase() != Phase.SMASH &&
-                        this.shouldAttack() &&
-                        this.isInHardMode() &&
-                        this.getBrain().getMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get()).isPresent() &&
-                        this.getBrain().getMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get()).get() > 0
-        ).isPresent();
-    }
-
-    public boolean isInHardMode() {
-        return this.level().getDifficulty() == Difficulty.HARD;
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity entity) {
-        if (entity instanceof LivingEntity livingEntity) {
-            if (livingEntity instanceof AbstractGolem || livingEntity instanceof TamableAnimal) {
-                double dist = Math.max(1, this.distanceTo(livingEntity));
-                livingEntity.hurt(this.level().damageSources().mobAttack(this), (float) ((livingEntity.getMaxHealth()) / (dist / 2)));
-            }
-            if (this.shouldUseMeleeAttack()) {
-                Vec3 start = this.position().add(0, 1.6f, 0);
-                Vec3 diff = entity.getEyePosition().subtract(start);
-                Vec3 normalized = diff.normalize();
-                double knockbackX = 0.25 * (1 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                double knockbackY = 1.5 * (1 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-                livingEntity.push(normalized.x() * knockbackY, normalized.y() * knockbackX, normalized.z() * knockbackY);
-                this.level().broadcastEntityEvent(this, (byte) 5);
-                this.playSound(GSoundEvents.BERSERKER_PUNCH.get(), 1, 1);
-            }
-            boolean flag = true;
-            if (livingEntity instanceof Player player && player.getAbilities().instabuild) {
-                flag = false;
-            }
-            if (flag) {
-                livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100));
-            }
-        }
-        return super.doHurtTarget(entity);
-    }
-
-    @Override
-    public boolean canDisableShield() {
-        return true;
-    }
-
-    @Override
-    public boolean hurt(DamageSource damageSource, float f) {
-        if (!this.level().isClientSide && this.getPhase() != Phase.IDLING && this.isInHardMode()) {
-            if (this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT.get()).isEmpty()) {
-                this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT.get(), 0);
-            } else {
-                int i = this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT.get()).get() + 1;
-                if (i > 2) {
-                    this.getBrain().setMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get(), UniformInt.of(30, 150).sample(this.getRandom()));
-                }
-                this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT.get(), i);
-            }
-        }
-        if (damageSource.getDirectEntity() instanceof AbstractArrow && this.getPhase() != Phase.IDLING) {
-            return false;
-        }
-        return super.hurt(damageSource, f);
-    }
-
-    public static AttributeSupplier.Builder createAttributes() {
-        return Berserker.createMonsterAttributes().add(Attributes.MAX_HEALTH, 155.0).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 10.0D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.ATTACK_KNOCKBACK, 1.5D);
-    }
-
-    @Override
-    protected Brain.Provider<Berserker> brainProvider() {
-        return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
-    }
-
-    @Override
-    protected Brain<?> makeBrain(Dynamic<?> dynamic) {
-        return BerserkerAi.makeBrain(this, this.brainProvider().makeBrain(dynamic));
-    }
-
-    @Override
-    public Brain<Berserker> getBrain() {
-        return (Brain<Berserker>) super.getBrain();
-    }
-
-    @Override
-    protected void customServerAiStep() {
-        this.level().getProfiler().push("berserkerBrain");
-        this.getBrain().tick((ServerLevel)this.level(), this);
-        this.level().getProfiler().pop();
-        BerserkerAi.updateActivity(this);
-        super.customServerAiStep();
-        if ((this.tickCount + this.getId()) % 1200 == 0) {
-            this.selectedEffects.forEach(mobEffect -> {
-                MobEffectInstance mobEffectInstance = new MobEffectInstance(mobEffect, 6000, 2);
-                MobEffectUtil.addEffectToPlayersAround((ServerLevel) this.level(), this, this.position(), 50.0, mobEffectInstance, 1200);
-            });
-        }
-        if (this.getBrain().getMemory(MemoryModuleType.HURT_BY_ENTITY).isEmpty() && this.getPhase() != Phase.IDLING) {
-            this.setPhase(Phase.IDLING);
-        }
-    }
-
-    @Override
-    public void travel(Vec3 vec3) {
-        if (this.isStationary() && this.onGround()) {
-            this.setDeltaMovement(this.getDeltaMovement().multiply(0.0, 1.0, 0.0));
-            vec3 = vec3.multiply(0.0, 1.0, 0.0);
-        }
-        super.travel(vec3);
-    }
-
-    public class BerserkerLookControl extends LookControl {
-
-        public BerserkerLookControl(Mob mob) {
-            super(mob);
-        }
-
-        @Override
-        public void tick() {
-            if (!Berserker.this.isStationary()) {
-                super.tick();
-            }
-        }
-    }
-
-    public enum Phase {
-        IDLING,
-        SMASH,
-        UNDERMINE,
-        SUMMONING
-    }
-
+public class Berserker extends Monster
+{
+	protected static final ImmutableList<? extends SensorType<? extends Sensor<? super Berserker>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY, GSensorTypes.BLIGHTED_ENTITY_SENSOR);
+	protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
+		MemoryModuleType.BREED_TARGET,
+		MemoryModuleType.NEAREST_LIVING_ENTITIES,
+		MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
+		MemoryModuleType.NEAREST_VISIBLE_PLAYER,
+		MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER,
+		MemoryModuleType.LOOK_TARGET,
+		MemoryModuleType.WALK_TARGET,
+		MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+		MemoryModuleType.PATH,
+		MemoryModuleType.ATTACK_TARGET,
+		MemoryModuleType.ATTACK_COOLING_DOWN,
+		MemoryModuleType.AVOID_TARGET,
+		MemoryModuleType.HURT_BY,
+		MemoryModuleType.HURT_BY_ENTITY,
+		MemoryModuleType.NEAREST_ATTACKABLE,
+		GMemoryModuleTypes.IMPALING_COOLDOWN,
+		GMemoryModuleTypes.IMPALING_COUNT,
+		GMemoryModuleTypes.IS_SMASHING,
+		GMemoryModuleTypes.IS_IMPALING,
+		GMemoryModuleTypes.IS_SUMMONING,
+		GMemoryModuleTypes.SUMMONING_COOLDOWN,
+		GMemoryModuleTypes.SUMMON_COUNT,
+		GMemoryModuleTypes.SMASHING_COOLDOWN,
+		GMemoryModuleTypes.HURT_COUNT,
+		GMemoryModuleTypes.RAMPAGE_TICKS,
+		MemoryModuleType.ROAR_SOUND_COOLDOWN,
+		MemoryModuleType.ROAR_SOUND_DELAY,
+		GMemoryModuleTypes.IS_SHAKING
+	);
+	private static final EntityDataAccessor<String> PHASE = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.STRING);
+	private static final EntityDataAccessor<Integer> STATIONARY_TICKS = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Boolean> SHEDDING = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.BOOLEAN);
+	private final List<Holder<MobEffect>> selectedEffects = Util.make(Lists.newArrayList(), list -> {
+		list.add(GMobEffects.BLOCK_BANE);
+		list.add(MobEffects.DIG_SLOWDOWN);
+	});
+	public AnimationState roarAnimationState = new AnimationState();
+	public AnimationState attackAnimationState = new AnimationState();
+	public AnimationState punchAnimationState = new AnimationState();
+	public AnimationState impalingAnimationState = new AnimationState();
+	public AnimationState summoningAnimationState = new AnimationState();
+	
+	public Berserker (EntityType<? extends Monster> entityType, Level level)
+	{
+		super(entityType, level);
+		this.lookControl = new BerserkerLookControl(this);
+	}
+	
+	@Override
+	public boolean isInvulnerableTo (DamageSource damageSource)
+	{
+		if (damageSource.getEntity() instanceof Player player && !player.getAbilities().instabuild && this.getStationaryTicks() > 0)
+		{
+			return true;
+		}
+		return super.isInvulnerableTo(damageSource);
+	}
+	
+	@Override
+	public float maxUpStep ()
+	{
+		return 1.0F;
+	}
+	
+	@Override
+	protected void defineSynchedData (SynchedEntityData.Builder builder)
+	{
+		super.defineSynchedData(builder);
+		builder.define(PHASE, Phase.IDLING.name());
+		builder.define(STATIONARY_TICKS, 0);
+		builder.define(SHEDDING, false);
+	}
+	
+	@Override
+	public void readAdditionalSaveData (CompoundTag compoundTag)
+	{
+		super.readAdditionalSaveData(compoundTag);
+		String phase = compoundTag.getString("Phase");
+		if (!phase.isEmpty())
+		{
+			this.setPhase(Phase.valueOf(phase));
+		}
+		this.setStationaryTicks(compoundTag.getInt("StationaryTicks"));
+		this.setShedding(compoundTag.getBoolean("Shedding"));
+	}
+	
+	@Override
+	public void addAdditionalSaveData (CompoundTag compoundTag)
+	{
+		super.addAdditionalSaveData(compoundTag);
+		compoundTag.putString("Phase", this.getPhase().name());
+		compoundTag.putInt("StationaryTicks", this.getStationaryTicks());
+		compoundTag.putBoolean("Shedding", this.isShedding());
+	}
+	
+	public boolean shouldAttack ()
+	{
+		return this.getPhase() == Phase.IDLING && !this.isStationary();
+	}
+	
+	public int getStage ()
+	{
+		float health = this.getHealth() / this.getMaxHealth();
+		if (this.isStationary())
+		{
+			return 3;
+		}
+		else if (health > 0.66F)
+		{
+			return 0;
+		}
+		else if (health <= 0.66F && health > 0.33F)
+		{
+			return 1;
+		}
+		else
+		{
+			return 2;
+		}
+	}
+	
+	public void setShedding (boolean shedding)
+	{
+		this.entityData.set(SHEDDING, shedding);
+	}
+	
+	public boolean isShedding ()
+	{
+		return this.entityData.get(SHEDDING);
+	}
+	
+	public void setStationaryTicks (int stationaryTicks)
+	{
+		this.entityData.set(STATIONARY_TICKS, stationaryTicks);
+	}
+	
+	public int getStationaryTicks ()
+	{
+		return this.entityData.get(STATIONARY_TICKS);
+	}
+	
+	public void setPhase (Phase phase)
+	{
+		if (phase == Phase.IDLING)
+		{
+			this.setPose(Pose.STANDING);
+		}
+		else if (phase == Phase.SMASH)
+		{
+			this.level().broadcastEntityEvent(this, (byte)4);
+		}
+		else if (phase == Phase.UNDERMINE)
+		{
+			this.level().broadcastEntityEvent(this, (byte)6);
+		}
+		else if (phase == Phase.SUMMONING)
+		{
+			this.level().broadcastEntityEvent(this, (byte)7);
+		}
+		this.entityData.set(PHASE, phase.name());
+	}
+	
+	@Override
+	public void handleEntityEvent (byte b)
+	{
+		if (b == 4)
+		{
+			this.attackAnimationState.start(this.tickCount);
+		}
+		else if (b == 5)
+		{
+			this.punchAnimationState.start(this.tickCount);
+		}
+		else if (b == 6)
+		{
+			this.impalingAnimationState.start(this.tickCount);
+		}
+		else if (b == 7)
+		{
+			this.summoningAnimationState.start(this.tickCount);
+		}
+		else if (b == 32)
+		{
+			BlockPos blockPos = this.getOnPos();
+			this.level().addParticle(GParticleTypes.IMPACT.get(), blockPos.getX() + 0.5D, blockPos.getY() + 1.15, blockPos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		}
+		else
+		{
+			super.handleEntityEvent(b);
+		}
+	}
+	
+	public Phase getPhase ()
+	{
+		String s = this.entityData.get(PHASE);
+		return Phase.valueOf(s);
+	}
+	
+	@Override
+	public void aiStep ()
+	{
+		super.aiStep();
+		double range = 0.75D;
+		double threshold = range - 0.6D;
+		double increment = 0.2D;
+		if (!this.level().isClientSide)
+		{
+			int count = 250;
+			boolean stationary = this.isStationary();
+			boolean shedding = this.isShedding();
+			if (this.getHealth() < this.getMaxHealth() && this.tickCount % count == 0)
+			{
+				this.heal(10.0f);
+			}
+			if (stationary)
+			{
+				this.getBrain().getMemories().keySet().stream().filter(memoryModuleType -> {
+					return memoryModuleType.equals(MemoryModuleType.WALK_TARGET) || memoryModuleType.equals(MemoryModuleType.LOOK_TARGET);
+				}).forEach(this.getBrain()::eraseMemory);
+				List<Player> list = this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(3.0D)).stream().filter(p -> !p.isCreative() && p.isAlive()).toList();
+				Optional<Player> player = list.stream().findAny();
+				if (!shedding)
+				{
+					player.ifPresent(this::setTarget);
+				}
+				else
+				{
+					list.stream().filter(ServerPlayer.class::isInstance).map(ServerPlayer.class::cast).forEach(serverPlayer -> CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayer, this));
+					if (this.getStationaryTicks() == 32)
+					{
+						this.getBrain().setMemory(GMemoryModuleTypes.IS_SHAKING.get(), Unit.INSTANCE);
+					}
+					this.setStationaryTicks(this.getStationaryTicks() - 1);
+					this.addParticles(range, increment, threshold);
+				}
+			}
+			else
+			{
+				if (shedding)
+				{
+					this.setShedding(false);
+					this.setPersistenceRequired();
+				}
+			}
+		}
+	}
+	
+	private void addParticles (double range, double increment, double threshold)
+	{
+		if (this.tickCount % 20 == 0)
+		{
+			for (double y = 0; y <= 1.95D; y += 0.35D)
+			{
+				for (double x = -range; x <= range; x += increment)
+				{
+					for (double z = -range; z <= range; z += increment)
+					{
+						if (x >= -threshold && x <= threshold || z >= -threshold && z <= threshold)
+						{
+							continue;
+						}
+						((ServerLevel)this.level()).sendParticles(GParticleTypes.PINK_SALT_FALLING_DUST.get(), this.getX() + x, this.getY() + y, this.getZ() + z, 1, 0.0, 0.0, 0.0, 0.0);
+					}
+				}
+			}
+		}
+	}
+	
+	public boolean isStationary ()
+	{
+		return this.getStationaryTicks() > 0;
+	}
+	
+	private void setTarget (Player player)
+	{
+		Brain<Berserker> brain = this.getBrain();
+		brain.setMemory(MemoryModuleType.ATTACK_TARGET, player);
+		this.setShedding(true);
+	}
+	
+	@Nullable
+	@Override
+	public SpawnGroupData finalizeSpawn (ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData)
+	{
+		if (mobSpawnType == MobSpawnType.STRUCTURE)
+		{
+			this.setStationaryTicks(100);
+		}
+		return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
+	}
+	
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound ()
+	{
+		return this.isStationary() ? null : GSoundEvents.BERSERKER_IDLE.get();
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound (DamageSource damageSource)
+	{
+		return GSoundEvents.BERSERKER_HURT.get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound ()
+	{
+		return GSoundEvents.BERSERKER_DEATH.get();
+	}
+	
+	protected SoundEvent getStepSound ()
+	{
+		return GSoundEvents.BERSERKER_STEP.get();
+	}
+	
+	@Override
+	protected void playStepSound (BlockPos blockPos, BlockState blockState)
+	{
+		playSound(getStepSound(), 1, 1);
+	}
+	
+	public boolean canTargetEntity (@Nullable Entity entity)
+	{
+		if (!(entity instanceof LivingEntity livingEntity))
+		{
+			return false;
+		}
+		Predicate<LivingEntity> predicate = e -> e.getType().is(GEntityTypeTags.BERSERKER_INVALID_TARGETS);
+		if (livingEntity.isInvulnerable() || livingEntity.isDeadOrDying() || predicate.test(livingEntity))
+		{
+			return false;
+		}
+		DamageSource lastSource = this.getLastDamageSource();
+		Entity e;
+		if (lastSource != null && (e = lastSource.getEntity()) instanceof LivingEntity living && e == livingEntity && !predicate.test(living))
+		{
+			return true;
+		}
+		if (this.level() != entity.level() || !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) || this.isAlliedTo(entity) || !this.level().getWorldBorder().isWithinBounds(livingEntity.getBoundingBox()))
+		{
+			return false;
+		}
+		return livingEntity instanceof Player || livingEntity instanceof AbstractVillager || livingEntity instanceof IronGolem || livingEntity instanceof Turtle;
+	}
+	
+	@Override
+	protected void updateWalkAnimation (float f)
+	{
+		float g = Math.min(f * 10.0F, 1.0f);
+		this.walkAnimation.update(g, 0.2f);
+	}
+	
+	@Override
+	public void onSyncedDataUpdated (EntityDataAccessor<?> entityDataAccessor)
+	{
+		if (DATA_POSE.equals(entityDataAccessor))
+		{
+			if (this.getPose() == Pose.EMERGING)
+			{
+				this.roarAnimationState.start(this.tickCount);
+			}
+		}
+		super.onSyncedDataUpdated(entityDataAccessor);
+	}
+	
+	public boolean shouldUseMeleeAttack ()
+	{
+		Optional<LivingEntity> memory = this.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
+		return memory.filter(livingEntity ->
+				  this.isWithinMeleeAttackRange(livingEntity) &&
+							 this.getPhase() != Phase.SMASH &&
+							 this.shouldAttack() &&
+							 this.isInHardMode() &&
+							 this.getBrain().getMemory(GMemoryModuleTypes.RAMPAGE_TICKS).isPresent() &&
+							 this.getBrain().getMemory(GMemoryModuleTypes.RAMPAGE_TICKS).get() > 0
+		).isPresent();
+	}
+	
+	public boolean isInHardMode ()
+	{
+		return this.level().getDifficulty() == Difficulty.HARD;
+	}
+	
+	@Override
+	public boolean doHurtTarget (Entity entity)
+	{
+		if (entity instanceof LivingEntity livingEntity)
+		{
+			if (livingEntity instanceof AbstractGolem || livingEntity instanceof TamableAnimal)
+			{
+				double dist = Math.max(1, this.distanceTo(livingEntity));
+				livingEntity.hurt(this.level().damageSources().mobAttack(this), (float)((livingEntity.getMaxHealth()) / (dist / 2)));
+			}
+			if (this.shouldUseMeleeAttack())
+			{
+				Vec3 start = this.position().add(0, 1.6f, 0);
+				Vec3 diff = entity.getEyePosition().subtract(start);
+				Vec3 normalized = diff.normalize();
+				double knockbackX = 0.25 * (1 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+				double knockbackY = 1.5 * (1 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+				livingEntity.push(normalized.x() * knockbackY, normalized.y() * knockbackX, normalized.z() * knockbackY);
+				this.level().broadcastEntityEvent(this, (byte)5);
+				this.playSound(GSoundEvents.BERSERKER_PUNCH.get(), 1, 1);
+			}
+			boolean flag = true;
+			if (livingEntity instanceof Player player && player.getAbilities().instabuild)
+			{
+				flag = false;
+			}
+			if (flag)
+			{
+				livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100));
+			}
+		}
+		return super.doHurtTarget(entity);
+	}
+	
+	@Override
+	public boolean canDisableShield ()
+	{
+		return true;
+	}
+	
+	@Override
+	public boolean hurt (DamageSource damageSource, float f)
+	{
+		if (!this.level().isClientSide && this.getPhase() != Phase.IDLING && this.isInHardMode())
+		{
+			if (this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT).isEmpty())
+			{
+				this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT, 0);
+			}
+			else
+			{
+				int i = this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT).get() + 1;
+				if (i > 2)
+				{
+					this.getBrain().setMemory(GMemoryModuleTypes.RAMPAGE_TICKS, UniformInt.of(30, 150).sample(this.getRandom()));
+				}
+				this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT, i);
+			}
+		}
+		if (damageSource.getDirectEntity() instanceof AbstractArrow && this.getPhase() != Phase.IDLING)
+		{
+			return false;
+		}
+		return super.hurt(damageSource, f);
+	}
+	
+	public static AttributeSupplier.Builder createAttributes ()
+	{
+		return Berserker.createMonsterAttributes().add(Attributes.MAX_HEALTH, 155.0).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 10.0D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.ATTACK_KNOCKBACK, 1.5D);
+	}
+	
+	@Override
+	protected Brain.Provider<Berserker> brainProvider ()
+	{
+		return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
+	}
+	
+	@Override
+	protected Brain<?> makeBrain (Dynamic<?> dynamic)
+	{
+		return BerserkerAi.makeBrain(this, this.brainProvider().makeBrain(dynamic));
+	}
+	
+	@Override
+	public Brain<Berserker> getBrain ()
+	{
+		return (Brain<Berserker>)super.getBrain();
+	}
+	
+	@Override
+	protected void customServerAiStep ()
+	{
+		this.level().getProfiler().push("berserkerBrain");
+		this.getBrain().tick((ServerLevel)this.level(), this);
+		this.level().getProfiler().pop();
+		BerserkerAi.updateActivity(this);
+		super.customServerAiStep();
+		if ((this.tickCount + this.getId()) % 1200 == 0)
+		{
+			this.selectedEffects.forEach(mobEffect -> {
+				MobEffectInstance mobEffectInstance = new MobEffectInstance(mobEffect, 6000, 2);
+				MobEffectUtil.addEffectToPlayersAround((ServerLevel)this.level(), this, this.position(), 50.0, mobEffectInstance, 1200);
+			});
+		}
+		if (this.getBrain().getMemory(MemoryModuleType.HURT_BY_ENTITY).isEmpty() && this.getPhase() != Phase.IDLING)
+		{
+			this.setPhase(Phase.IDLING);
+		}
+	}
+	
+	@Override
+	public void travel (Vec3 vec3)
+	{
+		if (this.isStationary() && this.onGround())
+		{
+			this.setDeltaMovement(this.getDeltaMovement().multiply(0.0, 1.0, 0.0));
+			vec3 = vec3.multiply(0.0, 1.0, 0.0);
+		}
+		super.travel(vec3);
+	}
+	
+	public class BerserkerLookControl extends LookControl
+	{
+		
+		public BerserkerLookControl (Mob mob)
+		{
+			super(mob);
+		}
+		
+		@Override
+		public void tick ()
+		{
+			if (!Berserker.this.isStationary())
+			{
+				super.tick();
+			}
+		}
+	}
+	
+	public enum Phase
+	{
+		IDLING,
+		SMASH,
+		UNDERMINE,
+		SUMMONING
+	}
+	
 }

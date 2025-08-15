@@ -1,18 +1,20 @@
-package net.orcinus.galosphere.init;
+package net.orcinus.galosphere.init
 
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-import net.orcinus.galosphere.Galosphere;
-import net.orcinus.galosphere.crafting.PreservedTransformRecipe;
+import net.minecraft.core.registries.Registries
+import net.minecraft.world.item.crafting.RecipeSerializer
+import net.neoforged.neoforge.registries.DeferredRegister
+import net.orcinus.galosphere.Galosphere
+import net.orcinus.galosphere.crafting.PreservedTransformRecipe
+import java.util.function.Supplier
 
-@Mod.EventBusSubscriber(modid = Galosphere.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class GRecipeSerializers {
+object GRecipeSerializers
+{
+	@JvmField
+	val RECIPE_SERIALIZERS =
+		DeferredRegister.create(Registries.RECIPE_SERIALIZER, Galosphere.MODID)
 
-    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Galosphere.MODID);
-
-    public static final RegistryObject<RecipeSerializer<PreservedTransformRecipe>> PRESERVED_TRANSFORM = RECIPE_SERIALIZERS.register("preserved_transform_recipe", PreservedTransformRecipe.Serializer::new);
-
+	@JvmField
+	val PRESERVED_TRANSFORM = RECIPE_SERIALIZERS.register("preserved_transform_recipe") { rs ->
+		PreservedTransformRecipe.Serializer()
+	}
 }

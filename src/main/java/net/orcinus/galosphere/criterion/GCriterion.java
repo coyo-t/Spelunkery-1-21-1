@@ -9,25 +9,29 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Optional;
 
-public class GCriterion extends SimpleCriterionTrigger<GCriterion.TriggerInstance> {
-
-    public GCriterion() {
-    }
-
-    public void trigger(ServerPlayer player) {
-        this.trigger(player, conditions -> true);
-    }
-
-    @Override
-    public Codec<TriggerInstance> codec() {
-        return TriggerInstance.CODEC;
-    }
-
-    public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance
-    {
-        public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player)
-        ).apply(instance, TriggerInstance::new));
-    }
-
+public class GCriterion extends SimpleCriterionTrigger<GCriterion.TriggerInstance>
+{
+	
+	public GCriterion ()
+	{
+	}
+	
+	public void trigger (ServerPlayer player)
+	{
+		this.trigger(player, conditions -> true);
+	}
+	
+	@Override
+	public Codec<TriggerInstance> codec ()
+	{
+		return TriggerInstance.CODEC;
+	}
+	
+	public record TriggerInstance(Optional<ContextAwarePredicate> player) implements SimpleInstance
+	{
+		public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+				  EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player)
+		).apply(instance, TriggerInstance::new));
+	}
+	
 }

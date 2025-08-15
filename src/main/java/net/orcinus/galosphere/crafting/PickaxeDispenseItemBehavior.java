@@ -11,33 +11,41 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.orcinus.galosphere.entities.Sparkle;
 
-public class PickaxeDispenseItemBehavior extends OptionalDispenseItemBehavior {
-
-    @Override
-    protected ItemStack execute(BlockSource blockSource, ItemStack itemStack) {
-        ServerLevel level = blockSource.level();
-        if (!level.isClientSide()) {
-            BlockPos blockpos = blockSource.pos().relative(blockSource.state().getValue(DispenserBlock.FACING));
-            this.setSuccess(extractItemFromEntity(level, blockpos, itemStack));
-            if (this.isSuccess()) {
-                itemStack.hurtAndBreak(1, level, null, item -> {});
-            }
-        }
-        return itemStack;
-    }
-
-    private static boolean extractItemFromEntity(ServerLevel world, BlockPos blockPos, ItemStack stack) {
-        for (Sparkle livingentity : world.getEntitiesOfClass(Sparkle.class, new AABB(blockPos), EntitySelector.NO_SPECTATORS)) {
-            if (livingentity != null) {
-                if (livingentity.getCrystaltype() != Sparkle.CrystalType.NONE) {
-                    livingentity.extractShard(stack);
-                    world.gameEvent(null, GameEvent.SHEAR, blockPos);
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
+public class PickaxeDispenseItemBehavior extends OptionalDispenseItemBehavior
+{
+	
+	@Override
+	protected ItemStack execute (BlockSource blockSource, ItemStack itemStack)
+	{
+		ServerLevel level = blockSource.level();
+		if (!level.isClientSide())
+		{
+			BlockPos blockpos = blockSource.pos().relative(blockSource.state().getValue(DispenserBlock.FACING));
+			this.setSuccess(extractItemFromEntity(level, blockpos, itemStack));
+			if (this.isSuccess())
+			{
+				itemStack.hurtAndBreak(1, level, null, item -> {});
+			}
+		}
+		return itemStack;
+	}
+	
+	private static boolean extractItemFromEntity (ServerLevel world, BlockPos blockPos, ItemStack stack)
+	{
+		for (Sparkle livingentity: world.getEntitiesOfClass(Sparkle.class, new AABB(blockPos), EntitySelector.NO_SPECTATORS))
+		{
+			if (livingentity != null)
+			{
+				if (livingentity.getCrystaltype() != Sparkle.CrystalType.NONE)
+				{
+					livingentity.extractShard(stack);
+					world.gameEvent(null, GameEvent.SHEAR, blockPos);
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 }
