@@ -18,12 +18,12 @@ import java.util.Optional;
 @Mixin(LightningBolt.class)
 public class LightningBoltMixin
 {
-	
+	// TODO: is there an event for this?
 	@Inject(at=@At(value="INVOKE", target="Lnet/minecraft/world/entity/LightningBolt;clearCopperOnLightningStrike(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V"), method="tick")
 	private void G$tick (CallbackInfo ci)
 	{
 		LightningBolt $this = (LightningBolt)(Object)this;
-		chargeLumiereOnLightningStrike(((LightningBolt)(Object)this).level(), $this.getStrikePosition());
+//		chargeLumiereOnLightningStrike(((LightningBolt)(Object)this).level(), $this.getStrikePosition());
 	}
 	
 	private static void chargeLumiereOnLightningStrike (Level world, BlockPos pos)

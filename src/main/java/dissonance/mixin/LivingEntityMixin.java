@@ -1,12 +1,13 @@
 package dissonance.mixin;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.orcinus.galosphere.api.BannerAttachable;
 import net.orcinus.galosphere.api.GoldenBreath;
 import net.orcinus.galosphere.api.SpectreBoundSpyglass;
@@ -26,6 +27,7 @@ public class LivingEntityMixin implements BannerAttachable, GoldenBreath, Spectr
 	private static final EntityDataAccessor<Boolean> USING_SPECTRE_BOUNDED_SPYGLASS = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.BOOLEAN);
 	@Unique
 	private final LivingEntity $this = (LivingEntity)(Object)this;
+
 	
 	@Inject(at=@At("HEAD"), method="defineSynchedData")
 	public void G$defineSynchedData (SynchedEntityData.Builder builder, CallbackInfo ci)
@@ -75,7 +77,7 @@ public class LivingEntityMixin implements BannerAttachable, GoldenBreath, Spectr
 	@Inject(at=@At("HEAD"), method="isInWall", cancellable=true)
 	private void G$isInWall (CallbackInfoReturnable<Boolean> cir)
 	{
-		if ($this.hasEffect(ForgeRegistries.MOB_EFFECTS.getHolder(GMobEffects.ASTRAL.get()).orElseThrow()))
+		if ($this.hasEffect(GMobEffects.ASTRAL))
 		{
 			cir.setReturnValue(false);
 		}

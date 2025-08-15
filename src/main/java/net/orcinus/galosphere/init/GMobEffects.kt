@@ -1,19 +1,23 @@
-package net.orcinus.galosphere.init;
+package net.orcinus.galosphere.init
 
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-import net.orcinus.galosphere.Galosphere;
-import net.orcinus.galosphere.effects.GMobEffect;
+import net.minecraft.core.registries.Registries
+import net.minecraft.world.effect.MobEffect
+import net.minecraft.world.effect.MobEffectCategory
+import net.neoforged.neoforge.registries.DeferredRegister
+import net.orcinus.galosphere.Galosphere
+import net.orcinus.galosphere.effects.GMobEffect
+import java.util.function.Supplier
 
-@Mod.EventBusSubscriber(modid = Galosphere.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class GMobEffects {
-    public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, Galosphere.MODID);
+object GMobEffects
+{
+	@JvmField
+	val MOB_EFFECTS =
+		DeferredRegister.create(Registries.MOB_EFFECT, Galosphere.MODID)
 
-    public static final RegistryObject<MobEffect> ASTRAL = MOB_EFFECTS.register("astral", () -> new GMobEffect(MobEffectCategory.BENEFICIAL, 12891319));
-    public static final RegistryObject<MobEffect> BLOCK_BANE = MOB_EFFECTS.register("block_bane", () -> new GMobEffect(MobEffectCategory.HARMFUL, 7612935));
-
+	@JvmField
+	val ASTRAL =
+		MOB_EFFECTS.register("astral", Supplier { GMobEffect(MobEffectCategory.BENEFICIAL, 12891319) })
+	@JvmField
+	val BLOCK_BANE =
+		MOB_EFFECTS.register("block_bane", Supplier { GMobEffect(MobEffectCategory.HARMFUL, 7612935) })
 }

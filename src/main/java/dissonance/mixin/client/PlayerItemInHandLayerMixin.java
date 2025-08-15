@@ -9,19 +9,25 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.orcinus.galosphere.init.GItems;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerItemInHandLayer.class)
-public class PlayerItemInHandLayerMixin {
-
-    @Inject(at = @At("HEAD"), method = "renderArmWithItem", cancellable = true)
-    private void GE$renderArmWithItem(LivingEntity livingEntity, ItemStack itemStack, ItemDisplayContext transformType, HumanoidArm humanoidArm, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci) {
-        if (itemStack.is(GItems.SPECTRE_BOUND_SPYGLASS.get()) && livingEntity.getUseItem() == itemStack && livingEntity.swingTime == 0) {
-            ci.cancel();
-            ((PlayerItemInHandLayer<?, ?>)(Object)this).renderArmWithSpyglass(livingEntity, itemStack, humanoidArm, poseStack, multiBufferSource, i);
-        }
-    }
-
+public abstract class PlayerItemInHandLayerMixin
+{
+	
+	@Shadow protected abstract void renderArmWithSpyglass (LivingEntity entity, ItemStack stack, HumanoidArm arm, PoseStack poseStack, MultiBufferSource buffer, int combinedLight);
+	
+	@Inject(at=@At("HEAD"), method="renderArmWithItem", cancellable=true)
+	private void GE$renderArmWithItem (LivingEntity livingEntity, ItemStack itemStack, ItemDisplayContext transformType, HumanoidArm humanoidArm, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, CallbackInfo ci)
+	{
+		if (itemStack.is(GItems.SPECTRE_BOUND_SPYGLASS.get()) && livingEntity.getUseItem() == itemStack && livingEntity.swingTime == 0)
+		{
+			ci.cancel();
+			renderArmWithSpyglass(livingEntity, itemStack, humanoidArm, poseStack, multiBufferSource, i);
+		}
+	}
+	
 }

@@ -16,18 +16,21 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(ItemRenderer.class)
-public class ItemRendererMixin {
-
-    @Shadow
-    @Final
-    private ItemModelShaper itemModelShaper;
-
-    @ModifyVariable(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z", ordinal = 0), method = "render", index = 8, argsOnly = true)
-    private BakedModel GE$render(BakedModel value, ItemStack itemStack, ItemDisplayContext transformType, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel) {
-        if (itemStack.is(GItems.SPECTRE_BOUND_SPYGLASS.get())) {
-            return this.itemModelShaper.getModelManager().getModel(ModelResourceLocation.vanilla("spyglass", "inventory"));
-        }
-        return value;
-    }
-
+public class ItemRendererMixin
+{
+	
+	@Shadow
+	@Final
+	private ItemModelShaper itemModelShaper;
+	
+	@ModifyVariable(at=@At(value="INVOKE", target="Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z", ordinal=0), method="render", index=8, argsOnly=true)
+	private BakedModel GE$render (BakedModel value, ItemStack itemStack, ItemDisplayContext transformType, boolean bl, PoseStack poseStack, MultiBufferSource multiBufferSource, int i, int j, BakedModel bakedModel)
+	{
+		if (itemStack.is(GItems.SPECTRE_BOUND_SPYGLASS.get()))
+		{
+			return this.itemModelShaper.getModelManager().getModel(ModelResourceLocation.vanilla("spyglass", "inventory"));
+		}
+		return value;
+	}
+	
 }
