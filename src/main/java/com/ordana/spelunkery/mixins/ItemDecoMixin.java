@@ -49,6 +49,7 @@ public abstract class ItemDecoMixin implements IGuiGraphicsExtension
 	
 	@Shadow public abstract void blitSprite (ResourceLocation sprite, int textureWidth, int textureHeight, int uPosition, int vPosition, int x, int y, int uWidth, int vHeight);
 	
+	/*
 	@ModifyExpressionValue(
 		method="renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V",
 		at=@At(value="INVOKE", target="Lnet/minecraft/world/item/ItemStack;isBarVisible()Z", ordinal = 0)
@@ -160,5 +161,6 @@ public abstract class ItemDecoMixin implements IGuiGraphicsExtension
 		
 		return false;
 	}
+	*/
 	
 }

@@ -75,18 +75,18 @@ class Spelunkery(ev: IEventBus, container: ModContainer)
 
 	fun clientSetup(ev: FMLClientSetupEvent)
 	{
-		ev.enqueueWork {
-			try
-			{
-				val game = Minecraft.getInstance()
-				initialize(game.textureManager, game.resourceManager)
-			}
-			catch (e: Throwable)
-			{
-				println("MACHINE WITNESS: no game?")
-				throw e
-			}
-		}
+//		ev.enqueueWork {
+//			try
+//			{
+//				val game = Minecraft.getInstance()
+//				initialize(game.textureManager, game.resourceManager)
+//			}
+//			catch (e: Throwable)
+//			{
+//				println("MACHINE WITNESS: no game?")
+//				throw e
+//			}
+//		}
 	}
 
 	fun commonInit(ev: FMLCommonSetupEvent?)
