@@ -22,48 +22,59 @@ import net.orcinus.galosphere.init.GDataComponents;
 import net.orcinus.galosphere.init.GEntityTypes;
 import net.orcinus.galosphere.init.GSoundEvents;
 
-public class SpectreBottleItem extends Item {
-
-    public SpectreBottleItem(Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public InteractionResult useOn(UseOnContext useOnContext) {
-        BlockPlaceContext itemPlacementContext = new BlockPlaceContext(useOnContext);
-        Level world = useOnContext.getLevel();
-        Player playerEntity = useOnContext.getPlayer();
-        BlockPos blockPos = itemPlacementContext.getClickedPos();
-        ItemStack stack = useOnContext.getItemInHand();
-        if (world instanceof ServerLevel serverWorld) {
-            if (!playerEntity.getAbilities().instabuild) {
-                stack.shrink(1);
-            }
-            if (!playerEntity.getInventory().add(new ItemStack(Items.GLASS_BOTTLE))) {
-                playerEntity.drop(new ItemStack(Items.GLASS_BOTTLE), false);
-            }
-            if (stack.has(GDataComponents.BOTTLE_ENTITY_DATA.get())) {
-                CompoundTag compoundTag = stack.get(GDataComponents.BOTTLE_ENTITY_DATA.get()).copyTag();
-                Entity spectre = EntityType.loadEntityRecursive(compoundTag, world, entity -> entity);
-                if (spectre != null) {
-                    spectre.setPos(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D);
-                    serverWorld.addWithUUID(spectre);
-
-                    if (spectre instanceof BottlePickable bottlePickable) bottlePickable.setFromBottle(true);
-                }
-            } else {
-                Spectre spectre = GEntityTypes.SPECTRE.get().create(world);
-                spectre.setPos(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D);
-                spectre.setFromBottle(true);
-                Entity entity = spectre.getType().spawn(serverWorld, stack, null, blockPos, MobSpawnType.SPAWN_EGG, true, false);
-                if (entity instanceof BottlePickable bottlePickable) {
-                    bottlePickable.setFromBottle(true);
-                }
-                world.playSound(null, blockPos, GSoundEvents.SPECTRE_BOTTLE_EMPTY.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
-                world.gameEvent(useOnContext.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
-            }
-            return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.sidedSuccess(world.isClientSide);
-    }
+public class SpectreBottleItem extends Item
+{
+	
+	public SpectreBottleItem (Properties properties)
+	{
+		super(properties);
+	}
+	
+	@Override
+	public InteractionResult useOn (UseOnContext useOnContext)
+	{
+		BlockPlaceContext itemPlacementContext = new BlockPlaceContext(useOnContext);
+		Level world = useOnContext.getLevel();
+		Player playerEntity = useOnContext.getPlayer();
+		BlockPos blockPos = itemPlacementContext.getClickedPos();
+		ItemStack stack = useOnContext.getItemInHand();
+		if (world instanceof ServerLevel serverWorld)
+		{
+			if (!playerEntity.getAbilities().instabuild)
+			{
+				stack.shrink(1);
+			}
+			if (!playerEntity.getInventory().add(new ItemStack(Items.GLASS_BOTTLE)))
+			{
+				playerEntity.drop(new ItemStack(Items.GLASS_BOTTLE), false);
+			}
+			if (stack.has(GDataComponents.BOTTLE_ENTITY_DATA.get()))
+			{
+				CompoundTag compoundTag = stack.get(GDataComponents.BOTTLE_ENTITY_DATA.get()).copyTag();
+				Entity spectre = EntityType.loadEntityRecursive(compoundTag, world, entity -> entity);
+				if (spectre != null)
+				{
+					spectre.setPos(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D);
+					serverWorld.addWithUUID(spectre);
+					
+					if (spectre instanceof BottlePickable bottlePickable) bottlePickable.setFromBottle(true);
+				}
+			}
+			else
+			{
+				Spectre spectre = GEntityTypes.SPECTRE.get().create(world);
+				spectre.setPos(blockPos.getX() + 0.5D, blockPos.getY(), blockPos.getZ() + 0.5D);
+				spectre.setFromBottle(true);
+				Entity entity = spectre.getType().spawn(serverWorld, stack, null, blockPos, MobSpawnType.SPAWN_EGG, true, false);
+				if (entity instanceof BottlePickable bottlePickable)
+				{
+					bottlePickable.setFromBottle(true);
+				}
+				world.playSound(null, blockPos, GSoundEvents.SPECTRE_BOTTLE_EMPTY.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+				world.gameEvent(useOnContext.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
+			}
+			return InteractionResult.SUCCESS;
+		}
+		return InteractionResult.sidedSuccess(world.isClientSide);
+	}
 }

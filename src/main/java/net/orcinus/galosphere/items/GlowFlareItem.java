@@ -17,34 +17,41 @@ import net.minecraft.world.level.Level;
 import net.orcinus.galosphere.entities.GlowFlare;
 import net.orcinus.galosphere.init.GCriteriaTriggers;
 
-public class GlowFlareItem extends Item implements ProjectileItem {
-
-    public GlowFlareItem(Properties properties) {
-        super(properties);
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        ItemStack itemStack = player.getItemInHand(interactionHand);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5f, 0.4f / (level.getRandom().nextFloat() * 0.4f + 0.8f));
-        if (!level.isClientSide) {
-            GlowFlare glowFlare = new GlowFlare(level, player, itemStack);
-            glowFlare.setPos(player.getX(), player.getEyeY() - (double)0.1f, player.getZ());
-            glowFlare.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.5f, 1.0f);
-            level.addFreshEntity(glowFlare);
-            if (player instanceof ServerPlayer serverPlayer) {
-                GCriteriaTriggers.LIGHT_SPREAD.get().trigger(serverPlayer);
-            }
-        }
-        player.awardStat(Stats.ITEM_USED.get(this));
-        if (!player.getAbilities().instabuild) {
-            itemStack.shrink(1);
-        }
-        return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
-    }
-
-    @Override
-    public Projectile asProjectile(Level level, Position position, ItemStack itemStack, Direction direction) {
-        return new GlowFlare(level, position.x(), position.y(), position.z());
-    }
+public class GlowFlareItem extends Item implements ProjectileItem
+{
+	
+	public GlowFlareItem (Properties properties)
+	{
+		super(properties);
+	}
+	
+	@Override
+	public InteractionResultHolder<ItemStack> use (Level level, Player player, InteractionHand interactionHand)
+	{
+		ItemStack itemStack = player.getItemInHand(interactionHand);
+		level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5f, 0.4f / (level.getRandom().nextFloat() * 0.4f + 0.8f));
+		if (!level.isClientSide)
+		{
+			GlowFlare glowFlare = new GlowFlare(level, player, itemStack);
+			glowFlare.setPos(player.getX(), player.getEyeY() - (double)0.1f, player.getZ());
+			glowFlare.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, 1.5f, 1.0f);
+			level.addFreshEntity(glowFlare);
+			if (player instanceof ServerPlayer serverPlayer)
+			{
+				GCriteriaTriggers.LIGHT_SPREAD.get().trigger(serverPlayer);
+			}
+		}
+		player.awardStat(Stats.ITEM_USED.get(this));
+		if (!player.getAbilities().instabuild)
+		{
+			itemStack.shrink(1);
+		}
+		return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
+	}
+	
+	@Override
+	public Projectile asProjectile (Level level, Position position, ItemStack itemStack, Direction direction)
+	{
+		return new GlowFlare(level, position.x(), position.y(), position.z());
+	}
 }

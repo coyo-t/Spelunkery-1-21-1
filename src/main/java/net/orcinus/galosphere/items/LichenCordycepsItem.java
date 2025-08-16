@@ -11,34 +11,44 @@ import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-public class LichenCordycepsItem extends ItemNameBlockItem {
-
-    public LichenCordycepsItem(Block block, Properties properties) {
-        super(block, properties);
-    }
-
-    @Override
-    public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
-        if (itemStack.has(DataComponents.FOOD)) {
-            boolean flag = livingEntity.getAirSupply() < livingEntity.getMaxAirSupply();
-            if (livingEntity instanceof Player player && (flag || player.canEat(itemStack.get(DataComponents.FOOD).canAlwaysEat()))) {
-                if (flag) {
-                    livingEntity.setAirSupply(Math.min(livingEntity.getAirSupply() + 60, livingEntity.getMaxAirSupply()));
-                }
-                livingEntity.eat(level, itemStack);
-            }
-        }
-        return itemStack;
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        ItemStack itemstack = player.getItemInHand(interactionHand);
-        if (player.getAirSupply() < player.getMaxAirSupply() || player.canEat(itemstack.get(DataComponents.FOOD).canAlwaysEat())) {
-            return ItemUtils.startUsingInstantly(level, player, interactionHand);
-        } else {
-            return InteractionResultHolder.pass(player.getItemInHand(interactionHand));
-        }
-    }
-
+public class LichenCordycepsItem extends ItemNameBlockItem
+{
+	
+	public LichenCordycepsItem (Block block, Properties properties)
+	{
+		super(block, properties);
+	}
+	
+	@Override
+	public ItemStack finishUsingItem (ItemStack itemStack, Level level, LivingEntity livingEntity)
+	{
+		if (itemStack.has(DataComponents.FOOD))
+		{
+			boolean flag = livingEntity.getAirSupply() < livingEntity.getMaxAirSupply();
+			if (livingEntity instanceof Player player && (flag || player.canEat(itemStack.get(DataComponents.FOOD).canAlwaysEat())))
+			{
+				if (flag)
+				{
+					livingEntity.setAirSupply(Math.min(livingEntity.getAirSupply() + 60, livingEntity.getMaxAirSupply()));
+				}
+				livingEntity.eat(level, itemStack);
+			}
+		}
+		return itemStack;
+	}
+	
+	@Override
+	public InteractionResultHolder<ItemStack> use (Level level, Player player, InteractionHand interactionHand)
+	{
+		ItemStack itemstack = player.getItemInHand(interactionHand);
+		if (player.getAirSupply() < player.getMaxAirSupply() || player.canEat(itemstack.get(DataComponents.FOOD).canAlwaysEat()))
+		{
+			return ItemUtils.startUsingInstantly(level, player, interactionHand);
+		}
+		else
+		{
+			return InteractionResultHolder.pass(player.getItemInHand(interactionHand));
+		}
+	}
+	
 }

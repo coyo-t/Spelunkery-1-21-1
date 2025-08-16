@@ -1,26 +1,21 @@
-package net.orcinus.galosphere.network;
+package net.orcinus.galosphere.network
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.FriendlyByteBuf
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 
-public record PlayCooldownSoundPacket() implements CustomPacketPayload
+class PlayCooldownSoundPacket() : CustomPacketPayload
 {
-	public static final StreamCodec<FriendlyByteBuf, PlayCooldownSoundPacket> CODEC = CustomPacketPayload.codec(PlayCooldownSoundPacket::write, PlayCooldownSoundPacket::new);
-	public static final Type<PlayCooldownSoundPacket> TYPE = CustomPacketPayload.createType("play_cooldown_sound");
-	
-	public PlayCooldownSoundPacket (FriendlyByteBuf buf)
-	{
-		this();
-	}
-	
-	public void write (FriendlyByteBuf buf)
+	constructor(buf: FriendlyByteBuf) : this()
+
+	fun write(buf: FriendlyByteBuf)
 	{
 	}
-	
-	@Override
-	public Type<? extends CustomPacketPayload> type ()
+
+	override fun type () = TYPE
+
+	companion object
 	{
-		return TYPE;
+		val CODEC = CustomPacketPayload.codec({ obj, buf -> obj.write(buf) }, ::PlayCooldownSoundPacket)
+		val TYPE = CustomPacketPayload.createType<PlayCooldownSoundPacket>("play_cooldown_sound")
 	}
 }

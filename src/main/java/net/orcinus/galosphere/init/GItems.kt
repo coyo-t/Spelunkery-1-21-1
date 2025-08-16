@@ -1,26 +1,16 @@
 package net.orcinus.galosphere.init
 
+import net.minecraft.world.entity.Entity
 import net.minecraft.world.food.FoodProperties
 import net.minecraft.world.item.AnimalArmorItem
 import net.minecraft.world.item.ArmorItem
 import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.Level
 import net.neoforged.neoforge.common.DeferredSpawnEggItem
 import net.neoforged.neoforge.registries.DeferredRegister
 import net.orcinus.galosphere.Galosphere
-import net.orcinus.galosphere.items.ChandelierItem
-import net.orcinus.galosphere.items.GlowFlareItem
-import net.orcinus.galosphere.items.GoldenLichenCordycepsItem
-import net.orcinus.galosphere.items.IconItem
-import net.orcinus.galosphere.items.LichenCordycepsItem
-import net.orcinus.galosphere.items.PreservedFleshItem
-import net.orcinus.galosphere.items.PreservedSmithingTemplateItem
-import net.orcinus.galosphere.items.SaltboundTabletItem
-import net.orcinus.galosphere.items.SilverBombItem
-import net.orcinus.galosphere.items.SilverSmithingTemplateItem
-import net.orcinus.galosphere.items.SpectreBottleItem
-import net.orcinus.galosphere.items.SpectreBoundSpyglassItem
-import net.orcinus.galosphere.items.SpectreFlareItem
-import net.orcinus.galosphere.items.SterlingArmorItem
+import net.orcinus.galosphere.items.*
 import java.util.function.Supplier
 
 object GItems
@@ -29,7 +19,14 @@ object GItems
 	val ITEMS = DeferredRegister.createItems(Galosphere.MODID)
 
 	@JvmField
-	val ICON_ITEM = regIt("icon_item") { IconItem(Item.Properties().stacksTo(0)) }
+	val ICON_ITEM = regIt("icon_item") {
+		object : Item(Properties().stacksTo(0)) {
+			override fun inventoryTick(stack: ItemStack, world: Level, entity: Entity, slotId: Int, isSelected: Boolean)
+			{
+				stack.count = 0
+			}
+		}
+	}
 
 	@JvmField
 	val SPARKLE_SPAWN_EGG = regIt("sparkle_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.SPARKLE, 0xF0F5F4, 0x24F6D8, Item.Properties()) }

@@ -1,23 +1,21 @@
-package net.orcinus.galosphere.network;
+package net.orcinus.galosphere.network
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.FriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
+import net.minecraft.network.codec.StreamDecoder
+import net.minecraft.network.codec.StreamMemberEncoder
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 
-public record BarometerPacket(int weatherTicks) implements CustomPacketPayload {
-    public static final StreamCodec<FriendlyByteBuf, BarometerPacket> CODEC = CustomPacketPayload.codec(BarometerPacket::write, BarometerPacket::new);
-    public static final Type<BarometerPacket> TYPE = CustomPacketPayload.createType("send_barometer_info");
+@JvmRecord
+data class BarometerPacket(@JvmField val weatherTicks: Int) : CustomPacketPayload
+{
+	constructor(buf: FriendlyByteBuf) : this(buf.readInt())
 
-    public BarometerPacket(FriendlyByteBuf buf) {
-        this(buf.readInt());
-    }
+	override fun type () = TYPE
 
-    public void write(FriendlyByteBuf buf) {
-        buf.writeInt(this.weatherTicks);
-    }
-
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+	companion object
+	{
+		val CODEC = CustomPacketPayload.codec({ o, f -> f.writeInt(o.weatherTicks) }, ::BarometerPacket)
+		val TYPE = CustomPacketPayload.createType<BarometerPacket>("send_barometer_info")
+	}
 }

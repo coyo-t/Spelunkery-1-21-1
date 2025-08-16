@@ -319,7 +319,7 @@ public class MobEvents {
         }
         if (SpectreBoundSpyglass.canUseSpectreBoundedSpyglass(useItem)) {
             if (!entity.level().isClientSide) {
-                Entity spectreBound = ((ServerLevel)entity.level()).getEntity(useItem.get(GDataComponents.SPECTRE_BOUND.get()).uuid());
+                Entity spectreBound = ((ServerLevel)entity.level()).getEntity(useItem.get(GDataComponents.SPECTRE_BOUND.get()).uuid);
                 Optional.ofNullable(spectreBound).filter(Spectre.class::isInstance).map(Spectre.class::cast).filter(Spectre::isAlive).ifPresent(spectre -> {
                     if (entity instanceof Player player && spectre.getManipulatorUUID() != player.getUUID()) {
                         boolean withinDistance = Math.sqrt(Math.pow((player.getX() - spectre.getX()), 2) + Math.pow((player.getZ() - spectre.getZ()), 2)) < 110;
