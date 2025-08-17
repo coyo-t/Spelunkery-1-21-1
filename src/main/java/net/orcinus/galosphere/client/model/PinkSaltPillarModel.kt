@@ -1,57 +1,69 @@
-package net.orcinus.galosphere.client.model;
+package net.orcinus.galosphere.client.model
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.orcinus.galosphere.client.animations.PinkSaltPillarAnimations;
-import net.orcinus.galosphere.entities.PinkSaltPillar;
+import com.mojang.blaze3d.vertex.PoseStack
+import com.mojang.blaze3d.vertex.VertexConsumer
+import net.minecraft.client.model.HierarchicalModel
+import net.minecraft.client.model.geom.ModelPart
+import net.minecraft.client.model.geom.PartPose
+import net.minecraft.client.model.geom.builders.CubeDeformation
+import net.minecraft.client.model.geom.builders.CubeListBuilder
+import net.minecraft.client.model.geom.builders.LayerDefinition
+import net.minecraft.client.model.geom.builders.MeshDefinition
+import net.neoforged.api.distmarker.Dist
+import net.neoforged.api.distmarker.OnlyIn
+import net.orcinus.galosphere.client.animations.PinkSaltPillarAnimations
+import net.orcinus.galosphere.entities.PinkSaltPillar
 
 @OnlyIn(Dist.CLIENT)
-public class PinkSaltPillarModel<T extends PinkSaltPillar> extends HierarchicalModel<T>
+class PinkSaltPillarModel<T : PinkSaltPillar?>(root: ModelPart) : HierarchicalModel<T?>()
 {
-	private final ModelPart root;
-	
-	public PinkSaltPillarModel (ModelPart root)
+	private val root: ModelPart
+
+	init
 	{
-		this.root = root.getChild("root");
+		this.root = root.getChild("root")
 	}
-	
-	public static LayerDefinition createBodyLayer ()
+
+	override fun setupAnim(
+		entity: T?,
+		limbSwing: Float,
+		limbSwingAmount: Float,
+		ageInTicks: Float,
+		netHeadYaw: Float,
+		headPitch: Float
+	)
 	{
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-		
-		PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, -32.0F, -5.0F, 10.0F, 32.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
-		
-		return LayerDefinition.create(meshdefinition, 48, 48);
+		this.root().allParts.forEach { it.resetPose() }
+		this.animate(entity!!.emergeAnimationState, PinkSaltPillarAnimations.PINK_SALT_PILLAR_EMERGE, ageInTicks)
+		this.animate(entity.retractAnimationState, PinkSaltPillarAnimations.PINK_SALT_PILLAR_RETRACT, ageInTicks)
 	}
-	
-	@Override
-	public void setupAnim (T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+
+	override fun renderToBuffer(poseStack: PoseStack, vertexConsumer: VertexConsumer, i: Int, j: Int, k: Int)
 	{
-		this.root().getAllParts().forEach(ModelPart::resetPose);
-		this.animate(entity.emergeAnimationState, PinkSaltPillarAnimations.PINK_SALT_PILLAR_EMERGE, ageInTicks);
-		this.animate(entity.retractAnimationState, PinkSaltPillarAnimations.PINK_SALT_PILLAR_RETRACT, ageInTicks);
+		this.root.render(poseStack, vertexConsumer, i, j, k)
 	}
-	
-	@Override
-	public void renderToBuffer (PoseStack poseStack, VertexConsumer vertexConsumer, int i, int j, int k)
+
+	override fun root(): ModelPart
 	{
-		this.root.render(poseStack, vertexConsumer, i, j, k);
+		return this.root
 	}
-	
-	@Override
-	public ModelPart root ()
+
+	companion object
 	{
-		return this.root;
+		@JvmStatic
+		fun createBodyLayer(): LayerDefinition
+		{
+			val meshdefinition = MeshDefinition()
+			val partdefinition = meshdefinition.getRoot()
+
+			val root = partdefinition.addOrReplaceChild(
+				"root",
+				CubeListBuilder.create().texOffs(0, 0)
+					.addBox(-5.0f, -32.0f, -5.0f, 10.0f, 32.0f, 10.0f, CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 24.0f, 0.0f)
+			)
+
+			return LayerDefinition.create(meshdefinition, 48, 48)
+		}
 	}
 }

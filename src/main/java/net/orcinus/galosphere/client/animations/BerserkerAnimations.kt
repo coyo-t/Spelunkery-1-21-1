@@ -12,6 +12,7 @@ import net.neoforged.api.distmarker.OnlyIn
 @OnlyIn(Dist.CLIENT)
 object BerserkerAnimations
 {
+
 	@JvmField
 	val BERSERKER_SHAKE = buildAnimation(2.5) {
 		addAnimation(

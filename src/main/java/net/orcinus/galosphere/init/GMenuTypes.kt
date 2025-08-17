@@ -17,10 +17,7 @@ object GMenuTypes
 		DeferredRegister.create(Registries.MENU, Galosphere.MODID)
 
 	@JvmField
-	val COMBUSTION_TABLE =
-		MENU_TYPES.register(
-			"combustion_table"
-		) { rl ->
+	val COMBUSTION_TABLE = MENU_TYPES.register("combustion_table") { rl ->
 			MenuType({ id, inventory ->
 				CombustionTableMenu(
 					id,

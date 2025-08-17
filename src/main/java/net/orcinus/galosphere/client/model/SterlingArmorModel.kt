@@ -1,37 +1,38 @@
-package net.orcinus.galosphere.client.model;
+package net.orcinus.galosphere.client.model
 
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.client.model.HumanoidModel
+import net.minecraft.client.model.geom.ModelPart
+import net.minecraft.client.model.geom.PartPose
+import net.minecraft.client.model.geom.builders.CubeDeformation
+import net.minecraft.client.model.geom.builders.CubeListBuilder
+import net.minecraft.client.model.geom.builders.LayerDefinition
+import net.minecraft.world.entity.LivingEntity
+import net.neoforged.api.distmarker.Dist
+import net.neoforged.api.distmarker.OnlyIn
 
 @OnlyIn(Dist.CLIENT)
-public class SterlingArmorModel<T extends LivingEntity> extends HumanoidModel<T>
+class SterlingArmorModel<T : LivingEntity?>(part: ModelPart) : HumanoidModel<T?>(part)
 {
-	public ModelPart helmet;
-	
-	public SterlingArmorModel (ModelPart part)
+	var helmet = this.head.getChild("helmet")
+
+	companion object
 	{
-		super(part);
-		this.helmet = this.head.getChild("helmet");
-	}
-	
-	public static LayerDefinition createBodyLayer ()
-	{
-		MeshDefinition meshdefinition = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
-		PartDefinition partdefinition = meshdefinition.getRoot();
-		
-		PartDefinition head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO);
-		PartDefinition helmet = head.addOrReplaceChild("helmet", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -12.25F, -6.0F, 2.0F, 12.0F, 12.0F, new CubeDeformation(0.0F))
-				  .texOffs(20, 16).addBox(-4.0F, -9.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(1.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-		
-		return LayerDefinition.create(meshdefinition, 64, 64);
+		@JvmStatic
+		fun createBodyLayer(): LayerDefinition
+		{
+			val meshdefinition = createMesh(CubeDeformation.NONE, 0.0f)
+			val partdefinition = meshdefinition.root
+
+			val head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO)
+			val helmet = head.addOrReplaceChild(
+				"helmet",
+				CubeListBuilder.create().texOffs(0, 0)
+					.addBox(-1.0f, -12.25f, -6.0f, 2.0f, 12.0f, 12.0f, CubeDeformation(0.0f))
+					.texOffs(20, 16).addBox(-4.0f, -9.0f, -4.0f, 8.0f, 8.0f, 8.0f, CubeDeformation(1.0f)),
+				PartPose.offset(0.0f, 0.0f, 0.0f)
+			)
+
+			return LayerDefinition.create(meshdefinition, 64, 64)
+		}
 	}
 }
