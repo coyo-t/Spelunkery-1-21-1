@@ -24,45 +24,48 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class GStructures {
-    public static final ResourceKey<Structure> PINK_SALT_SHRINE = createKey("pink_salt_shrine");
-
-    public static void bootstrap(BootstrapContext<Structure> bootstrapContext) {
-        HolderGetter<Biome> holderGetter = bootstrapContext.lookup(Registries.BIOME);
-        HolderGetter<StructureTemplatePool> holderGetter1 = bootstrapContext.lookup(Registries.TEMPLATE_POOL);
-        bootstrapContext.register(
-                PINK_SALT_SHRINE,
-                new JigsawStructure(
-                        new Structure.StructureSettings.Builder(
-                                holderGetter.getOrThrow(GBiomeTags.HAS_PINK_SALT_SHRINE))
-                                .generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
-                                .terrainAdapation(TerrainAdjustment.BEARD_BOX)
-                                .spawnOverrides(
-                                        Arrays.stream(MobCategory.values())
-                                                .collect(
-                                                        Collectors.toMap(
-                                                                category -> category,
-                                                                category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())
-                                                        )
-                                                )
-                                )
-                                .build(),
-                        holderGetter1.getOrThrow(PinkSaltShrineStructurePools.START),
-                        Optional.empty(),
-                        7,
-                        UniformHeight.of(VerticalAnchor.absolute(-30), VerticalAnchor.absolute(30)),
-                        false,
-                        Optional.empty(),
-                        80,
-                        List.of(),
-                        JigsawStructure.DEFAULT_DIMENSION_PADDING,
-                        LiquidSettings.IGNORE_WATERLOGGING
-                )
-        );
-    }
-
-    private static ResourceKey<Structure> createKey(String name) {
-        return ResourceKey.create(Registries.STRUCTURE, Galosphere.id(name));
-    }
-
+public class GStructures
+{
+	public static final ResourceKey<Structure> PINK_SALT_SHRINE = createKey("pink_salt_shrine");
+	
+	public static void bootstrap (BootstrapContext<Structure> bootstrapContext)
+	{
+		HolderGetter<Biome> holderGetter = bootstrapContext.lookup(Registries.BIOME);
+		HolderGetter<StructureTemplatePool> holderGetter1 = bootstrapContext.lookup(Registries.TEMPLATE_POOL);
+		bootstrapContext.register(
+				  PINK_SALT_SHRINE,
+				  new JigsawStructure(
+							 new Structure.StructureSettings.Builder(
+										holderGetter.getOrThrow(GBiomeTags.HAS_PINK_SALT_SHRINE))
+										.generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES)
+										.terrainAdapation(TerrainAdjustment.BEARD_BOX)
+										.spawnOverrides(
+												  Arrays.stream(MobCategory.values())
+															 .collect(
+																		Collectors.toMap(
+																				  category -> category,
+																				  category -> new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create())
+																		)
+															 )
+										)
+										.build(),
+							 holderGetter1.getOrThrow(PinkSaltShrineStructurePools.START),
+							 Optional.empty(),
+							 7,
+							 UniformHeight.of(VerticalAnchor.absolute(-30), VerticalAnchor.absolute(30)),
+							 false,
+							 Optional.empty(),
+							 80,
+							 List.of(),
+							 JigsawStructure.DEFAULT_DIMENSION_PADDING,
+							 LiquidSettings.IGNORE_WATERLOGGING
+				  )
+		);
+	}
+	
+	private static ResourceKey<Structure> createKey (String name)
+	{
+		return ResourceKey.create(Registries.STRUCTURE, Galosphere.id(name));
+	}
+	
 }

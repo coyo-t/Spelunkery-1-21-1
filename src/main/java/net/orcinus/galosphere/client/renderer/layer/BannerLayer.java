@@ -31,26 +31,32 @@ public class BannerLayer<T extends LivingEntity, M extends EntityModel<T> & Head
 	@Override
 	public void render (PoseStack stack, MultiBufferSource source, int packedLight, T entity, float p_117353_, float p_117354_, float p_117355_, float p_117356_, float p_117357_, float p_117358_)
 	{
-		if (!((BannerAttachable)entity).getBanner().isEmpty())
+		if (!(entity instanceof BannerAttachable baEnt))
 		{
-			ItemStack itemstack = ((BannerAttachable)entity).getBanner();
-			if (itemstack != null)
+			return;
+		}
+		
+		if (baEnt.getBanner().isEmpty())
+		{
+			return;
+		}
+		var itemstack = baEnt.getBanner();
+		if (itemstack != null)
+		{
+			if (!itemstack.isEmpty())
 			{
-				if (!itemstack.isEmpty())
+				Item item = itemstack.getItem();
+				stack.pushPose();
+				stack.scale(1.0F, 1.0F, 1.0F);
+				this.getParentModel().getHead().translateAndRotate(stack);
+				if (!(item instanceof ArmorItem ai) || ai.getEquipmentSlot() != EquipmentSlot.HEAD)
 				{
-					Item item = itemstack.getItem();
-					stack.pushPose();
-					stack.scale(1.0F, 1.0F, 1.0F);
-					this.getParentModel().getHead().translateAndRotate(stack);
-					if (!(item instanceof ArmorItem) || ((ArmorItem)item).getEquipmentSlot() != EquipmentSlot.HEAD)
-					{
-						stack.translate(0.0D, -0.25D, 0.0D);
-						stack.mulPose(Axis.YP.rotationDegrees(180.0F));
-						stack.scale(0.625F, -0.625F, -0.625F);
-						Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemDisplayContext.HEAD, false, stack, source, entity.level(), packedLight, OverlayTexture.NO_OVERLAY, entity.getId() + ItemDisplayContext.HEAD.ordinal());
-					}
-					stack.popPose();
+					stack.translate(0.0D, -0.25D, 0.0D);
+					stack.mulPose(Axis.YP.rotationDegrees(180.0F));
+					stack.scale(0.625F, -0.625F, -0.625F);
+					Minecraft.getInstance().getItemRenderer().renderStatic(entity, itemstack, ItemDisplayContext.HEAD, false, stack, source, entity.level(), packedLight, OverlayTexture.NO_OVERLAY, entity.getId() + ItemDisplayContext.HEAD.ordinal());
 				}
+				stack.popPose();
 			}
 		}
 	}

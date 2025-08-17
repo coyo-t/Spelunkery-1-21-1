@@ -19,13 +19,13 @@ object GMenuTypes
 	@JvmField
 	val COMBUSTION_TABLE =
 		MENU_TYPES.register(
-			"combustion_table",
-			{ rl ->
-				MenuType({ id, inventory ->
-					CombustionTableMenu(
-						id,
-						inventory
-					)
-				}, FeatureFlags.VANILLA_SET)
-			})
+			"combustion_table"
+		) { rl ->
+			MenuType({ id, inventory ->
+				CombustionTableMenu(
+					id,
+					inventory
+				)
+			}, FeatureFlags.VANILLA_SET)
+		}
 }

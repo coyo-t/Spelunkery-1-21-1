@@ -38,7 +38,7 @@ public class PinkSaltPillarRenderer extends EntityRenderer<PinkSaltPillar>
 		poseStack.scale(1.0F, -1.0F, 1.0F);
 		poseStack.translate(0.0F, -1.0F, 0.0F);
 		this.model.setupAnim(entity, 0.0F, 0.0f, ticks, entity.getYRot(), entity.getXRot());
-		VertexConsumer vertexConsumer = multiBufferSource.getBuffer(this.model.renderType(TEXTURE));
+		var vertexConsumer = multiBufferSource.getBuffer(this.model.renderType(TEXTURE));
 		this.model.renderToBuffer(poseStack, vertexConsumer, i, OverlayTexture.NO_OVERLAY);
 		poseStack.popPose();
 		super.render(entity, f, g, poseStack, multiBufferSource, i);

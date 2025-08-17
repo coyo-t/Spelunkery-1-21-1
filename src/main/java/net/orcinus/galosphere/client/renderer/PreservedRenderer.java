@@ -9,11 +9,13 @@ import net.orcinus.galosphere.Galosphere;
 import net.orcinus.galosphere.client.model.PreservedModel;
 import net.orcinus.galosphere.entities.Preserved;
 import net.orcinus.galosphere.init.GModelLayers;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class PreservedRenderer extends MobRenderer<Preserved, PreservedModel<Preserved>>
 {
-	private static final ResourceLocation TEXTURE = Galosphere.id("textures/entity/preserved/preserved.png");
+	private static final ResourceLocation
+	TEXTURE = Galosphere.id("textures/entity/preserved/preserved.png");
 	
 	public PreservedRenderer (EntityRendererProvider.Context context)
 	{
@@ -21,7 +23,7 @@ public class PreservedRenderer extends MobRenderer<Preserved, PreservedModel<Pre
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation (Preserved entity)
+	public @NotNull ResourceLocation getTextureLocation (@NotNull Preserved entity)
 	{
 		return TEXTURE;
 	}

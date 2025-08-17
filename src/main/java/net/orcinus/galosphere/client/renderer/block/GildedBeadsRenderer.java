@@ -31,7 +31,8 @@ import java.util.function.Function;
 @OnlyIn(Dist.CLIENT)
 public class GildedBeadsRenderer implements BlockEntityRenderer<GildedBeadsBlockEntity>
 {
-	public static final Function<BlockState, Material> FUNCTION = state -> new Material(TextureAtlas.LOCATION_BLOCKS, Galosphere.id("entity/gilded_beads/" + (state.getValue(BlockStateProperties.BOTTOM) ? "gilded_beads_head" : "gilded_beads_body")));
+	public static final Function<BlockState, Material>
+	FUNCTION = state -> new Material(TextureAtlas.LOCATION_BLOCKS, Galosphere.id("entity/gilded_beads/" + (state.getValue(BlockStateProperties.BOTTOM) ? "gilded_beads_head" : "gilded_beads_body")));
 	private final ModelPart gilded_beads;
 	
 	public GildedBeadsRenderer (BlockEntityRendererProvider.Context context)
