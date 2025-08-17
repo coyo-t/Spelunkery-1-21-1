@@ -16,9 +16,9 @@ object GMobEffects
 
 	@JvmField
 	val ASTRAL =
-		MOB_EFFECTS.register("astral") { rs -> GMobEffect(MobEffectCategory.BENEFICIAL, 12891319) }
+		MOB_EFFECTS.register("astral") { rs -> GMobEffect(MobEffectCategory.BENEFICIAL, 0xc4b4b7) }
 
 	@JvmField
 	val BLOCK_BANE =
-		MOB_EFFECTS.register("block_bane") { rs -> GMobEffect(MobEffectCategory.HARMFUL, 7612935) }
+		MOB_EFFECTS.register("block_bane") { rs -> GMobEffect(MobEffectCategory.HARMFUL, 0x742a07) }
 }

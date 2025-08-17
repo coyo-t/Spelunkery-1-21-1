@@ -1,15 +1,11 @@
 package dissonance.mixin;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.orcinus.galosphere.api.BannerAttachable;
-import net.orcinus.galosphere.api.GoldenBreath;
 import net.orcinus.galosphere.api.SpectreBoundSpyglass;
 import net.orcinus.galosphere.init.GMobEffects;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public class LivingEntityMixin implements BannerAttachable, GoldenBreath, SpectreBoundSpyglass
+public class LivingEntityMixin implements SpectreBoundSpyglass
 {
 	private static final EntityDataAccessor<ItemStack> BANNER_STACK = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.ITEM_STACK);
 	private static final EntityDataAccessor<Float> GOLDEN_AIR_SUPPLY = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.FLOAT);
@@ -45,34 +41,15 @@ public class LivingEntityMixin implements BannerAttachable, GoldenBreath, Spectr
 		{
 			tag.put("BannerStack", stack.save($this.registryAccess()));
 		}
-		tag.putFloat("GoldenAirSupply", this.getGoldenAirSupply());
 		tag.putBoolean("UsingSpectreBoundedSpyglass", this.isUsingSpectreBoundedSpyglass());
 	}
 	
 	@Inject(at=@At("RETURN"), method="readAdditionalSaveData")
 	public void G$readAdditionalSavaData (CompoundTag tag, CallbackInfo ci)
 	{
-		LivingEntity $this = (LivingEntity)(Object)this;
-		if (tag.contains("BannerStack", 10))
-		{
-			this.setBanner(ItemStack.parse($this.registryAccess(), tag.getCompound("BannerStack")).orElse(ItemStack.EMPTY));
-		}
-		else
-		{
-			this.setBanner(ItemStack.EMPTY);
-		}
-		this.setGoldenAirSupply(tag.getFloat("GoldenAirSupply"));
 		this.setUsingSpectreBoundedSpyglass(tag.getBoolean("UsingSpectreBoundedSpyglass"));
 	}
-	
-	@Inject(at=@At("HEAD"), method="decreaseAirSupply", cancellable=true)
-	private void G$decreaseAirSupply (int i, CallbackInfoReturnable<Integer> cir)
-	{
-		if (this.getGoldenAirSupply() > 0)
-		{
-			cir.setReturnValue(i);
-		}
-	}
+
 	
 	@Inject(at=@At("HEAD"), method="isInWall", cancellable=true)
 	private void G$isInWall (CallbackInfoReturnable<Boolean> cir)
@@ -81,30 +58,6 @@ public class LivingEntityMixin implements BannerAttachable, GoldenBreath, Spectr
 		{
 			cir.setReturnValue(false);
 		}
-	}
-	
-	@Override
-	public void setBanner (ItemStack stack)
-	{
-		$this.getEntityData().set(BANNER_STACK, stack);
-	}
-	
-	@Override
-	public ItemStack getBanner ()
-	{
-		return $this.getEntityData().get(BANNER_STACK);
-	}
-	
-	@Override
-	public void setGoldenAirSupply (float goldenAirSupply)
-	{
-		$this.getEntityData().set(GOLDEN_AIR_SUPPLY, goldenAirSupply);
-	}
-	
-	@Override
-	public float getGoldenAirSupply ()
-	{
-		return $this.getEntityData().get(GOLDEN_AIR_SUPPLY);
 	}
 	
 	@Override

@@ -20,14 +20,12 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterEntitySpectatorShadersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.MutableHashedLinkedMap;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.orcinus.galosphere.Galosphere;
 import net.orcinus.galosphere.client.SpectatorTickHandler;
-import net.orcinus.galosphere.client.gui.CombustionTableScreen;
 import net.orcinus.galosphere.client.gui.SpectatorVisionOverlay;
 import net.orcinus.galosphere.client.model.*;
 import net.orcinus.galosphere.client.particles.CrystalRainParticle;
@@ -54,12 +52,6 @@ public class ClientEvents
 {
 	private static final Function<ItemLike, ItemStack> FUNCTION = ItemStack::new;
 	public static int clearWeatherTime;
-	
-	@SubscribeEvent
-	public static void registerMenus (final RegisterMenuScreensEvent ev)
-	{
-		ev.register(GMenuTypes.COMBUSTION_TABLE.get(), CombustionTableScreen::new);
-	}
 	
 	@SubscribeEvent
 	public static void onClientSetup (final FMLClientSetupEvent event)

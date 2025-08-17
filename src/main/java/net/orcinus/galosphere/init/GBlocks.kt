@@ -30,16 +30,6 @@ object GBlocks
 	}
 
 	@JvmField
-	val COMBUSTION_TABLE = registerBlock(
-		"combustion_table"
-	) {
-		CombustionTableBlock(
-			BlockBehaviour.Properties.of().strength(2.5f).sound(GSoundEvents.COMBUSTION_TABLE)
-				.requiresCorrectToolForDrops()
-		)
-	}
-
-	@JvmField
 	val WARPED_ANCHOR = registerBlock("warped_anchor") {
 		WarpedAnchorBlock(
 			BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).lightLevel {
@@ -52,9 +42,7 @@ object GBlocks
 	}
 
 	@JvmField
-	val SILVER_TILES = registerBlock(
-		"silver_tiles"
-	) {
+	val SILVER_TILES = registerBlock("silver_tiles") {
 		Block(
 			BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).requiresCorrectToolForDrops()
 				.sound(GSoundEvents.SILVER).strength(3.0f, 6.0f)
@@ -988,22 +976,6 @@ object GBlocks
 		)
 	}
 
-	@JvmField
-	val LUMIERE_COMPOSTER = registerNoTabBlock("lumiere_composter", {
-		LumiereComposterBlock(
-			BlockBehaviour.Properties.ofFullCopy(
-				Blocks.COMPOSTER
-			)
-		)
-	})
-	@JvmField
-	val SALINE_COMPOSTER = registerNoTabBlock("saline_composter", {
-		SoilComposterBlock(
-			BlockBehaviour.Properties.ofFullCopy(
-				Blocks.COMPOSTER
-			)
-		)
-	})
 	@JvmField
 	val POTTED_BOWL_LICHEN = registerNoTabBlock("potted_bowl_lichen", {
 		FlowerPotBlock(

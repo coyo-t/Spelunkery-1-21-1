@@ -106,7 +106,7 @@ object GItems
 
 	@JvmField
 	val GOLDEN_LICHEN_CORDYCEPS = regIt("golden_lichen_cordyceps") {
-		GoldenLichenCordycepsItem(
+		Item(
 			Item.Properties().food(GFoods.GOLDEN_LICHEN_CORDYCEPS)
 		)
 	}

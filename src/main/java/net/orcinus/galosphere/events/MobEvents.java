@@ -10,14 +10,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrownEnderpearl;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.component.ChargedProjectiles;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -32,24 +34,18 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.item.ItemExpireEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingGetProjectileEvent;
 import net.neoforged.neoforge.event.entity.player.ArrowLooseEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
-import net.orcinus.galosphere.Galosphere;
-import net.orcinus.galosphere.api.BannerAttachable;
-import net.orcinus.galosphere.api.GoldenBreath;
 import net.orcinus.galosphere.api.SpectreBoundSpyglass;
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock;
 import net.orcinus.galosphere.config.GalosphereConfig;
 import net.orcinus.galosphere.entities.*;
 import net.orcinus.galosphere.init.*;
 import net.orcinus.galosphere.items.SterlingArmorItem;
-import net.orcinus.galosphere.util.BannerRendererUtil;
 import net.orcinus.galosphere.util.PreservedShulkerBox;
 
 import java.util.Comparator;
@@ -227,21 +223,6 @@ public class MobEvents
 	}
 	
 	@SubscribeEvent
-	public void onLivingDeath (LivingDeathEvent event)
-	{
-		LivingEntity livingEntity = event.getEntity();
-		if (livingEntity instanceof Horse horse && horse instanceof BannerAttachable bannerAttachable)
-		{
-			if (!bannerAttachable.getBanner().isEmpty() && horse.getBodyArmorItem().is(GItems.STERLING_HORSE_ARMOR.get()))
-			{
-				ItemStack copy = bannerAttachable.getBanner();
-				horse.spawnAtLocation(copy);
-				bannerAttachable.setBanner(ItemStack.EMPTY);
-			}
-		}
-	}
-	
-	@SubscribeEvent
 	public void onLivingDamage (LivingHurtEvent event)
 	{
 		LivingEntity entity = event.getEntity();
@@ -271,92 +252,10 @@ public class MobEvents
 	}
 	
 	@SubscribeEvent
-	public void onRightClickEntity (PlayerInteractEvent.EntityInteract event)
-	{
-		ItemStack stack = event.getItemStack();
-		Player player = event.getEntity();
-		InteractionHand hand = event.getHand();
-		Entity target = event.getTarget();
-		BannerRendererUtil util = new BannerRendererUtil();
-		if (target instanceof Horse horse)
-		{
-			if (horse.getBodyArmorItem().is(GItems.STERLING_HORSE_ARMOR.get()))
-			{
-				if (((BannerAttachable)horse).getBanner().isEmpty())
-				{
-					if (util.isTapestryStack(stack) || stack.getItem() instanceof BannerItem)
-					{
-						if (!horse.level().isClientSide())
-						{
-							event.setCanceled(true);
-							ItemStack copy = stack.copy();
-							if (!player.getAbilities().instabuild)
-							{
-								stack.shrink(1);
-							}
-							copy.setCount(1);
-							horse.level().playSound(null, horse, SoundEvents.HORSE_ARMOR, SoundSource.PLAYERS, 1.0F, 1.0F);
-							horse.gameEvent(GameEvent.ENTITY_INTERACT, player);
-							((BannerAttachable)horse).setBanner(copy);
-							player.swing(hand);
-						}
-					}
-				}
-				else
-				{
-					if (player.isShiftKeyDown() && stack.isEmpty())
-					{
-						if (!horse.level().isClientSide())
-						{
-							event.setCanceled(true);
-							ItemStack copy = ((BannerAttachable)horse).getBanner();
-							player.setItemInHand(hand, copy);
-							horse.level().playSound(null, horse, SoundEvents.HORSE_ARMOR, SoundSource.PLAYERS, 1.0F, 1.0F);
-							horse.gameEvent(GameEvent.ENTITY_INTERACT, player);
-							((BannerAttachable)horse).setBanner(ItemStack.EMPTY);
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	@SubscribeEvent
 	public void onLivingUpdate (LivingEvent.LivingTickEvent event)
 	{
 		LivingEntity entity = event.getEntity();
 		ItemStack useItem = entity.getUseItem();
-		if (entity instanceof BannerAttachable bannerEntity)
-		{
-			if (!bannerEntity.getBanner().isEmpty())
-			{
-				if (entity instanceof Horse horse)
-				{
-					if (!((BannerAttachable)horse).getBanner().isEmpty() && !horse.getBodyArmorItem().is(GItems.STERLING_HORSE_ARMOR.get()))
-					{
-						ItemStack copy = ((BannerAttachable)horse).getBanner();
-						horse.spawnAtLocation(copy);
-						((BannerAttachable)horse).setBanner(ItemStack.EMPTY);
-					}
-				}
-				else
-				{
-					if (!entity.getItemBySlot(EquipmentSlot.HEAD).is(GItems.STERLING_HELMET.get()))
-					{
-						ItemStack copy = bannerEntity.getBanner();
-						entity.spawnAtLocation(copy);
-						bannerEntity.setBanner(ItemStack.EMPTY);
-					}
-				}
-			}
-		}
-		if (entity.isAlive() && entity instanceof GoldenBreath goldenBreath)
-		{
-			if (goldenBreath.getGoldenAirSupply() > 0)
-			{
-				goldenBreath.setGoldenAirSupply(goldenBreath.decreaseGoldenAirSupply(entity, (int)goldenBreath.getGoldenAirSupply()));
-			}
-		}
 		if (SpectreBoundSpyglass.canUseSpectreBoundedSpyglass(useItem))
 		{
 			if (!entity.level().isClientSide)

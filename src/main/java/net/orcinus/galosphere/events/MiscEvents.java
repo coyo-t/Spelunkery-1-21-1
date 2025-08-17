@@ -1,17 +1,13 @@
 package net.orcinus.galosphere.events;
 
+import dissonance.mixin.LootTableAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.ProjectileDispenseBehavior;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BannerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionBrewing;
@@ -30,24 +26,18 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
-import net.orcinus.galosphere.Galosphere;
-import net.orcinus.galosphere.api.BannerAttachable;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.orcinus.galosphere.blocks.LumiereComposterBlock;
 import net.orcinus.galosphere.config.GalosphereConfig;
 import net.orcinus.galosphere.crafting.LumiereComposterDispenseItemBehavior;
 import net.orcinus.galosphere.crafting.LumiereReformingManager;
 import net.orcinus.galosphere.crafting.MonstrometerDispenseItemBehavior;
-import net.orcinus.galosphere.crafting.PickaxeDispenseItemBehavior;
 import net.orcinus.galosphere.crafting.WarpedAnchorDispenseItemBehavior;
-import net.orcinus.galosphere.init.GBlocks;
-import net.orcinus.galosphere.init.GItems;
-import net.orcinus.galosphere.init.GNetworkHandler;
-import net.orcinus.galosphere.init.GPotions;
-import net.orcinus.galosphere.init.GSoundEvents;
-import dissonance.mixin.LootTableAccessor;
+import net.orcinus.galosphere.init.*;
 import net.orcinus.galosphere.network.BarometerPacket;
-import net.orcinus.galosphere.util.BannerRendererUtil;
 
 import java.util.List;
 
@@ -126,13 +116,6 @@ public class MiscEvents
 		BlockPos pos = event.getPos();
 		Level world = event.getLevel();
 		BlockState state = world.getBlockState(pos);
-		if (player.isShiftKeyDown() && !((BannerAttachable)player).getBanner().isEmpty() && stack.isEmpty())
-		{
-			ItemStack copy = ((BannerAttachable)player).getBanner();
-			player.setItemInHand(hand, copy);
-			player.gameEvent(GameEvent.EQUIP, player);
-			((BannerAttachable)player).setBanner(ItemStack.EMPTY);
-		}
 		if (state.getBlock() == Blocks.COMPOSTER)
 		{
 			InteractionHand offHand = InteractionHand.OFF_HAND;
@@ -153,32 +136,7 @@ public class MiscEvents
 			}
 		}
 	}
-	
-	@SubscribeEvent
-	public void onRightClick (PlayerInteractEvent.RightClickItem event)
-	{
-		ItemStack stack = event.getItemStack();
-		Player player = event.getEntity();
-		InteractionHand hand = event.getHand();
-		Level world = event.getLevel();
-		BannerRendererUtil util = new BannerRendererUtil();
-		if (((BannerAttachable)player).getBanner().isEmpty() && player.getItemBySlot(EquipmentSlot.HEAD).is(GItems.STERLING_HELMET.get()))
-		{
-			if (util.isTapestryStack(stack) || stack.getItem() instanceof BannerItem)
-			{
-				player.gameEvent(GameEvent.EQUIP, player);
-				ItemStack copy = stack.copy();
-				if (!player.getAbilities().instabuild)
-				{
-					stack.shrink(1);
-				}
-				copy.setCount(1);
-				((BannerAttachable)player).setBanner(copy);
-				player.playSound(SoundEvents.ARMOR_EQUIP_LEATHER.value(), 1.0F, 1.0F);
-				player.swing(hand);
-			}
-		}
-	}
+
 	
 	@SubscribeEvent
 	public void onTagsUpdated (TagsUpdatedEvent event)
@@ -187,10 +145,6 @@ public class MiscEvents
 		DispenserBlock.registerBehavior(GBlocks.ALLURITE_BLOCK.get().asItem(), new WarpedAnchorDispenseItemBehavior());
 		DispenserBlock.registerBehavior(GItems.LUMIERE_SHARD.get(), new LumiereComposterDispenseItemBehavior());
 		DispenserBlock.registerBehavior(GItems.GLOW_FLARE.get(), new ProjectileDispenseBehavior(GItems.GLOW_FLARE.get()));
-		BuiltInRegistries.ITEM.getTagOrEmpty(ItemTags.CLUSTER_MAX_HARVESTABLES).iterator().forEachRemaining(holder -> {
-			DispenserBlock.registerBehavior(holder.value(), new PickaxeDispenseItemBehavior());
-		});
-		
 	}
 	
 }
