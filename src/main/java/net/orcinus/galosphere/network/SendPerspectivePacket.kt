@@ -1,26 +1,28 @@
-package net.orcinus.galosphere.network;
+package net.orcinus.galosphere.network
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.FriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
+import net.minecraft.network.codec.StreamDecoder
+import net.minecraft.network.codec.StreamMemberEncoder
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload
+import java.util.*
 
-import java.util.UUID;
+@JvmRecord
+data class SendPerspectivePacket(@JvmField val uuid: UUID, @JvmField val id: Int) : CustomPacketPayload
+{
+	constructor(buf: FriendlyByteBuf) : this(buf.readUUID(), buf.readInt())
 
-public record SendPerspectivePacket(UUID uuid, int id) implements CustomPacketPayload {
-    public static final StreamCodec<FriendlyByteBuf, SendPerspectivePacket> CODEC = CustomPacketPayload.codec(SendPerspectivePacket::write, SendPerspectivePacket::new);
-    public static final Type<SendPerspectivePacket> TYPE = CustomPacketPayload.createType("send_perspective");
+	fun write(buf: FriendlyByteBuf)
+	{
+		buf.writeUUID(this.uuid)
+		buf.writeInt(this.id)
+	}
 
-    public SendPerspectivePacket(FriendlyByteBuf buf) {
-        this(buf.readUUID(), buf.readInt());
-    }
+	override fun type () = TYPE
 
-    public void write(FriendlyByteBuf buf) {
-        buf.writeUUID(this.uuid);
-        buf.writeInt(this.id);
-    }
-
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+	companion object
+	{
+		val CODEC = CustomPacketPayload.codec(SendPerspectivePacket::write, ::SendPerspectivePacket)
+		val TYPE = CustomPacketPayload.createType<SendPerspectivePacket>("send_perspective")
+	}
 }

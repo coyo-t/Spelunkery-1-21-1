@@ -1,9 +1,7 @@
 package net.orcinus.galosphere.init
 
-import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.level.block.entity.BlockEntityType
-import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.registries.DeferredRegister
 import net.orcinus.galosphere.Galosphere
 import net.orcinus.galosphere.blocks.blockentities.*
@@ -50,18 +48,6 @@ object GBlockEntityTypes
 						blockState
 					)
 				}, GBlocks.LICHEN_CORDYCEPS.get()).build(null)
-			})
-	@JvmField
-	val SHADOW_FRAME =
-		BLOCK_ENTITIES.register(
-			"shadow_frame",
-			Supplier {
-				BlockEntityType.Builder.of(BlockEntityType.BlockEntitySupplier { blockPos, blockState ->
-					ShadowFrameBlockEntity(
-						blockPos,
-						blockState
-					)
-				}, GBlocks.SHADOW_FRAME.get()).build(null)
 			})
 	@JvmField
 	val GILDED_BEADS =

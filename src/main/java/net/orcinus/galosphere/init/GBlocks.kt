@@ -950,18 +950,6 @@ object GBlocks
 	}
 
 	@JvmField
-	val SHADOW_FRAME = registerBlock("shadow_frame") {
-		ShadowFrameBlock(
-			BlockBehaviour.Properties.of()
-				.mapColor(MapColor.TERRACOTTA_GRAY)
-				.strength(3.0f, 6.0f)
-				.lightLevel { it.getValue(ShadowFrameBlock.LEVEL) }
-				.noCollission()
-				.sound(GSoundEvents.SILVER)
-		)
-	}
-
-	@JvmField
 	val GILDED_BEADS = registerBlock("gilded_beads") {
 		GildedBeadsBlock(
 			BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).noCollission().sound(GSoundEvents.GILDED_BEADS)

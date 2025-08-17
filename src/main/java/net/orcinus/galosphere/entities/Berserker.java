@@ -83,19 +83,19 @@ public class Berserker extends Monster
 		MemoryModuleType.HURT_BY,
 		MemoryModuleType.HURT_BY_ENTITY,
 		MemoryModuleType.NEAREST_ATTACKABLE,
-		GMemoryModuleTypes.IMPALING_COOLDOWN,
-		GMemoryModuleTypes.IMPALING_COUNT,
-		GMemoryModuleTypes.IS_SMASHING,
-		GMemoryModuleTypes.IS_IMPALING,
-		GMemoryModuleTypes.IS_SUMMONING,
-		GMemoryModuleTypes.SUMMONING_COOLDOWN,
-		GMemoryModuleTypes.SUMMON_COUNT,
-		GMemoryModuleTypes.SMASHING_COOLDOWN,
-		GMemoryModuleTypes.HURT_COUNT,
-		GMemoryModuleTypes.RAMPAGE_TICKS,
+		GMemoryModuleTypes.IMPALING_COOLDOWN.get(),
+		GMemoryModuleTypes.IMPALING_COUNT.get(),
+		GMemoryModuleTypes.IS_SMASHING.get(),
+		GMemoryModuleTypes.IS_IMPALING.get(),
+		GMemoryModuleTypes.IS_SUMMONING.get(),
+		GMemoryModuleTypes.SUMMONING_COOLDOWN.get(),
+		GMemoryModuleTypes.SUMMON_COUNT.get(),
+		GMemoryModuleTypes.SMASHING_COOLDOWN.get(),
+		GMemoryModuleTypes.HURT_COUNT.get(),
+		GMemoryModuleTypes.RAMPAGE_TICKS.get(),
 		MemoryModuleType.ROAR_SOUND_COOLDOWN,
 		MemoryModuleType.ROAR_SOUND_DELAY,
-		GMemoryModuleTypes.IS_SHAKING
+		GMemoryModuleTypes.IS_SHAKING.get()
 	);
 	private static final EntityDataAccessor<String> PHASE = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.STRING);
 	private static final EntityDataAccessor<Integer> STATIONARY_TICKS = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.INT);
@@ -441,8 +441,8 @@ public class Berserker extends Monster
 							 this.getPhase() != Phase.SMASH &&
 							 this.shouldAttack() &&
 							 this.isInHardMode() &&
-							 this.getBrain().getMemory(GMemoryModuleTypes.RAMPAGE_TICKS).isPresent() &&
-							 this.getBrain().getMemory(GMemoryModuleTypes.RAMPAGE_TICKS).get() > 0
+							 this.getBrain().getMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get()).isPresent() &&
+							 this.getBrain().getMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get()).get() > 0
 		).isPresent();
 	}
 	
@@ -496,18 +496,18 @@ public class Berserker extends Monster
 	{
 		if (!this.level().isClientSide && this.getPhase() != Phase.IDLING && this.isInHardMode())
 		{
-			if (this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT).isEmpty())
+			if (this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT.get()).isEmpty())
 			{
-				this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT, 0);
+				this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT.get(), 0);
 			}
 			else
 			{
-				int i = this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT).get() + 1;
+				int i = this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT.get()).get() + 1;
 				if (i > 2)
 				{
-					this.getBrain().setMemory(GMemoryModuleTypes.RAMPAGE_TICKS, UniformInt.of(30, 150).sample(this.getRandom()));
+					this.getBrain().setMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get(), UniformInt.of(30, 150).sample(this.getRandom()));
 				}
-				this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT, i);
+				this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT.get(), i);
 			}
 		}
 		if (damageSource.getDirectEntity() instanceof AbstractArrow && this.getPhase() != Phase.IDLING)

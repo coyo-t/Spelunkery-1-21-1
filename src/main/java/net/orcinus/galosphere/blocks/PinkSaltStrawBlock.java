@@ -58,7 +58,6 @@ public class PinkSaltStrawBlock extends Block implements SimpleWaterloggedBlock
 	private static final VoxelShape BOTTOM_UP_SHAPE = Block.box(2, 0.0, 2, 14, 16.0, 14);
 	private static final VoxelShape BOTTOM_DOWN_SHAPE = Block.box(2, 0.0, 2, 14, 16.0, 14);
 	private static final Map<Predicate<BlockState>, SaltReaction> REACTIONS = Util.make(Maps.newHashMap(), map -> {
-		map.put(blockState -> blockState.is(Blocks.COMPOSTER) && blockState.getValue(ComposterBlock.LEVEL) > 0, new SaltReaction(blockState -> GBlocks.SALINE_COMPOSTER.get().withPropertiesOf(blockState), 0.5F));
 		map.put(blockState -> WeatheringCopper.NEXT_BY_BLOCK.get().containsKey(blockState.getBlock()), new SaltReaction(blockState -> WeatheringCopper.getNext(blockState.getBlock()).orElseThrow().withPropertiesOf(blockState), 0.0015F));
 	});
 	

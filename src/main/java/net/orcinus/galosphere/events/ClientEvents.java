@@ -37,7 +37,6 @@ import net.orcinus.galosphere.client.particles.providers.SilverBombProvider;
 import net.orcinus.galosphere.client.particles.providers.WarpedProvider;
 import net.orcinus.galosphere.client.renderer.*;
 import net.orcinus.galosphere.client.renderer.block.GildedBeadsRenderer;
-import net.orcinus.galosphere.client.renderer.block.ShadowFrameBlockRenderer;
 import net.orcinus.galosphere.init.*;
 import net.orcinus.galosphere.items.SaltboundTabletItem;
 import org.jetbrains.annotations.Nullable;
@@ -335,7 +334,6 @@ public class ClientEvents
 		event.registerEntityRenderer(GEntityTypes.PRESERVED.get(), PreservedRenderer::new);
 		event.registerEntityRenderer(GEntityTypes.PINK_SALT_PILLAR.get(), PinkSaltPillarRenderer::new);
 		event.registerEntityRenderer(GEntityTypes.PINK_SALT_SHARD.get(), PinkSaltShardRenderer::new);
-		event.registerBlockEntityRenderer(GBlockEntityTypes.SHADOW_FRAME.get(), ShadowFrameBlockRenderer::new);
 		event.registerBlockEntityRenderer(GBlockEntityTypes.GILDED_BEADS.get(), GildedBeadsRenderer::new);
 	}
 	

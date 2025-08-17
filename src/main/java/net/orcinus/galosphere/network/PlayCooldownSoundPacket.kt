@@ -15,7 +15,7 @@ class PlayCooldownSoundPacket() : CustomPacketPayload
 
 	companion object
 	{
-		val CODEC = CustomPacketPayload.codec({ obj, buf -> obj.write(buf) }, ::PlayCooldownSoundPacket)
+		val CODEC = CustomPacketPayload.codec(PlayCooldownSoundPacket::write, ::PlayCooldownSoundPacket)
 		val TYPE = CustomPacketPayload.createType<PlayCooldownSoundPacket>("play_cooldown_sound")
 	}
 }

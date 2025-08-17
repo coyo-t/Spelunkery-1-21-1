@@ -1,24 +1,24 @@
-package net.orcinus.galosphere.network;
+package net.orcinus.galosphere.network
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.core.BlockPos
+import net.minecraft.network.FriendlyByteBuf
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 
-public record SendParticlesPacket(BlockPos blockPos) implements CustomPacketPayload {
-    public static final StreamCodec<FriendlyByteBuf, SendParticlesPacket> CODEC = CustomPacketPayload.codec(SendParticlesPacket::write, SendParticlesPacket::new);
-    public static final Type<SendParticlesPacket> TYPE = CustomPacketPayload.createType("send_particles");
+@JvmRecord
+data class SendParticlesPacket(@JvmField val blockPos: BlockPos) : CustomPacketPayload
+{
+	private constructor(buf: FriendlyByteBuf) : this(buf.readBlockPos())
 
-    private SendParticlesPacket(FriendlyByteBuf buf) {
-        this(buf.readBlockPos());
-    }
+	private fun write(buf: FriendlyByteBuf)
+	{
+		buf.writeBlockPos(blockPos)
+	}
 
-    private void write(FriendlyByteBuf buf) {
-        buf.writeBlockPos(blockPos);
-    }
+	override fun type() = TYPE
 
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
+	companion object
+	{
+		val CODEC = CustomPacketPayload.codec(SendParticlesPacket::write, ::SendParticlesPacket)
+		val TYPE = CustomPacketPayload.createType<SendParticlesPacket>("send_particles")
+	}
 }
