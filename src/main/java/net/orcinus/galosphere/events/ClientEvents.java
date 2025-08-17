@@ -324,7 +324,6 @@ public class ClientEvents
 	public static void registerEntityRenderers (EntityRenderersEvent.RegisterRenderers event)
 	{
 		event.registerEntityRenderer(GEntityTypes.SPARKLE.get(), SparkleRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.SILVER_BOMB.get(), context -> new ThrownItemRenderer<>(context, 1.5F, false));
 		event.registerEntityRenderer(GEntityTypes.SPECTRE.get(), SpectreRenderer::new);
 		event.registerEntityRenderer(GEntityTypes.GLOW_FLARE.get(), ThrowableLaunchedProjectileRenderer::new);
 		event.registerEntityRenderer(GEntityTypes.SPECTRE_FLARE.get(), ThrowableLaunchedProjectileRenderer::new);

@@ -71,9 +71,6 @@ object GItems
 	val BAROMETER = regIt("barometer")
 
 	@JvmField
-	val SILVER_BOMB = regIt("silver_bomb") { SilverBombItem(Item.Properties().stacksTo(16)) }
-
-	@JvmField
 	val STERLING_HELMET = regIt("sterling_helmet") { SterlingArmorItem(ArmorItem.Type.HELMET, Item.Properties().stacksTo(1)) }
 
 	@JvmField

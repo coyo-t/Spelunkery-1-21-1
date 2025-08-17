@@ -5,20 +5,18 @@ import net.minecraft.world.effect.MobEffect
 import net.minecraft.world.effect.MobEffectCategory
 import net.neoforged.neoforge.registries.DeferredRegister
 import net.orcinus.galosphere.Galosphere
-import net.orcinus.galosphere.effects.GMobEffect
 import java.util.function.Supplier
 
 object GMobEffects
 {
-	@JvmField
-	val MOB_EFFECTS =
-		DeferredRegister.create(Registries.MOB_EFFECT, Galosphere.MODID)
+	class MF(category: MobEffectCategory, col:Int): MobEffect(category, col)
 
-	@JvmField
-	val ASTRAL =
-		MOB_EFFECTS.register("astral") { rs -> GMobEffect(MobEffectCategory.BENEFICIAL, 0xc4b4b7) }
+	private infix fun MobEffectCategory.mfDoom (c:Int) = MF(this, c)
+	private infix fun (()->MobEffect).named (s:String) = MOB_EFFECTS.register(s, Supplier(this))
 
-	@JvmField
-	val BLOCK_BANE =
-		MOB_EFFECTS.register("block_bane") { rs -> GMobEffect(MobEffectCategory.HARMFUL, 0x742a07) }
+
+	@JvmField val MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, Galosphere.MODID)
+
+	@JvmField val ASTRAL = { MobEffectCategory.BENEFICIAL mfDoom 0xc4b4b7 } named "astral"
+	@JvmField val BLOCK_BANE = { MobEffectCategory.HARMFUL mfDoom 0x742a07 } named "block_bane"
 }

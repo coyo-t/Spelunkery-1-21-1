@@ -17,18 +17,6 @@ object GEntityTypes
 		DeferredRegister.create(Registries.ENTITY_TYPE, Galosphere.MODID)
 
 	@JvmField
-	val SILVER_BOMB = ENTITY_TYPES.register(
-		"silver_bomb",
-		Supplier {
-			EntityType.Builder.of({ entity, world ->
-				SilverBomb(
-					entity,
-					world
-				)
-			}, MobCategory.MISC).sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(10)
-				.build(Galosphere.id("silver_bomb").toString())
-		})
-	@JvmField
 	val SPARKLE = ENTITY_TYPES.register(
 		"sparkle",
 		Supplier {
