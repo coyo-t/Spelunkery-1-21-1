@@ -1,4 +1,4 @@
-package net.orcinus.galosphere.world.gen;
+package dissonance.util.noizor;
 
 public class GVector2f {
 

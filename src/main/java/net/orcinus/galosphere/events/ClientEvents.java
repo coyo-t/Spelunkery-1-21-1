@@ -339,7 +339,6 @@ public class ClientEvents
 	@SubscribeEvent
 	public static void registerParticles (RegisterParticleProvidersEvent event)
 	{
-		event.registerSpecial(GParticleTypes.SILVER_BOMB.get(), new SilverBombProvider());
 		event.registerSpriteSet(GParticleTypes.WARPED.get(), WarpedProvider::new);
 		event.registerSpriteSet(GParticleTypes.ALLURITE_RAIN.get(), CrystalRainParticle.Provider::new);
 		event.registerSpriteSet(GParticleTypes.LUMIERE_RAIN.get(), CrystalRainParticle.Provider::new);

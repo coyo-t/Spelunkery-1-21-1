@@ -1,6 +1,5 @@
 package net.orcinus.galosphere.init
 
-import net.minecraft.core.particles.ParticleType
 import net.minecraft.core.particles.SimpleParticleType
 import net.minecraft.core.registries.Registries
 import net.neoforged.neoforge.registries.DeferredRegister
@@ -9,30 +8,18 @@ import java.util.function.Supplier
 
 object GParticleTypes
 {
-	@JvmField
-	val PARTICLES = DeferredRegister.create(Registries.PARTICLE_TYPE, Galosphere.MODID)
+	@JvmField val PARTICLES = DeferredRegister.create(Registries.PARTICLE_TYPE, Galosphere.MODID)
 
-	@JvmField
-	val AURA_RINGER_INDICATOR = registerParticle("aura_ringer_indicator", false)
-	@JvmField
-	val SILVER_BOMB = registerParticle("item_silverbomb", false)
-	@JvmField
-	val WARPED = registerParticle("warped", false)
-	@JvmField
-	val ALLURITE_RAIN = registerParticle("allurite_rain", false)
-	@JvmField
-	val LUMIERE_RAIN = registerParticle("lumiere_rain", false)
-	@JvmField
-	val AMETHYST_RAIN = registerParticle("amethyst_rain", false)
-	@JvmField
-	val SPECTATE_ORB = registerParticle("spectate_orb", false)
-	@JvmField
-	val PINK_SALT_FALLING_DUST = registerParticle("pink_salt_falling_dust", false)
-	@JvmField
-	val IMPACT = registerParticle("impact", false)
+	@JvmField val AURA_RINGER_INDICATOR = rp("aura_ringer_indicator")
 
-	fun registerParticle(key: String, alwaysShow: Boolean): Supplier<SimpleParticleType>
-	{
-		return PARTICLES.register(key, Supplier { SimpleParticleType(alwaysShow) })
-	}
+	@JvmField val WARPED = rp("warped")
+	@JvmField val ALLURITE_RAIN = rp("allurite_rain")
+	@JvmField val LUMIERE_RAIN = rp("lumiere_rain")
+	@JvmField val AMETHYST_RAIN = rp("amethyst_rain")
+	@JvmField val SPECTATE_ORB = rp("spectate_orb")
+	@JvmField val PINK_SALT_FALLING_DUST = rp("pink_salt_falling_dust")
+	@JvmField val IMPACT = rp("impact")
+
+	private fun rp(key: String)
+		= PARTICLES.register(key, Supplier { SimpleParticleType(false) })
 }

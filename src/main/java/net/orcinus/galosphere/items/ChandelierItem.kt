@@ -1,30 +1,27 @@
-package net.orcinus.galosphere.items;
+package net.orcinus.galosphere.items
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.orcinus.galosphere.blocks.ChandelierBlock;
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
+import net.minecraft.world.item.BlockItem
+import net.minecraft.world.item.context.BlockPlaceContext
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.state.BlockState
+import net.orcinus.galosphere.blocks.ChandelierBlock
 
-public class ChandelierItem extends BlockItem
+class ChandelierItem(block: Block, properties: Properties) : BlockItem(block, properties)
 {
-	
-	public ChandelierItem (Block block, Properties properties)
+	override fun placeBlock(blockPlaceContext: BlockPlaceContext, blockState: BlockState): Boolean
 	{
-		super(block, properties);
+		val blockPos: BlockPos
+		val level = blockPlaceContext.level
+		val blockState2 = if (level.isWaterAt(
+				blockPlaceContext.clickedPos
+					.relative(blockState.getValue(ChandelierBlock.VERTICAL_DIRECTION)).also { blockPos = it })
+		) Blocks.WATER.defaultBlockState()
+		else Blocks.AIR.defaultBlockState()
+		level.setBlock(blockPos, blockState2, 0b11011)
+		return super.placeBlock(blockPlaceContext, blockState)
 	}
-	
-	@Override
-	protected boolean placeBlock (BlockPlaceContext blockPlaceContext, BlockState blockState)
-	{
-		BlockPos blockPos;
-		Level level = blockPlaceContext.getLevel();
-		BlockState blockState2 = level.isWaterAt(blockPos = blockPlaceContext.getClickedPos().relative(blockState.getValue(ChandelierBlock.VERTICAL_DIRECTION))) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
-		level.setBlock(blockPos, blockState2, 27);
-		return super.placeBlock(blockPlaceContext, blockState);
-	}
-	
 }

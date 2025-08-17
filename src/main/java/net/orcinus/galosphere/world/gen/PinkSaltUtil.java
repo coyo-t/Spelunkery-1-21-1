@@ -1,5 +1,6 @@
 package net.orcinus.galosphere.world.gen;
 
+import dissonance.util.noizor.FastNoise;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.orcinus.galosphere.init.GBlocks;

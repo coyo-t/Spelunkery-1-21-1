@@ -1,4 +1,4 @@
-package com.ordana.spelunkery.worldgen.feature_configs.util;
+package dissonance.util.noizor;
 
 // MIT License
 //
@@ -709,44 +709,30 @@ public class FastNoiseLite
 	
 	private float GenNoiseSingle (int seed, /*FNLfloat*/ double x, /*FNLfloat*/ double y)
 	{
-		switch (mNoiseType)
+		return switch (mNoiseType)
 		{
-			case OpenSimplex2:
-				return SingleSimplex(seed, x, y);
-			case OpenSimplex2S:
-				return SingleOpenSimplex2S(seed, x, y);
-			case Cellular:
-				return SingleCellular(seed, x, y);
-			case Perlin:
-				return SinglePerlin(seed, x, y);
-			case ValueCubic:
-				return SingleValueCubic(seed, x, y);
-			case Value:
-				return SingleValue(seed, x, y);
-			default:
-				return 0;
-		}
+			case OpenSimplex2 -> SingleSimplex(seed, x, y);
+			case OpenSimplex2S -> SingleOpenSimplex2S(seed, x, y);
+			case Cellular -> SingleCellular(seed, x, y);
+			case Perlin -> SinglePerlin(seed, x, y);
+			case ValueCubic -> SingleValueCubic(seed, x, y);
+			case Value -> SingleValue(seed, x, y);
+			default -> 0;
+		};
 	}
 	
 	private float GenNoiseSingle (int seed, /*FNLfloat*/ double x, /*FNLfloat*/ double y, /*FNLfloat*/ double z)
 	{
-		switch (mNoiseType)
+		return switch (mNoiseType)
 		{
-			case OpenSimplex2:
-				return SingleOpenSimplex2(seed, x, y, z);
-			case OpenSimplex2S:
-				return SingleOpenSimplex2S(seed, x, y, z);
-			case Cellular:
-				return SingleCellular(seed, x, y, z);
-			case Perlin:
-				return SinglePerlin(seed, x, y, z);
-			case ValueCubic:
-				return SingleValueCubic(seed, x, y, z);
-			case Value:
-				return SingleValue(seed, x, y, z);
-			default:
-				return 0;
-		}
+			case OpenSimplex2 -> SingleOpenSimplex2(seed, x, y, z);
+			case OpenSimplex2S -> SingleOpenSimplex2S(seed, x, y, z);
+			case Cellular -> SingleCellular(seed, x, y, z);
+			case Perlin -> SinglePerlin(seed, x, y, z);
+			case ValueCubic -> SingleValueCubic(seed, x, y, z);
+			case Value -> SingleValue(seed, x, y, z);
+			default -> 0;
+		};
 	}
 	
 	
@@ -754,27 +740,16 @@ public class FastNoiseLite
 	
 	private void UpdateTransformType3D ()
 	{
-		switch (mRotationType3D)
+		mTransformType3D = switch (mRotationType3D)
 		{
-			case ImproveXYPlanes:
-				mTransformType3D = TransformType3D.ImproveXYPlanes;
-				break;
-			case ImproveXZPlanes:
-				mTransformType3D = TransformType3D.ImproveXZPlanes;
-				break;
-			default:
-				switch (mNoiseType)
-				{
-					case OpenSimplex2:
-					case OpenSimplex2S:
-						mTransformType3D = TransformType3D.DefaultOpenSimplex2;
-						break;
-					default:
-						mTransformType3D = TransformType3D.None;
-						break;
-				}
-				break;
-		}
+			case ImproveXYPlanes -> TransformType3D.ImproveXYPlanes;
+			case ImproveXZPlanes -> TransformType3D.ImproveXZPlanes;
+			default -> switch (mNoiseType)
+			{
+				case OpenSimplex2, OpenSimplex2S -> TransformType3D.DefaultOpenSimplex2;
+				default -> TransformType3D.None;
+			};
+		};
 	}
 	
 	private void UpdateWarpTransformType3D ()

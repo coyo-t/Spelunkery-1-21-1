@@ -28,7 +28,6 @@ public class Galosphere
 		
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, GalosphereConfig.COMMON);
 		
-		GAttributes.ATTRIBTUES.register(modEventBus);
 		GBlocks.BLOCKS.register(modEventBus);
 		GBlockEntityTypes.BLOCK_ENTITIES.register(modEventBus);
 		GCreativeModeTabs.CREATIVE_MODE_TABS.register(modEventBus);
@@ -38,7 +37,6 @@ public class Galosphere
 		GEntityTypes.ENTITY_TYPES.register(modEventBus);
 		GFeatures.FEATURES.register(modEventBus);
 		GItems.ITEMS.register(modEventBus);
-		GLootModifiers.LOOT_MODIFIERS.register(modEventBus);
 		GMemoryModuleTypes.MEMORY_MODULE_TYPES.register(modEventBus);
 		GMobEffects.MOB_EFFECTS.register(modEventBus);
 		GPotions.POTIONS.register(modEventBus);

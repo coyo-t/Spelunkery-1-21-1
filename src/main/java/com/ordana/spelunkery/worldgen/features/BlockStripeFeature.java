@@ -1,7 +1,7 @@
 package com.ordana.spelunkery.worldgen.features;
 
 import com.ordana.spelunkery.worldgen.feature_configs.BlockStripeFeatureConfig;
-import com.ordana.spelunkery.worldgen.feature_configs.util.FastNoiseLite;
+import dissonance.util.noizor.FastNoiseLite;
 import com.ordana.spelunkery.worldgen.feature_configs.util.StoneEntry;
 import com.ordana.spelunkery.worldgen.feature_configs.util.StonePattern;
 import net.minecraft.core.BlockPos;

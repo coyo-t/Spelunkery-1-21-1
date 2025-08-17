@@ -1,88 +1,75 @@
-package net.orcinus.galosphere.items;
+package net.orcinus.galosphere.items
 
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.stats.Stats;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.Level;
-import net.orcinus.galosphere.api.SpectreBoundSpyglass;
-import net.orcinus.galosphere.init.GCriteriaTriggers;
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.sounds.SoundEvents
+import net.minecraft.stats.Stats
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResultHolder
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.ItemUtils
+import net.minecraft.world.item.UseAnim
+import net.minecraft.world.level.Level
+import net.orcinus.galosphere.api.SpectreBoundSpyglass
+import net.orcinus.galosphere.init.GCriteriaTriggers
 
-public class SpectreBoundSpyglassItem extends Item
+class SpectreBoundSpyglassItem(properties: Properties) : Item(properties)
 {
-	
-	public SpectreBoundSpyglassItem (Properties properties)
+	override fun getUseDuration(itemStack: ItemStack, livingEntity: LivingEntity): Int
 	{
-		super(properties);
+		return 1200
 	}
-	
-	@Override
-	public int getUseDuration (ItemStack itemStack, LivingEntity livingEntity)
+
+	override fun getUseAnimation(itemStack: ItemStack): UseAnim
 	{
-		return 1200;
+		return UseAnim.SPYGLASS
 	}
-	
-	@Override
-	public UseAnim getUseAnimation (ItemStack itemStack)
-	{
-		return UseAnim.SPYGLASS;
-	}
-	
-	@Override
-	public InteractionResultHolder<ItemStack> use (Level level, Player player, InteractionHand interactionHand)
+
+	override fun use(level: Level, player: Player, interactionHand: InteractionHand): InteractionResultHolder<ItemStack?>
 	{
 		if (!SpectreBoundSpyglass.canUseSpectreBoundedSpyglass(player.getItemInHand(interactionHand)))
 		{
-			return InteractionResultHolder.fail(player.getItemInHand(interactionHand));
+			return InteractionResultHolder.fail<ItemStack?>(player.getItemInHand(interactionHand))
 		}
 		else
 		{
-			if (player instanceof ServerPlayer serverPlayer)
+			if (player is ServerPlayer)
 			{
 				if (!level.isClientSide)
 				{
-					GCriteriaTriggers.USE_SPECTRE_SPYGLASS.get().trigger(serverPlayer);
+					GCriteriaTriggers.USE_SPECTRE_SPYGLASS.get().trigger(player)
 				}
-				player.awardStat(Stats.ITEM_USED.get(this));
+				player.awardStat(Stats.ITEM_USED.get(this))
 			}
-			player.playSound(SoundEvents.SPYGLASS_USE, 1.0f, 1.0f);
-			return ItemUtils.startUsingInstantly(level, player, interactionHand);
+			player.playSound(SoundEvents.SPYGLASS_USE, 1.0f, 1.0f)
+			return ItemUtils.startUsingInstantly(level, player, interactionHand)
 		}
 	}
-	
-	@Override
-	public ItemStack finishUsingItem (ItemStack itemStack, Level level, LivingEntity livingEntity)
+
+	override fun finishUsingItem(itemStack: ItemStack, level: Level, livingEntity: LivingEntity): ItemStack
 	{
-		this.stopUsing(livingEntity);
-		return itemStack;
+		this.stopUsing(livingEntity)
+		return itemStack
 	}
-	
-	@Override
-	public void releaseUsing (ItemStack itemStack, Level level, LivingEntity livingEntity, int i)
+
+	override fun releaseUsing(itemStack: ItemStack, level: Level, livingEntity: LivingEntity, i: Int)
 	{
-		this.stopUsing(livingEntity);
+		this.stopUsing(livingEntity)
 	}
-	
-	@Override
-	public boolean isFoil (ItemStack itemStack)
+
+	override fun isFoil(itemStack: ItemStack): Boolean
 	{
-		return true;
+		return true
 	}
-	
-	private void stopUsing (LivingEntity livingEntity)
+
+	private fun stopUsing(livingEntity: LivingEntity)
 	{
-		livingEntity.playSound(SoundEvents.SPYGLASS_STOP_USING, 1.0f, 1.0f);
-		if (livingEntity instanceof Player player)
+		livingEntity.playSound(SoundEvents.SPYGLASS_STOP_USING, 1.0f, 1.0f)
+		if (livingEntity is Player)
 		{
-			player.getCooldowns().addCooldown(this, 20);
+			livingEntity.cooldowns.addCooldown(this, 20)
 		}
 	}
-	
 }

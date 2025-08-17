@@ -19,7 +19,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.orcinus.galosphere.Galosphere;
 import net.orcinus.galosphere.client.model.SterlingArmorModel;
 import net.orcinus.galosphere.init.GArmorMaterials;
-import net.orcinus.galosphere.init.GAttributes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +42,6 @@ public class SterlingArmorItem extends ArmorItem
 			ResourceLocation gResourceLocation = Galosphere.id("armor." + type.getName());
 			builder.add(Attributes.ARMOR, new AttributeModifier(resourceLocation, this.getMaterial().value().getDefense(type), AttributeModifier.Operation.ADD_VALUE), equipmentSlotGroup);
 			builder.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(resourceLocation, this.getMaterial().value().toughness(), AttributeModifier.Operation.ADD_VALUE), equipmentSlotGroup);
-			builder.add(GAttributes.ILLAGER_RESISTANCE.getHolder().orElseThrow(), new AttributeModifier(gResourceLocation, this.getIllagerResistance(type.getSlot()), AttributeModifier.Operation.ADD_VALUE), equipmentSlotGroup);
 			return builder.build();
 		});
 	}

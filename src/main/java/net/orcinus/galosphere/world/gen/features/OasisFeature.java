@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.material.Fluids;
 import net.orcinus.galosphere.Galosphere;
-import net.orcinus.galosphere.world.gen.FastNoise;
+import dissonance.util.noizor.FastNoise;
 import net.orcinus.galosphere.world.gen.PinkSaltUtil;
 
 import java.util.List;

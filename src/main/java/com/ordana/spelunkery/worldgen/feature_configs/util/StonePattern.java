@@ -2,6 +2,7 @@ package com.ordana.spelunkery.worldgen.feature_configs.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dissonance.util.noizor.FastNoiseLite;
 import net.minecraft.core.BlockPos;
 
 public class StonePattern

@@ -5,7 +5,7 @@ import net.minecraft.core.UUIDUtil
 import net.minecraft.network.codec.ByteBufCodecs
 import net.minecraft.network.codec.StreamCodec
 import net.minecraft.util.ExtraCodecs
-import net.orcinus.galosphere.util.GByteBufCodecs
+import dissonance.util.GByteBufCodecs
 import java.util.*
 
 @JvmRecord

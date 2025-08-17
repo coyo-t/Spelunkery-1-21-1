@@ -1,160 +1,163 @@
-package net.orcinus.galosphere.init;
+package net.orcinus.galosphere.init
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
-import net.orcinus.galosphere.Galosphere;
+import com.jcraft.jorbis.Block
+import net.minecraft.core.registries.Registries
+import net.minecraft.network.chat.Component
+import net.minecraft.world.item.CreativeModeTab
+import net.minecraft.world.item.CreativeModeTab.DisplayItemsGenerator
+import net.minecraft.world.item.CreativeModeTab.ItemDisplayParameters
+import net.minecraft.world.item.Item
+import net.minecraft.world.level.ItemLike
+import net.neoforged.neoforge.registries.DeferredRegister
+import net.orcinus.galosphere.Galosphere
+import java.util.function.Supplier
 
-@Mod.EventBusSubscriber(modid = Galosphere.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class GCreativeModeTabs {
+object GCreativeModeTabs
+{
+	private operator fun <T : ItemLike> CreativeModeTab.Output.plusAssign(s: Supplier<T>) = accept(s.get())
 
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Galosphere.MODID);
+	@JvmField
+	val CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Galosphere.MODID)
 
-    public static final RegistryObject<CreativeModeTab> GALOSPHERE = CREATIVE_MODE_TABS.register("galosphere", () -> CreativeModeTab.builder()
-            .icon(GItems.ICON_ITEM.get()::getDefaultInstance)
-            .title(Component.translatable("itemGroup.galosphere.galosphere"))
-            .displayItems((itemDisplayParameters, output) -> {
-                output.accept(GItems.SILVER_UPGRADE_SMITHING_TEMPLATE.get());
-                output.accept(GItems.PRESERVED_TEMPLATE.get());
-                output.accept(GItems.SALTBOUND_TABLET.get());
-                output.accept(GItems.SPARKLE_SPAWN_EGG.get());
-                output.accept(GItems.SPECTRE_SPAWN_EGG.get());
-                output.accept(GItems.SPECTERPILLAR_SPAWN_EGG.get());
-                output.accept(GItems.BERSERKER_SPAWN_EGG.get());
-                output.accept(GItems.PRESERVED_SPAWN_EGG.get());
-                output.accept(GItems.BOTTLE_OF_SPECTRE.get());
-                output.accept(GItems.ALLURITE_SHARD.get());
-                output.accept(GItems.LUMIERE_SHARD.get());
-                output.accept(GItems.PINK_SALT_SHARD.get());
-                output.accept(GItems.RAW_SILVER.get());
-                output.accept(GItems.SILVER_INGOT.get());
-                output.accept(GItems.SILVER_NUGGET.get());
-                output.accept(GItems.BAROMETER.get());
-                output.accept(GItems.SILVER_BOMB.get());
-                output.accept(GItems.STERLING_HELMET.get());
-                output.accept(GItems.STERLING_CHESTPLATE.get());
-                output.accept(GItems.STERLING_LEGGINGS.get());
-                output.accept(GItems.STERLING_BOOTS.get());
-                output.accept(GItems.STERLING_HORSE_ARMOR.get());
-                output.accept(GItems.LICHEN_CORDYCEPS.get());
-                output.accept(GItems.GOLDEN_LICHEN_CORDYCEPS.get());
-                output.accept(GItems.SALTED_JERKY.get());
-                output.accept(GItems.PRESERVED_FLESH.get());
-                output.accept(GItems.CURED_MEMBRANE.get());
-                output.accept(GItems.GLOW_FLARE.get());
-                output.accept(GItems.SPECTRE_FLARE.get());
-                output.accept(GItems.CHANDELIER.get());
-                output.accept(GBlocks.GILDED_BEADS.get());
-                output.accept(GBlocks.MONSTROMETER.get());
-                output.accept(GBlocks.COMBUSTION_TABLE.get());
-                output.accept(GBlocks.WARPED_ANCHOR.get());
-                output.accept(GBlocks.SHADOW_FRAME.get());
-                output.accept(GBlocks.SILVER_BALANCE.get());
-                output.accept(GBlocks.SILVER_TILES.get());
-                output.accept(GBlocks.SILVER_TILES_STAIRS.get());
-                output.accept(GBlocks.SILVER_TILES_SLAB.get());
-                output.accept(GBlocks.SILVER_PANEL.get());
-                output.accept(GBlocks.SILVER_PANEL_STAIRS.get());
-                output.accept(GBlocks.SILVER_PANEL_SLAB.get());
-                output.accept(GBlocks.SILVER_LATTICE.get());
-                output.accept(GBlocks.SILVER_ORE.get());
-                output.accept(GBlocks.DEEPSLATE_SILVER_ORE.get());
-                output.accept(GBlocks.SILVER_BLOCK.get());
-                output.accept(GBlocks.RAW_SILVER_BLOCK.get());
-                output.accept(GBlocks.ALLURITE_BLOCK.get());
-                output.accept(GBlocks.LUMIERE_BLOCK.get());
-                output.accept(GBlocks.CHARGED_LUMIERE_BLOCK.get());
-                output.accept(GBlocks.ALLURITE_CLUSTER.get());
-                output.accept(GBlocks.LUMIERE_CLUSTER.get());
-                output.accept(GBlocks.GLINTED_ALLURITE_CLUSTER.get());
-                output.accept(GBlocks.GLINTED_LUMIERE_CLUSTER.get());
-                output.accept(GBlocks.GLINTED_AMETHYST_CLUSTER.get());
-                output.accept(GBlocks.AMETHYST_STAIRS.get());
-                output.accept(GBlocks.AMETHYST_SLAB.get());
-                output.accept(GBlocks.ALLURITE_STAIRS.get());
-                output.accept(GBlocks.ALLURITE_SLAB.get());
-                output.accept(GBlocks.LUMIERE_STAIRS.get());
-                output.accept(GBlocks.LUMIERE_SLAB.get());
-                output.accept(GBlocks.SMOOTH_AMETHYST.get());
-                output.accept(GBlocks.SMOOTH_AMETHYST_STAIRS.get());
-                output.accept(GBlocks.SMOOTH_AMETHYST_SLAB.get());
-                output.accept(GBlocks.SMOOTH_ALLURITE.get());
-                output.accept(GBlocks.SMOOTH_ALLURITE_STAIRS.get());
-                output.accept(GBlocks.SMOOTH_ALLURITE_SLAB.get());
-                output.accept(GBlocks.SMOOTH_LUMIERE.get());
-                output.accept(GBlocks.SMOOTH_LUMIERE_STAIRS.get());
-                output.accept(GBlocks.SMOOTH_LUMIERE_SLAB.get());
-                output.accept(GBlocks.AMETHYST_BRICKS.get());
-                output.accept(GBlocks.AMETHYST_BRICK_STAIRS.get());
-                output.accept(GBlocks.AMETHYST_BRICK_SLAB.get());
-                output.accept(GBlocks.ALLURITE_BRICKS.get());
-                output.accept(GBlocks.ALLURITE_BRICK_STAIRS.get());
-                output.accept(GBlocks.ALLURITE_BRICK_SLAB.get());
-                output.accept(GBlocks.LUMIERE_BRICKS.get());
-                output.accept(GBlocks.LUMIERE_BRICK_STAIRS.get());
-                output.accept(GBlocks.LUMIERE_BRICK_SLAB.get());
-                output.accept(GBlocks.CHISELED_AMETHYST.get());
-                output.accept(GBlocks.CHISELED_ALLURITE.get());
-                output.accept(GBlocks.CHISELED_LUMIERE.get());
-                output.accept(GBlocks.AMETHYST_LAMP.get());
-                output.accept(GBlocks.ALLURITE_LAMP.get());
-                output.accept(GBlocks.LUMIERE_LAMP.get());
-                output.accept(GBlocks.LICHEN_MOSS.get());
-                output.accept(GBlocks.LICHEN_ROOTS.get());
-                output.accept(GBlocks.BOWL_LICHEN.get());
-                output.accept(GBlocks.LICHEN_SHELF.get());
-                output.accept(GBlocks.GLOW_INK_CLUMPS.get());
-                output.accept(GBlocks.PINK_SALT.get());
-                output.accept(GBlocks.ROSE_PINK_SALT.get());
-                output.accept(GBlocks.PASTEL_PINK_SALT.get());
-                output.accept(GBlocks.PINK_SALT_STAIRS.get());
-                output.accept(GBlocks.ROSE_PINK_SALT_STAIRS.get());
-                output.accept(GBlocks.PASTEL_PINK_SALT_STAIRS.get());
-                output.accept(GBlocks.PINK_SALT_SLAB.get());
-                output.accept(GBlocks.ROSE_PINK_SALT_SLAB.get());
-                output.accept(GBlocks.PASTEL_PINK_SALT_SLAB.get());
-                output.accept(GBlocks.PINK_SALT_WALL.get());
-                output.accept(GBlocks.ROSE_PINK_SALT_WALL.get());
-                output.accept(GBlocks.PASTEL_PINK_SALT_WALL.get());
-                output.accept(GBlocks.POLISHED_PINK_SALT.get());
-                output.accept(GBlocks.POLISHED_ROSE_PINK_SALT.get());
-                output.accept(GBlocks.POLISHED_PASTEL_PINK_SALT.get());
-                output.accept(GBlocks.POLISHED_PINK_SALT_STAIRS.get());
-                output.accept(GBlocks.POLISHED_ROSE_PINK_SALT_STAIRS.get());
-                output.accept(GBlocks.POLISHED_PASTEL_PINK_SALT_STAIRS.get());
-                output.accept(GBlocks.POLISHED_PINK_SALT_SLAB.get());
-                output.accept(GBlocks.POLISHED_ROSE_PINK_SALT_SLAB.get());
-                output.accept(GBlocks.POLISHED_PASTEL_PINK_SALT_SLAB.get());
-                output.accept(GBlocks.POLISHED_PINK_SALT_WALL.get());
-                output.accept(GBlocks.POLISHED_ROSE_PINK_SALT_WALL.get());
-                output.accept(GBlocks.POLISHED_PASTEL_PINK_SALT_WALL.get());
-                output.accept(GBlocks.PINK_SALT_BRICKS.get());
-                output.accept(GBlocks.ROSE_PINK_SALT_BRICKS.get());
-                output.accept(GBlocks.PASTEL_PINK_SALT_BRICKS.get());
-                output.accept(GBlocks.PINK_SALT_BRICK_STAIRS.get());
-                output.accept(GBlocks.ROSE_PINK_SALT_BRICK_STAIRS.get());
-                output.accept(GBlocks.PASTEL_PINK_SALT_BRICK_STAIRS.get());
-                output.accept(GBlocks.PINK_SALT_BRICK_SLAB.get());
-                output.accept(GBlocks.ROSE_PINK_SALT_BRICK_SLAB.get());
-                output.accept(GBlocks.PASTEL_PINK_SALT_BRICK_SLAB.get());
-                output.accept(GBlocks.PINK_SALT_BRICK_WALL.get());
-                output.accept(GBlocks.ROSE_PINK_SALT_BRICK_WALL.get());
-                output.accept(GBlocks.PASTEL_PINK_SALT_BRICK_WALL.get());
-                output.accept(GBlocks.CHISELED_PINK_SALT.get());
-                output.accept(GBlocks.CHISELED_ROSE_PINK_SALT.get());
-                output.accept(GBlocks.CHISELED_PASTEL_PINK_SALT.get());
-                output.accept(GBlocks.PINK_SALT_CHAMBER.get());
-                output.accept(GBlocks.PINK_SALT_LAMP.get());
-                output.accept(GBlocks.PINK_SALT_STRAW.get());
-                output.accept(GBlocks.PINK_SALT_CLUSTER.get());
-                output.accept(GBlocks.PINK_SALT_CLUSTER.get());
-                output.accept(GBlocks.CURED_MEMBRANE_BLOCK.get());
-                output.accept(GBlocks.STRANDED_MEMBRANE_BLOCK.get());
-            })
-            .build()
-    );
-
+	val GALOSPHERE = CREATIVE_MODE_TABS.register("galosphere") { res ->
+		CreativeModeTab.builder().apply {
+			icon { GItems.ICON_ITEM.get().defaultInstance }
+			title(Component.translatable("itemGroup.galosphere.galosphere"))
+			displayItems { idp, output ->
+				output += GItems.SILVER_UPGRADE_SMITHING_TEMPLATE
+				output += GItems.PRESERVED_TEMPLATE
+				output += GItems.SALTBOUND_TABLET
+				output += GItems.SPARKLE_SPAWN_EGG
+				output += GItems.SPECTRE_SPAWN_EGG
+				output += GItems.SPECTERPILLAR_SPAWN_EGG
+				output += GItems.BERSERKER_SPAWN_EGG
+				output += GItems.PRESERVED_SPAWN_EGG
+				output += GItems.BOTTLE_OF_SPECTRE
+				output += GItems.ALLURITE_SHARD
+				output += GItems.LUMIERE_SHARD
+				output += GItems.PINK_SALT_SHARD
+				output += GItems.RAW_SILVER
+				output += GItems.SILVER_INGOT
+				output += GItems.SILVER_NUGGET
+				output += GItems.BAROMETER
+				output += GItems.STERLING_HELMET
+				output += GItems.STERLING_CHESTPLATE
+				output += GItems.STERLING_LEGGINGS
+				output += GItems.STERLING_BOOTS
+				output += GItems.STERLING_HORSE_ARMOR
+				output += GItems.LICHEN_CORDYCEPS
+				output += GItems.GOLDEN_LICHEN_CORDYCEPS
+				output += GItems.SALTED_JERKY
+				output += GItems.PRESERVED_FLESH
+				output += GItems.CURED_MEMBRANE
+				output += GItems.GLOW_FLARE
+				output += GItems.SPECTRE_FLARE
+				output += GItems.CHANDELIER
+				output += GBlocks.GILDED_BEADS
+				output += GBlocks.MONSTROMETER
+				output += GBlocks.WARPED_ANCHOR
+				output += GBlocks.SILVER_BALANCE
+				output += GBlocks.SILVER_TILES
+				output += GBlocks.SILVER_TILES_STAIRS
+				output += GBlocks.SILVER_TILES_SLAB
+				output += GBlocks.SILVER_PANEL
+				output += GBlocks.SILVER_PANEL_STAIRS
+				output += GBlocks.SILVER_PANEL_SLAB
+				output += GBlocks.SILVER_LATTICE
+				output += GBlocks.SILVER_ORE
+				output += GBlocks.DEEPSLATE_SILVER_ORE
+				output += GBlocks.SILVER_BLOCK
+				output += GBlocks.RAW_SILVER_BLOCK
+				output += GBlocks.ALLURITE_BLOCK
+				output += GBlocks.LUMIERE_BLOCK
+				output += GBlocks.CHARGED_LUMIERE_BLOCK
+				output += GBlocks.ALLURITE_CLUSTER
+				output += GBlocks.LUMIERE_CLUSTER
+				output += GBlocks.GLINTED_ALLURITE_CLUSTER
+				output += GBlocks.GLINTED_LUMIERE_CLUSTER
+				output += GBlocks.GLINTED_AMETHYST_CLUSTER
+				output += GBlocks.AMETHYST_STAIRS
+				output += GBlocks.AMETHYST_SLAB
+				output += GBlocks.ALLURITE_STAIRS
+				output += GBlocks.ALLURITE_SLAB
+				output += GBlocks.LUMIERE_STAIRS
+				output += GBlocks.LUMIERE_SLAB
+				output += GBlocks.SMOOTH_AMETHYST
+				output += GBlocks.SMOOTH_AMETHYST_STAIRS
+				output += GBlocks.SMOOTH_AMETHYST_SLAB
+				output += GBlocks.SMOOTH_ALLURITE
+				output += GBlocks.SMOOTH_ALLURITE_STAIRS
+				output += GBlocks.SMOOTH_ALLURITE_SLAB
+				output += GBlocks.SMOOTH_LUMIERE
+				output += GBlocks.SMOOTH_LUMIERE_STAIRS
+				output += GBlocks.SMOOTH_LUMIERE_SLAB
+				output += GBlocks.AMETHYST_BRICKS
+				output += GBlocks.AMETHYST_BRICK_STAIRS
+				output += GBlocks.AMETHYST_BRICK_SLAB
+				output += GBlocks.ALLURITE_BRICKS
+				output += GBlocks.ALLURITE_BRICK_STAIRS
+				output += GBlocks.ALLURITE_BRICK_SLAB
+				output += GBlocks.LUMIERE_BRICKS
+				output += GBlocks.LUMIERE_BRICK_STAIRS
+				output += GBlocks.LUMIERE_BRICK_SLAB
+				output += GBlocks.CHISELED_AMETHYST
+				output += GBlocks.CHISELED_ALLURITE
+				output += GBlocks.CHISELED_LUMIERE
+				output += GBlocks.AMETHYST_LAMP
+				output += GBlocks.ALLURITE_LAMP
+				output += GBlocks.LUMIERE_LAMP
+				output += GBlocks.LICHEN_MOSS
+				output += GBlocks.LICHEN_ROOTS
+				output += GBlocks.BOWL_LICHEN
+				output += GBlocks.LICHEN_SHELF
+				output += GBlocks.GLOW_INK_CLUMPS
+				output += GBlocks.PINK_SALT
+				output += GBlocks.ROSE_PINK_SALT
+				output += GBlocks.PASTEL_PINK_SALT
+				output += GBlocks.PINK_SALT_STAIRS
+				output += GBlocks.ROSE_PINK_SALT_STAIRS
+				output += GBlocks.PASTEL_PINK_SALT_STAIRS
+				output += GBlocks.PINK_SALT_SLAB
+				output += GBlocks.ROSE_PINK_SALT_SLAB
+				output += GBlocks.PASTEL_PINK_SALT_SLAB
+				output += GBlocks.PINK_SALT_WALL
+				output += GBlocks.ROSE_PINK_SALT_WALL
+				output += GBlocks.PASTEL_PINK_SALT_WALL
+				output += GBlocks.POLISHED_PINK_SALT
+				output += GBlocks.POLISHED_ROSE_PINK_SALT
+				output += GBlocks.POLISHED_PASTEL_PINK_SALT
+				output += GBlocks.POLISHED_PINK_SALT_STAIRS
+				output += GBlocks.POLISHED_ROSE_PINK_SALT_STAIRS
+				output += GBlocks.POLISHED_PASTEL_PINK_SALT_STAIRS
+				output += GBlocks.POLISHED_PINK_SALT_SLAB
+				output += GBlocks.POLISHED_ROSE_PINK_SALT_SLAB
+				output += GBlocks.POLISHED_PASTEL_PINK_SALT_SLAB
+				output += GBlocks.POLISHED_PINK_SALT_WALL
+				output += GBlocks.POLISHED_ROSE_PINK_SALT_WALL
+				output += GBlocks.POLISHED_PASTEL_PINK_SALT_WALL
+				output += GBlocks.PINK_SALT_BRICKS
+				output += GBlocks.ROSE_PINK_SALT_BRICKS
+				output += GBlocks.PASTEL_PINK_SALT_BRICKS
+				output += GBlocks.PINK_SALT_BRICK_STAIRS
+				output += GBlocks.ROSE_PINK_SALT_BRICK_STAIRS
+				output += GBlocks.PASTEL_PINK_SALT_BRICK_STAIRS
+				output += GBlocks.PINK_SALT_BRICK_SLAB
+				output += GBlocks.ROSE_PINK_SALT_BRICK_SLAB
+				output += GBlocks.PASTEL_PINK_SALT_BRICK_SLAB
+				output += GBlocks.PINK_SALT_BRICK_WALL
+				output += GBlocks.ROSE_PINK_SALT_BRICK_WALL
+				output += GBlocks.PASTEL_PINK_SALT_BRICK_WALL
+				output += GBlocks.CHISELED_PINK_SALT
+				output += GBlocks.CHISELED_ROSE_PINK_SALT
+				output += GBlocks.CHISELED_PASTEL_PINK_SALT
+				output += GBlocks.PINK_SALT_CHAMBER
+				output += GBlocks.PINK_SALT_LAMP
+				output += GBlocks.PINK_SALT_STRAW
+				output += GBlocks.PINK_SALT_CLUSTER
+				output += GBlocks.PINK_SALT_CLUSTER
+				output += GBlocks.CURED_MEMBRANE_BLOCK
+				output += GBlocks.STRANDED_MEMBRANE_BLOCK
+			}
+		}.build()
+	}
 }
