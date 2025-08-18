@@ -61,6 +61,7 @@ import net.neoforged.neoforge.client.event.*
 import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent.OverlayType
 import net.neoforged.neoforge.client.event.ViewportEvent.ComputeFogColor
 import net.neoforged.neoforge.event.AddReloadListenerEvent
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
 import net.neoforged.neoforge.event.LootTableLoadEvent
 import net.neoforged.neoforge.event.TagsUpdatedEvent
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent
@@ -135,27 +136,26 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 
 		//#region client events
 
+		clientEventz(ev)
+
+		ev.addListener<BuildCreativeModeTabContentsEvent> { event ->
+
+		}
+
+		//#endregion
+
+		entityEventz(ev)
+
+		miscEventz(ev)
+
+	}
+
+	private fun clientEventz(ev: IEventBus)
+	{
 		ev.addListener<FMLClientSetupEvent> { event ->
-			event.enqueueWork(Runnable {
-				ItemProperties.register(
-					Items.CROSSBOW,
-					id("glow_flare")
-				) { itemStack, clientLevel, livingEntity, i ->
-					val chargedProjectiles = itemStack.get(
-						DataComponents.CHARGED_PROJECTILES
-					)
-					if (chargedProjectiles != null && chargedProjectiles.contains(GItems.GLOW_FLARE.get())) 1f else 0f
-				}
-				ItemProperties.register(
-					Items.CROSSBOW,
-					id("spectre_flare")
-				) { itemStack, clientLevel, livingEntity, i: Int ->
-					val chargedProjectiles = itemStack.get(
-						DataComponents.CHARGED_PROJECTILES
-					)
-					if (chargedProjectiles != null && chargedProjectiles.contains(GItems.SPECTRE_FLARE.get())) 1f else 0f
-				}
-				ItemProperties.register(GItems.BAROMETER.get(), id("weather_level"), object : ClampedItemPropertyFunction {
+			event.enqueueWork {
+				ItemProperties.register(GItems.BAROMETER.get(), id("weather_level"), object : ClampedItemPropertyFunction
+				{
 					private var rotation = 0.0
 					private var ticksBeforeChange = 0
 
@@ -214,7 +214,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 				ItemProperties.register(GItems.SALTBOUND_TABLET.get(), id("cooldown")) { stack, world, entity, i ->
 					if (entity is Player && entity.cooldowns.isOnCooldown(GItems.SALTBOUND_TABLET.get())) 1f else 0f
 				}
-			})
+			}
 		}
 
 		ev.addListener<ComputeFogColor> { event ->
@@ -249,7 +249,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		}
 
 		ev.addListener<RegisterParticleProvidersEvent> {
-			with (it) {
+			with(it) {
 				registerSpriteSet(GParticleTypes.WARPED.get(), ::WarpedProvider)
 				registerSpriteSet(GParticleTypes.ALLURITE_RAIN.get(), CrystalRainParticle::Provider)
 				registerSpriteSet(GParticleTypes.LUMIERE_RAIN.get(), CrystalRainParticle::Provider)
@@ -262,7 +262,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		}
 
 		ev.addListener<EntityRenderersEvent.RegisterRenderers> {
-			with (it)
+			with(it)
 			{
 				registerEntityRenderer(GEntityTypes.SPARKLE.get(), ::SparkleRenderer)
 				registerEntityRenderer(GEntityTypes.SPECTRE.get(), ::SpectreRenderer)
@@ -284,7 +284,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		}
 
 		ev.addListener<EntityRenderersEvent.RegisterLayerDefinitions> {
-			with (it)
+			with(it)
 			{
 				registerLayerDefinition(GModelLayers.SPARKLE, SparkleModel<*>::createBodyLayer)
 				registerLayerDefinition(GModelLayers.STERLING_HELMET) {
@@ -331,13 +331,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 
 		}
-
-		//#endregion
-
-		entityEventz(ev)
-
-		miscEventz(ev)
-
 	}
 
 	private fun miscEventz(ev: IEventBus)
