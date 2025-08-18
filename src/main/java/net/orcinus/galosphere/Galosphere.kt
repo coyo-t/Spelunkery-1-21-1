@@ -1,5 +1,6 @@
 package net.orcinus.galosphere
 
+import dissonance.mixin.LootTableAccessor
 import dissonance.util.extension.contains
 import dissonance.util.extension.decremented
 import dissonance.util.extension.get
@@ -7,6 +8,7 @@ import dissonance.util.extension.isa
 import net.minecraft.ChatFormatting
 import net.minecraft.core.BlockPos
 import net.minecraft.core.component.DataComponents
+import net.minecraft.core.dispenser.ProjectileDispenseBehavior
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
@@ -23,14 +25,25 @@ import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.ProjectileWeaponItem
+import net.minecraft.world.item.alchemy.Potions
+import net.minecraft.world.level.block.DispenserBlock
 import net.minecraft.world.level.block.ShulkerBoxBlock
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity
 import net.minecraft.world.level.gameevent.GameEvent
 import net.minecraft.world.level.levelgen.Heightmap
+import net.minecraft.world.level.storage.loot.BuiltInLootTables
+import net.minecraft.world.level.storage.loot.LootPool
+import net.minecraft.world.level.storage.loot.entries.LootItem
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.config.ModConfig
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.neoforge.event.AddReloadListenerEvent
+import net.neoforged.neoforge.event.LootTableLoadEvent
+import net.neoforged.neoforge.event.TagsUpdatedEvent
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent
@@ -44,6 +57,10 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent
 import net.orcinus.galosphere.api.SpectreBoundSpyglass
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock
 import net.orcinus.galosphere.config.GalosphereConfig
+import net.orcinus.galosphere.crafting.LumiereComposterDispenseItemBehavior
+import net.orcinus.galosphere.crafting.LumiereReformingManager
+import net.orcinus.galosphere.crafting.MonstrometerDispenseItemBehavior
+import net.orcinus.galosphere.crafting.WarpedAnchorDispenseItemBehavior
 import net.orcinus.galosphere.entities.*
 import net.orcinus.galosphere.events.MiscEvents
 import net.orcinus.galosphere.init.*
@@ -79,6 +96,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		GSensorTypes.SENSOR_TYPES.register(ev)
 		GSoundEvents.SOUND_EVENTS.register(ev)
 
+		//#region Entity Eventz
 		ev.addListener<RegisterSpawnPlacementsEvent> { event ->
 			event.register(
 				GEntityTypes.SPARKLE.get(),
@@ -315,8 +333,53 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 				}
 			}
 		}
+		//#endregion
 
-		ev.register(this)
+		//#region Misc Eventz
+
+		ev.addListener<TagsUpdatedEvent> { event ->
+			DispenserBlock.registerBehavior(GBlocks.ALLURITE_BLOCK.get().asItem(), MonstrometerDispenseItemBehavior())
+			DispenserBlock.registerBehavior(GBlocks.ALLURITE_BLOCK.get().asItem(), WarpedAnchorDispenseItemBehavior())
+			DispenserBlock.registerBehavior(GItems.LUMIERE_SHARD.get(), LumiereComposterDispenseItemBehavior())
+			DispenserBlock.registerBehavior(GItems.GLOW_FLARE.get(), ProjectileDispenseBehavior(GItems.GLOW_FLARE.get()))
+		}
+
+		ev.addListener<AddReloadListenerEvent> { event ->
+			event.addListener(LumiereReformingManager())
+		}
+
+		ev.addListener<LootTableLoadEvent> { event ->
+			val name = event.name
+			val pools = (event.table as LootTableAccessor).getPools()
+			if (name == BuiltInLootTables.ANCIENT_CITY.location() && GalosphereConfig.SPECTRE_FLARE_ANCIENT_CITY_LOOT.get())
+			{
+				pools.add(
+					LootPool.lootPool().add(
+						LootItem.lootTableItem(GItems.SPECTRE_FLARE.get()).setWeight(1)
+							.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0f, 2.0f)))
+					).build()
+				)
+			}
+			if ((name == BuiltInLootTables.PILLAGER_OUTPOST.location() || name == BuiltInLootTables.ABANDONED_MINESHAFT.location()) && GalosphereConfig.SILVER_UPGRADE_TEMPLATES_LOOT.get())
+			{
+				pools.add(
+					LootPool.lootPool().add(
+						LootItem.lootTableItem(GItems.SILVER_UPGRADE_SMITHING_TEMPLATE.get()).setWeight(1)
+							.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0f, 2.0f)))
+					).build()
+				)
+			}
+		}
+
+		ev.addListener<RegisterBrewingRecipesEvent> { event ->
+			event.builder.apply {
+				addMix(Potions.AWKWARD, GItems.CURED_MEMBRANE.get(), GPotions.ASTRAL)
+				addMix(GPotions.ASTRAL, Items.REDSTONE, GPotions.LONG_ASTRAL)
+			}
+		}
+
+		//#endregion
+
 		ev.register(MiscEvents())
 	}
 
