@@ -11,7 +11,7 @@ import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 
 @OnlyIn(Dist.CLIENT)
-class SterlingArmorModel<T : LivingEntity?>(part: ModelPart) : HumanoidModel<T?>(part)
+class SterlingArmorModel<T : LivingEntity>(part: ModelPart) : HumanoidModel<T>(part)
 {
 	val helmet = this.head.getChild("helmet")
 }

@@ -1,14 +1,8 @@
-package net.orcinus.galosphere.client.renderer.block
+package net.orcinus.galosphere.client.renderer
 
 import com.mojang.blaze3d.vertex.PoseStack
-import com.mojang.blaze3d.vertex.VertexConsumer
 import com.mojang.math.Axis
 import net.minecraft.client.model.geom.ModelPart
-import net.minecraft.client.model.geom.PartPose
-import net.minecraft.client.model.geom.builders.CubeDeformation
-import net.minecraft.client.model.geom.builders.CubeListBuilder
-import net.minecraft.client.model.geom.builders.LayerDefinition
-import net.minecraft.client.model.geom.builders.MeshDefinition
 import net.minecraft.client.renderer.MultiBufferSource
 import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer
@@ -20,11 +14,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties
 import net.minecraft.world.level.block.state.properties.RotationSegment
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
-import net.orcinus.galosphere.Galosphere.Companion.id
+import net.orcinus.galosphere.Galosphere
 import net.orcinus.galosphere.blocks.GildedBeadsBlock
 import net.orcinus.galosphere.blocks.blockentities.GildedBeadsBlockEntity
 import net.orcinus.galosphere.init.GModelLayers
-import java.util.function.Function
 
 @OnlyIn(Dist.CLIENT)
 class GildedBeadsRenderer(context: BlockEntityRendererProvider.Context) : BlockEntityRenderer<GildedBeadsBlockEntity>
@@ -51,7 +44,7 @@ class GildedBeadsRenderer(context: BlockEntityRendererProvider.Context) : BlockE
 		poseStack.mulPose(
 			Axis.YP.rotationDegrees(
 				-RotationSegment.convertToDegrees(
-					blockEntity.blockState.getValue(GildedBeadsBlock.ROTATION)
+					blockEntity.blockState.getValue(GildedBeadsBlock.Companion.ROTATION)
 				)
 			)
 		)
@@ -63,8 +56,8 @@ class GildedBeadsRenderer(context: BlockEntityRendererProvider.Context) : BlockE
 
 	companion object
 	{
-		val RL_HEAD = id("entity/gilded_beads/gilded_beads_head")
-		val RL_BODY = id("entity/gilded_beads/gilded_beads_body")
+		val RL_HEAD = Galosphere.Companion.id("entity/gilded_beads/gilded_beads_head")
+		val RL_BODY = Galosphere.Companion.id("entity/gilded_beads/gilded_beads_body")
 
 		private fun gm (state: BlockState) = Material(
 			TextureAtlas.LOCATION_BLOCKS,

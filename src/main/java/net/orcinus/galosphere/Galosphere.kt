@@ -89,7 +89,7 @@ import net.orcinus.galosphere.client.renderer.BerserkerRenderer
 import net.orcinus.galosphere.client.renderer.PinkSaltPillarRenderer
 import net.orcinus.galosphere.client.renderer.PinkSaltShardRenderer
 import net.orcinus.galosphere.client.renderer.PreservedRenderer
-import net.orcinus.galosphere.client.renderer.block.GildedBeadsRenderer
+import net.orcinus.galosphere.client.renderer.GildedBeadsRenderer
 import net.orcinus.galosphere.entities.Berserker
 import net.orcinus.galosphere.entities.PreservedCorpse
 import net.orcinus.galosphere.init.*

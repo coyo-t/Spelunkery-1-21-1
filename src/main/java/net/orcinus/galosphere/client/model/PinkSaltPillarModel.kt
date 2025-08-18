@@ -17,15 +17,10 @@ import net.orcinus.galosphere.entities.PinkSaltPillar
 @OnlyIn(Dist.CLIENT)
 class PinkSaltPillarModel<T : PinkSaltPillar>(root: ModelPart) : HierarchicalModel<T>()
 {
-	private val root: ModelPart
-
-	init
-	{
-		this.root = root.getChild("root")
-	}
+	private val root = root.getChild("root")
 
 	override fun setupAnim(
-		entity: T?,
+		entity: T,
 		limbSwing: Float,
 		limbSwingAmount: Float,
 		ageInTicks: Float,
@@ -34,7 +29,7 @@ class PinkSaltPillarModel<T : PinkSaltPillar>(root: ModelPart) : HierarchicalMod
 	)
 	{
 		this.root().allParts.forEach { it.resetPose() }
-		this.animate(entity!!.emergeAnimationState, PinkSaltPillarAnimations.PINK_SALT_PILLAR_EMERGE, ageInTicks)
+		this.animate(entity.emergeAnimationState, PinkSaltPillarAnimations.PINK_SALT_PILLAR_EMERGE, ageInTicks)
 		this.animate(entity.retractAnimationState, PinkSaltPillarAnimations.PINK_SALT_PILLAR_RETRACT, ageInTicks)
 	}
 
