@@ -1,5 +1,6 @@
 package net.orcinus.galosphere.init
 
+import dissonance.util.enumMapOf
 import net.minecraft.Util
 import net.minecraft.core.Holder
 import net.minecraft.core.Registry
@@ -17,13 +18,13 @@ object GArmorMaterials
 {
 	@JvmField
 	val STERLING = register(
-		"sterling", EnumMap<ArmorItem.Type, Int>(ArmorItem.Type::class.java).apply {
-			put(ArmorItem.Type.BOOTS, 1)
-			put(ArmorItem.Type.LEGGINGS, 4)
-			put(ArmorItem.Type.CHESTPLATE, 3)
-			put(ArmorItem.Type.HELMET, 1)
-			put(ArmorItem.Type.BODY, 3)
-		},
+		"sterling", enumMapOf(
+			ArmorItem.Type.BOOTS to 1,
+			ArmorItem.Type.LEGGINGS to 4,
+			ArmorItem.Type.CHESTPLATE to 3,
+			ArmorItem.Type.HELMET to 1,
+			ArmorItem.Type.BODY to 3,
+		),
 		9,
 		SoundEvents.ARMOR_EQUIP_CHAIN,
 		0.0f,
