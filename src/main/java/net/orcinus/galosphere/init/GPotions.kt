@@ -1,19 +1,20 @@
-package net.orcinus.galosphere.init;
+package net.orcinus.galosphere.init
 
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
-import net.orcinus.galosphere.Galosphere;
+import net.minecraft.core.registries.Registries
+import net.minecraft.world.effect.MobEffectInstance
+import net.minecraft.world.item.alchemy.Potion
+import net.neoforged.neoforge.registries.DeferredRegister
+import net.orcinus.galosphere.Galosphere
+import java.util.function.Supplier
 
-@Mod.EventBusSubscriber(modid = Galosphere.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class GPotions {
+object GPotions
+{
+	@JvmField
+	val POTIONS = DeferredRegister.create(Registries.POTION, Galosphere.MODID)
 
-    public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, Galosphere.MODID);
+	@JvmField
+	val ASTRAL = POTIONS.register("astral") { r -> Potion(MobEffectInstance(GMobEffects.ASTRAL, 1800)) }
 
-    public static final RegistryObject<Potion> ASTRAL = POTIONS.register("astral", () -> new Potion(new MobEffectInstance(GMobEffects.ASTRAL.getHolder().get(), 1800)));
-    public static final RegistryObject<Potion> LONG_ASTRAL = POTIONS.register("long_astral", () -> new Potion("astral", new MobEffectInstance(GMobEffects.ASTRAL.getHolder().get(), 3600)));
-
+	@JvmField
+	val LONG_ASTRAL = POTIONS.register("long_astral") { r -> Potion("astral", MobEffectInstance(GMobEffects.ASTRAL, 3600)) }
 }

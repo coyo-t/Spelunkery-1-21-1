@@ -1,6 +1,5 @@
 package com.ordana.spelunkery
 
-import com.ordana.spelunkery.datamalarky.SlotDecoManager.initialize
 import com.ordana.spelunkery.items.magnetic_compass.MagneticCompassItemPropertyFunction
 import com.ordana.spelunkery.reg.*
 import com.ordana.spelunkery.reg.GameRulez.init
@@ -8,7 +7,6 @@ import com.ordana.spelunkery.reg.ModItems.inititiititititialliziaation
 import com.ordana.spelunkery.utils.isItem
 import net.mehvahdjukaar.moonlight.api.platform.ClientHelper
 import net.minecraft.advancements.CriteriaTriggers
-import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.item.ItemProperties
 import net.minecraft.core.BlockPos
@@ -36,27 +34,23 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.EventBusSubscriber
-import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
-import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent
 import net.neoforged.neoforge.registries.DeferredRegister
 import org.apache.logging.log4j.LogManager
 import java.util.*
 import java.util.function.Supplier
 
-@Mod(Spelunkery.MOD_ID)
+
 class Spelunkery(ev: IEventBus, container: ModContainer)
 {
 	init
 	{
-		ev.addListener<FMLCommonSetupEvent> { commonInit(it) }
-		ev.addListener<FMLClientSetupEvent> { clientSetup(it) }
+		ev.addListener(::commonInit)
+		ev.addListener(::clientSetup)
+		ev.addListener(::obsidianDraining)
 
-		NeoForge.EVENT_BUS.addListener<UseItemOnBlockEvent> {
-			obsidianDraining(it)
-		}
 		with (DeferredRegister.create(Registries.SOUND_EVENT, MOD_ID))
 		{
 			ModSoundEvents.init(this)
@@ -89,7 +83,7 @@ class Spelunkery(ev: IEventBus, container: ModContainer)
 //		}
 	}
 
-	fun commonInit(ev: FMLCommonSetupEvent?)
+	fun commonInit(ev: FMLCommonSetupEvent)
 	{
 		if (initiated)
 		{

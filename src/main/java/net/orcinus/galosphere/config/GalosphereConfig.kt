@@ -1,29 +1,29 @@
-package net.orcinus.galosphere.config;
+package net.orcinus.galosphere.config
 
-import net.neoforged.fml.common.Mod;
-import net.orcinus.galosphere.Galosphere;
+import net.neoforged.neoforge.common.ModConfigSpec
 
 //@Mod(modid = Galosphere.MODID)
-public class GalosphereConfig
+object GalosphereConfig
 {
-	
-	//FIXME
-	//    public static final ForgeConfigSpec.Builder BUILDER;
-	//    public static ForgeConfigSpec COMMON;
-	//    public static ForgeConfigSpec.BooleanValue SLOWED_BUDDING_AMETHYST_MINING_SPEED;
-	//    public static ForgeConfigSpec.BooleanValue PILLAGER_DROP_SILVER_INGOT;
-	//    public static ForgeConfigSpec.BooleanValue SPECTRE_FLARE_ANCIENT_CITY_LOOT;
-	//    public static ForgeConfigSpec.BooleanValue SILVER_UPGRADE_TEMPLATES_LOOT;
-	//
-	//    static {
-	//        BUILDER = new ForgeConfigSpec.Builder();
-	//
-	//        SLOWED_BUDDING_AMETHYST_MINING_SPEED = BUILDER.comment("Slows the mining speed of budding amethyst").define("slowedBuddingAmethystMiningSpeed", true);
-	//        PILLAGER_DROP_SILVER_INGOT = BUILDER.comment("Adds silver ingot to pillager drops").define("pillagerDropSilverIngot", true);
-	//        SPECTRE_FLARE_ANCIENT_CITY_LOOT = BUILDER.comment("Adds spectre flares to ancient city loot").define("spectreFlareAncientCityLoot", true);
-	//        SILVER_UPGRADE_TEMPLATES_LOOT = BUILDER.comment("Adds Silver Upgrade Template to Abandoned Mineshafts or Pillager Outposts loot").define("silverUpgradeTemplatesLoot", true);
-	//
-	//        COMMON = BUILDER.build();
-	//    }
-	
+	@JvmField
+	var COMMON: ModConfigSpec
+	@JvmField
+	var SPECTRE_FLARE_ANCIENT_CITY_LOOT: ModConfigSpec.BooleanValue
+	@JvmField
+	var SILVER_UPGRADE_TEMPLATES_LOOT: ModConfigSpec.BooleanValue
+
+	init
+	{
+		COMMON = ModConfigSpec.Builder().run {
+			SPECTRE_FLARE_ANCIENT_CITY_LOOT = run {
+				comment("Adds spectre flares to ancient city loot")
+				define("spectreFlareAncientCityLoot", true)
+			}
+			SILVER_UPGRADE_TEMPLATES_LOOT = run {
+				comment("Adds Silver Upgrade Template to Abandoned Mineshafts or Pillager Outposts loot")
+				define("silverUpgradeTemplatesLoot", true)
+			}
+			build()
+		}
+	}
 }
