@@ -130,30 +130,18 @@ object GSoundEvents
 	val CURED_MEMBRANE = soundType("cured_membrane")
 	val STRANDED_MEMBRANE = soundType("stranded_membrane")
 
-	private fun register(string: String): Supplier<SoundEvent>
-	{
-		return SOUND_EVENTS.register(string) { r -> SoundEvent.createVariableRangeEvent(Galosphere.id(string)) }
-	}
+	private fun register(string: String) = SOUND_EVENTS.register(string) { r -> SoundEvent.createVariableRangeEvent(Galosphere.id(string)) }
 
-	private fun block(name: String, append: String?): String
-	{
-		return "block.$name.$append"
-	}
+	private fun block(name: String, append: String) = "block.$name.$append"
 
-	private fun soundType(name: String): SoundType
-	{
-		return register(name, 1f, 1f)
-	}
+	private fun soundType(name: String) = register(name, 1f, 1f)
 
-	private fun register(name: String, volume: Float, pitch: Float): SoundType
-	{
-		return DeferredSoundType(
-			volume, pitch,
-			register(block(name, "break")),
-			register(block(name, "step")),
-			register(block(name, "place")),
-			register(block(name, "hit")),
-			register(block(name, "fall")),
-		)
-	}
+	private fun register(name: String, volume: Float, pitch: Float) = DeferredSoundType(
+		volume, pitch,
+		register(block(name, "break")),
+		register(block(name, "step")),
+		register(block(name, "place")),
+		register(block(name, "hit")),
+		register(block(name, "fall")),
+	)
 }

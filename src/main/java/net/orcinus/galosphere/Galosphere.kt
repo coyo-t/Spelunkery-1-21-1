@@ -6,7 +6,6 @@ import dissonance.util.extension.decremented
 import dissonance.util.extension.get
 import dissonance.util.extension.isa
 import net.minecraft.ChatFormatting
-import net.minecraft.client.CameraType
 import net.minecraft.client.Minecraft
 import net.minecraft.client.model.HumanoidModel.createMesh
 import net.minecraft.client.model.geom.PartPose
@@ -85,11 +84,7 @@ import net.orcinus.galosphere.client.particles.ImpactParticle
 import net.orcinus.galosphere.client.particles.IndicatorParticle
 import net.orcinus.galosphere.client.particles.providers.PinkSaltFallingDustProvider
 import net.orcinus.galosphere.client.particles.providers.WarpedProvider
-import net.orcinus.galosphere.client.renderer.BerserkerRenderer
-import net.orcinus.galosphere.client.renderer.PinkSaltPillarRenderer
-import net.orcinus.galosphere.client.renderer.PinkSaltShardRenderer
-import net.orcinus.galosphere.client.renderer.PreservedRenderer
-import net.orcinus.galosphere.client.renderer.GildedBeadsRenderer
+import net.orcinus.galosphere.client.renderer.*
 import net.orcinus.galosphere.entities.Berserker
 import net.orcinus.galosphere.entities.PreservedCorpse
 import net.orcinus.galosphere.init.*
@@ -98,7 +93,6 @@ import net.orcinus.galosphere.items.SterlingArmorItem
 import net.orcinus.galosphere.network.BarometerPacket
 import net.orcinus.galosphere.network.PlayCooldownSoundPacket
 import net.orcinus.galosphere.network.SendParticlesPacket
-import net.orcinus.galosphere.network.SendPerspectivePacket
 import net.orcinus.galosphere.util.PreservedShulkerBox
 import org.apache.logging.log4j.LogManager
 import org.joml.Vector3d
@@ -318,11 +312,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 					BarometerPacket.TYPE,
 					BarometerPacket.CODEC,
 					::sendBarometerInfo,
-				)
-				playToClient(
-					SendPerspectivePacket.TYPE,
-					SendPerspectivePacket.CODEC,
-					::sendPerspective,
 				)
 				playToClient(
 					PlayCooldownSoundPacket.TYPE,
@@ -589,28 +578,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 	{
 		ctx.enqueueWork {
 			clearWeatherTime = packet.weatherTicks
-			ctx.handle(packet)
-		}
-	}
-
-	fun sendPerspective(packet: SendPerspectivePacket, ctx: IPayloadContext)
-	{
-		ctx.enqueueWork {
-			val client = Minecraft.getInstance()
-			val level = client.level
-			level?.let { world ->
-				val maybePlayer = world.getPlayerByUUID(packet.uuid)
-				if (maybePlayer == client.player)
-				{
-					level.getEntity(packet.id)?.let {
-						client.setCameraEntity(it)
-						if (!client.options.cameraType.isFirstPerson)
-						{
-							client.options.cameraType = CameraType.FIRST_PERSON
-						}
-					}
-				}
-			}
 			ctx.handle(packet)
 		}
 	}

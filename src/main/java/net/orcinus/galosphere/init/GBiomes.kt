@@ -1,129 +1,155 @@
-package net.orcinus.galosphere.init;
+package net.orcinus.galosphere.init
 
-import com.google.common.collect.Lists;
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.Music;
-import net.minecraft.sounds.Musics;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.biome.AmbientMoodSettings;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeGenerationSettings;
-import net.minecraft.world.level.biome.BiomeSpecialEffects;
-import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.orcinus.galosphere.Galosphere;
-import org.jetbrains.annotations.Nullable;
+import com.google.common.collect.Lists
+import net.minecraft.core.HolderGetter
+import net.minecraft.core.registries.Registries
+import net.minecraft.data.worldgen.BiomeDefaultFeatures
+import net.minecraft.data.worldgen.BootstrapContext
+import net.minecraft.resources.ResourceKey
+import net.minecraft.sounds.Music
+import net.minecraft.sounds.Musics
+import net.minecraft.util.Mth
+import net.minecraft.world.level.biome.*
+import net.minecraft.world.level.biome.Biome.BiomeBuilder
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver
+import net.minecraft.world.level.levelgen.placement.PlacedFeature
+import net.orcinus.galosphere.Galosphere.Companion.id
 
-import java.util.List;
-
-public class GBiomes
+object GBiomes
 {
-	public static final List<ResourceKey<Biome>> BIOMES = Lists.newLinkedList();
-	
-	public static ResourceKey<Biome> CRYSTAL_CANYONS = register("crystal_canyons");
-	public static ResourceKey<Biome> LICHEN_CAVES = register("lichen_caves");
-	public static ResourceKey<Biome> PINK_SALT_CAVES = register("pink_salt_caves");
-	
-	public static void init ()
+	val BIOMES = Lists.newLinkedList<ResourceKey<Biome>>()
+
+	@JvmField val CRYSTAL_CANYONS = register("crystal_canyons")
+	@JvmField val LICHEN_CAVES = register("lichen_caves")
+	@JvmField val PINK_SALT_CAVES = register("pink_salt_caves")
+
+	fun init()
 	{
 	}
-	
-	public static void bootstrap (BootstrapContext<Biome> bootstrapContext)
+
+	fun bootstrap(bootstrapContext: BootstrapContext<Biome>)
 	{
-		HolderGetter<PlacedFeature> holderGetter = bootstrapContext.lookup(Registries.PLACED_FEATURE);
-		HolderGetter<ConfiguredWorldCarver<?>> holderGetter2 = bootstrapContext.lookup(Registries.CONFIGURED_CARVER);
-		bootstrapContext.register(CRYSTAL_CANYONS, crystalCanyons(holderGetter, holderGetter2));
-		bootstrapContext.register(LICHEN_CAVES, lichenCaves(holderGetter, holderGetter2));
-		bootstrapContext.register(PINK_SALT_CAVES, pinkSaltCaves(holderGetter, holderGetter2));
+		val holderGetter = bootstrapContext.lookup(Registries.PLACED_FEATURE)
+		val holderGetter2 = bootstrapContext.lookup(Registries.CONFIGURED_CARVER)
+		bootstrapContext.register(CRYSTAL_CANYONS, crystalCanyons(holderGetter, holderGetter2))
+		bootstrapContext.register(LICHEN_CAVES, lichenCaves(holderGetter, holderGetter2))
+		bootstrapContext.register(PINK_SALT_CAVES, pinkSaltCaves(holderGetter, holderGetter2))
 	}
-	
-	public static Biome pinkSaltCaves (HolderGetter<PlacedFeature> holderGetter, HolderGetter<ConfiguredWorldCarver<?>> holderGetter2)
+
+	fun pinkSaltCaves(
+		holderGetter: HolderGetter<PlacedFeature>,
+		holderGetter2: HolderGetter<ConfiguredWorldCarver<*>>
+	): Biome
 	{
-		MobSpawnSettings.Builder mobBuilder = new MobSpawnSettings.Builder();
-		BiomeDefaultFeatures.commonSpawns(mobBuilder);
-		BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(holderGetter, holderGetter2);
-		BiomeDefaultFeatures.addDefaultCarversAndLakes(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultCrystalFormations(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultMonsterRoom(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultSprings(biomeBuilder);
-		BiomeDefaultFeatures.addSurfaceFreezing(biomeBuilder);
-		BiomeDefaultFeatures.addPlainGrass(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultOres(biomeBuilder);
-		Music music = Musics.createGameMusic(GSoundEvents.MUSIC_PINK_SALT_CAVES.getHolder().orElseThrow());
-		return biome(true, 0.5f, 0.5f, mobBuilder, biomeBuilder, music);
+		val mobBuilder = MobSpawnSettings.Builder()
+		BiomeDefaultFeatures.commonSpawns(mobBuilder)
+		val biomeBuilder = BiomeGenerationSettings.Builder(holderGetter, holderGetter2)
+		BiomeDefaultFeatures.addDefaultCarversAndLakes(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultCrystalFormations(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultMonsterRoom(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultSprings(biomeBuilder)
+		BiomeDefaultFeatures.addSurfaceFreezing(biomeBuilder)
+		BiomeDefaultFeatures.addPlainGrass(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultOres(biomeBuilder)
+		val music = Musics.createGameMusic(GSoundEvents.MUSIC_PINK_SALT_CAVES)
+		return biome(true, 0.5f, 0.5f, mobBuilder, biomeBuilder, music)
 	}
-	
-	public static Biome lichenCaves (HolderGetter<PlacedFeature> holderGetter, HolderGetter<ConfiguredWorldCarver<?>> holderGetter2)
+
+	fun lichenCaves(
+		holderGetter: HolderGetter<PlacedFeature>,
+		holderGetter2: HolderGetter<ConfiguredWorldCarver<*>>
+	): Biome
 	{
-		MobSpawnSettings.Builder mobBuilder = new MobSpawnSettings.Builder();
-		BiomeDefaultFeatures.commonSpawns(mobBuilder);
-		BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(holderGetter, holderGetter2);
-		BiomeDefaultFeatures.addDefaultCarversAndLakes(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultCrystalFormations(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultMonsterRoom(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultSprings(biomeBuilder);
-		BiomeDefaultFeatures.addSurfaceFreezing(biomeBuilder);
-		BiomeDefaultFeatures.addPlainGrass(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultOres(biomeBuilder);
-		Music music = Musics.createGameMusic(GSoundEvents.MUSIC_LICHEN_CAVES.getHolder().orElseThrow());
-		return biome(true, 0.5f, 0.5f, mobBuilder, biomeBuilder, music);
+		val mobBuilder = MobSpawnSettings.Builder()
+		BiomeDefaultFeatures.commonSpawns(mobBuilder)
+		val biomeBuilder = BiomeGenerationSettings.Builder(holderGetter, holderGetter2)
+		BiomeDefaultFeatures.addDefaultCarversAndLakes(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultCrystalFormations(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultMonsterRoom(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultSprings(biomeBuilder)
+		BiomeDefaultFeatures.addSurfaceFreezing(biomeBuilder)
+		BiomeDefaultFeatures.addPlainGrass(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultOres(biomeBuilder)
+		val music = Musics.createGameMusic(GSoundEvents.MUSIC_LICHEN_CAVES)
+		return biome(true, 0.5f, 0.5f, mobBuilder, biomeBuilder, music)
 	}
-	
-	public static Biome crystalCanyons (HolderGetter<PlacedFeature> holderGetter, HolderGetter<ConfiguredWorldCarver<?>> holderGetter2)
+
+	fun crystalCanyons(
+		holderGetter: HolderGetter<PlacedFeature>,
+		holderGetter2: HolderGetter<ConfiguredWorldCarver<*>>
+	): Biome
 	{
-		MobSpawnSettings.Builder mobBuilder = new MobSpawnSettings.Builder();
-		BiomeDefaultFeatures.commonSpawns(mobBuilder);
-		BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(holderGetter, holderGetter2);
-		BiomeDefaultFeatures.addDefaultCarversAndLakes(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultCrystalFormations(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultMonsterRoom(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultSprings(biomeBuilder);
-		BiomeDefaultFeatures.addSurfaceFreezing(biomeBuilder);
-		BiomeDefaultFeatures.addPlainGrass(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultOres(biomeBuilder);
-		Music music = Musics.createGameMusic(GSoundEvents.MUSIC_CRYSTAL_CANYONS.getHolder().orElseThrow());
-		return biome(true, 0.5f, 0.5f, mobBuilder, biomeBuilder, music);
+		val mobBuilder = MobSpawnSettings.Builder()
+		BiomeDefaultFeatures.commonSpawns(mobBuilder)
+		val biomeBuilder = BiomeGenerationSettings.Builder(holderGetter, holderGetter2)
+		BiomeDefaultFeatures.addDefaultCarversAndLakes(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultCrystalFormations(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultMonsterRoom(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultSprings(biomeBuilder)
+		BiomeDefaultFeatures.addSurfaceFreezing(biomeBuilder)
+		BiomeDefaultFeatures.addPlainGrass(biomeBuilder)
+		BiomeDefaultFeatures.addDefaultOres(biomeBuilder)
+		val music = Musics.createGameMusic(GSoundEvents.MUSIC_CRYSTAL_CANYONS)
+		return biome(true, 0.5f, 0.5f, mobBuilder, biomeBuilder, music)
 	}
-	
-	private static Biome biome (boolean bl, float f, float g, MobSpawnSettings.Builder builder, BiomeGenerationSettings.Builder builder2, @Nullable Music music)
+
+	private fun biome(
+		bl: Boolean,
+		f: Float,
+		g: Float,
+		msb: MobSpawnSettings.Builder,
+		bgb: BiomeGenerationSettings.Builder,
+		music: Music
+	): Biome
 	{
-		return biome(bl, f, g, 4159204, 329011, null, null, builder, builder2, music);
+		return biome(bl, f, g, 0x3f76e4, 0x050533, null, null, msb, bgb, music)
 	}
-	
-	private static Biome biome (boolean bl, float f, float g, int i, int j, @Nullable Integer integer, @Nullable Integer integer2, MobSpawnSettings.Builder builder, BiomeGenerationSettings.Builder builder2, @Nullable Music music)
+
+	private fun biome(
+		bl: Boolean,
+		f: Float,
+		g: Float,
+		i: Int,
+		j: Int,
+		gcol: Int?,
+		fcol: Int?,
+		msb: MobSpawnSettings.Builder,
+		bgb: BiomeGenerationSettings.Builder,
+		music: Music
+	): Biome
 	{
-		BiomeSpecialEffects.Builder builder3 = new BiomeSpecialEffects.Builder().waterColor(i).waterFogColor(j).fogColor(12638463).skyColor(calculateSkyColor(f)).ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS).backgroundMusic(music);
-		if (integer != null)
-		{
-			builder3.grassColorOverride(integer);
+		return BiomeBuilder().run {
+			hasPrecipitation(bl)
+			temperature(f)
+			downfall(g)
+			specialEffects(BiomeSpecialEffects.Builder().run {
+				waterColor(i)
+				waterFogColor(j)
+				fogColor(0xc0d8ff)
+				skyColor(calculateSkyColor(f))
+				ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+				backgroundMusic(music)
+				if (gcol != null)
+					grassColorOverride(gcol)
+				if (fcol != null)
+					foliageColorOverride(fcol)
+				build()
+			})
+			mobSpawnSettings(msb.build())
+			generationSettings(bgb.build())
+			build()
 		}
-		if (integer2 != null)
-		{
-			builder3.foliageColorOverride(integer2);
-		}
-		return new Biome.BiomeBuilder().hasPrecipitation(bl).temperature(f).downfall(g).specialEffects(builder3.build()).mobSpawnSettings(builder.build()).generationSettings(builder2.build()).build();
 	}
-	
-	protected static int calculateSkyColor (float p_194844_)
+
+	internal fun calculateSkyColor(t: Float): Int
 	{
-		float $$1 = p_194844_ / 3.0F;
-		$$1 = Mth.clamp($$1, -1.0F, 1.0F);
-		return Mth.hsvToRgb(0.62222224F - $$1 * 0.05F, 0.5F + $$1 * 0.1F, 1.0F);
+		val k = Mth.clamp(t / 3f, -1f, +1f)
+		return Mth.hsvToRgb(0.62222224f - k * 0.05f, 0.5f + k * 0.1f, 1.0f)
 	}
-	
-	private static ResourceKey<Biome> register (String name)
-	{
-		ResourceKey<Biome> key = ResourceKey.create(Registries.BIOME, Galosphere.id(name));
-		BIOMES.add(key);
-		return key;
-	}
-	
+
+	private fun register(name: String)
+		= ResourceKey.create(Registries.BIOME, id(name)).also { BIOMES.add(it) }
 }
