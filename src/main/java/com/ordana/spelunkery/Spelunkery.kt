@@ -4,7 +4,6 @@ import com.ordana.spelunkery.items.magnetic_compass.MagneticCompassItemPropertyF
 import com.ordana.spelunkery.reg.*
 import com.ordana.spelunkery.reg.GameRulez.init
 import com.ordana.spelunkery.reg.ModItems.inititiititititialliziaation
-import dissonance.util.extension.isa
 import net.mehvahdjukaar.moonlight.api.platform.ClientHelper
 import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.client.renderer.RenderType

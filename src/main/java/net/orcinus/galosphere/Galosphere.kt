@@ -1,10 +1,7 @@
 package net.orcinus.galosphere
 
 import dissonance.mixin.LootTableAccessor
-import dissonance.util.extension.contains
-import dissonance.util.extension.decremented
-import dissonance.util.extension.get
-import dissonance.util.extension.isa
+import dissonance.util.get
 import net.minecraft.ChatFormatting
 import net.minecraft.client.Minecraft
 import net.minecraft.client.model.HumanoidModel.createMesh

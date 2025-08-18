@@ -1,8 +1,7 @@
 package net.orcinus.galosphere.client.animations
 
-import dissonance.util.extension.buildAnimation
+import dissonance.util.buildAnimation
 import net.minecraft.client.animation.AnimationChannel
-import net.minecraft.client.animation.AnimationDefinition
 import net.minecraft.client.animation.Keyframe
 import net.minecraft.client.animation.KeyframeAnimations
 import net.neoforged.api.distmarker.Dist

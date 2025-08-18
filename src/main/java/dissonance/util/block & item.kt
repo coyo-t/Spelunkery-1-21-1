@@ -1,4 +1,4 @@
-package dissonance.util.extension
+package dissonance.util
 
 import net.minecraft.core.Holder
 import net.minecraft.core.component.DataComponentType

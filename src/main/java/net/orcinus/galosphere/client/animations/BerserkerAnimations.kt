@@ -1,9 +1,8 @@
 package net.orcinus.galosphere.client.animations
 
-import dissonance.util.extension.buildAnimation
+import dissonance.util.buildAnimation
 import net.minecraft.client.animation.AnimationChannel
 import net.minecraft.client.animation.AnimationChannel.Interpolations
-import net.minecraft.client.animation.AnimationDefinition
 import net.minecraft.client.animation.Keyframe
 import net.minecraft.client.animation.KeyframeAnimations
 import net.neoforged.api.distmarker.Dist
@@ -13,8 +12,10 @@ import net.neoforged.api.distmarker.OnlyIn
 object BerserkerAnimations
 {
 
+
 	@JvmField
 	val BERSERKER_SHAKE = buildAnimation(2.5) {
+		/*
 		addAnimation(
 			"root",
 			AnimationChannel(
@@ -152,7 +153,7 @@ object BerserkerAnimations
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.3750000000000002f, KeyframeAnimations.posVec(-0.32f, 0f, 0f),
+					1.375f, KeyframeAnimations.posVec(-0.32f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
@@ -497,10 +498,12 @@ object BerserkerAnimations
 				)
 			)
 		)
+		*/
 	}
 
 	@JvmField
 	val BERSERKER_ATTACK = buildAnimation(3) {
+		/*
 		addAnimation(
 			"head",
 			AnimationChannel(
@@ -875,10 +878,12 @@ object BerserkerAnimations
 				)
 			)
 		)
+		*/
 	}
 
 	@JvmField
 	val BERSERKER_IMPALING = buildAnimation(2.5) {
+		/*
 		addAnimation(
 			"head",
 			AnimationChannel(
@@ -1227,10 +1232,12 @@ object BerserkerAnimations
 				)
 			)
 		)
+		*/
 	}
 
 	@JvmField
 	val BERSERKER_WALK = buildAnimation(2) {
+		//*
 		looping()
 		addAnimation(
 			"head",
@@ -1990,10 +1997,12 @@ object BerserkerAnimations
 				)
 			)
 		)
+		//*/
 	}
 
 	@JvmField
 	val BERSERKER_RECOVERING = buildAnimation(4) {
+		//*
 		addAnimation(
 			"head",
 			AnimationChannel(
@@ -2414,10 +2423,12 @@ object BerserkerAnimations
 				)
 			)
 		)
+		//*/
 	}
 
 	@JvmField
 	val BERSERKER_PUNCH = buildAnimation(0.7083434) {
+		//*
 		addAnimation(
 			"rightArm",
 			AnimationChannel(
@@ -2632,10 +2643,12 @@ object BerserkerAnimations
 				)
 			)
 		)
+		//*/
 	}
 
 	@JvmField
 	val BERSERKER_SPAWN_MINIONS = buildAnimation(3.5) {
+		//*
 		addAnimation(
 			"root",
 			AnimationChannel(
@@ -3484,5 +3497,6 @@ object BerserkerAnimations
 				)
 			)
 		)
+		//*/
 	}
 }
