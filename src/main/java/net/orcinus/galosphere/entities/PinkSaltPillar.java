@@ -150,7 +150,7 @@ public class PinkSaltPillar extends Entity implements TraceableEntity {
                 List<LivingEntity> list = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2, 0.0, 0.2));
 
                 for (LivingEntity livingEntity : list) {
-                    if (getOwner() instanceof Berserker && livingEntity instanceof Preserved) continue;
+                    if (getOwner() instanceof Berserker && livingEntity instanceof PreservedCorpse) continue;
                     this.dealDamageTo(livingEntity);
                 }
                 if (!this.sentSpikeEvent) {

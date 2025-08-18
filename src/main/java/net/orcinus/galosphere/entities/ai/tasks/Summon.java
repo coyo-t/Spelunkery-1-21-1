@@ -15,7 +15,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.orcinus.galosphere.entities.Berserker;
-import net.orcinus.galosphere.entities.Preserved;
+import net.orcinus.galosphere.entities.PreservedCorpse;
 import net.orcinus.galosphere.init.GEntityTypes;
 import net.orcinus.galosphere.init.GMemoryModuleTypes;
 import net.orcinus.galosphere.init.GSoundEvents;
@@ -90,10 +90,10 @@ public class Summon extends Behavior<Berserker> {
             return;
         }
         BlockPos randomPos = positions.get(serverLevel.getRandom().nextInt(positions.size()));
-        Preserved preserved = GEntityTypes.PRESERVED.get().spawn(serverLevel, null, null, livingEntity.blockPosition(), MobSpawnType.TRIGGERED, true, true);
-        preserved.moveTo(randomPos.getX(), randomPos.getY() + 1, randomPos.getZ(), 0.0f, 0.0f);
-        preserved.setHealth(preserved.getMaxHealth() * ((float) livingEntity.getRandom().nextInt(4, 7) / 10));
-        serverLevel.addFreshEntityWithPassengers(preserved);
+        PreservedCorpse preservedCorpse = GEntityTypes.PRESERVED_CORPSE.get().spawn(serverLevel, null, null, livingEntity.blockPosition(), MobSpawnType.TRIGGERED, true, true);
+        preservedCorpse.moveTo(randomPos.getX(), randomPos.getY() + 1, randomPos.getZ(), 0.0f, 0.0f);
+        preservedCorpse.setHealth(preservedCorpse.getMaxHealth() * ((float) livingEntity.getRandom().nextInt(4, 7) / 10));
+        serverLevel.addFreshEntityWithPassengers(preservedCorpse);
     }
 
     @Override

@@ -7,12 +7,12 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.orcinus.galosphere.Galosphere;
 import net.orcinus.galosphere.client.model.PreservedModel;
-import net.orcinus.galosphere.entities.Preserved;
+import net.orcinus.galosphere.entities.PreservedCorpse;
 import net.orcinus.galosphere.init.GModelLayers;
 import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
-public class PreservedRenderer extends MobRenderer<Preserved, PreservedModel<Preserved>>
+public class PreservedRenderer extends MobRenderer<PreservedCorpse, PreservedModel<PreservedCorpse>>
 {
 	private static final ResourceLocation
 	TEXTURE = Galosphere.id("textures/entity/preserved/preserved.png");
@@ -23,7 +23,7 @@ public class PreservedRenderer extends MobRenderer<Preserved, PreservedModel<Pre
 	}
 	
 	@Override
-	public @NotNull ResourceLocation getTextureLocation (@NotNull Preserved entity)
+	public @NotNull ResourceLocation getTextureLocation (@NotNull PreservedCorpse entity)
 	{
 		return TEXTURE;
 	}

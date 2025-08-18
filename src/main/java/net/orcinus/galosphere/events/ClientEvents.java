@@ -2,7 +2,6 @@ package net.orcinus.galosphere.events;
 
 import com.google.common.collect.Lists;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.component.DataComponents;
@@ -33,7 +32,6 @@ import net.orcinus.galosphere.client.particles.ImpactParticle;
 import net.orcinus.galosphere.client.particles.IndicatorParticle;
 import net.orcinus.galosphere.client.particles.SpectateOrbParticle;
 import net.orcinus.galosphere.client.particles.providers.PinkSaltFallingDustProvider;
-import net.orcinus.galosphere.client.particles.providers.SilverBombProvider;
 import net.orcinus.galosphere.client.particles.providers.WarpedProvider;
 import net.orcinus.galosphere.client.renderer.*;
 import net.orcinus.galosphere.client.renderer.block.GildedBeadsRenderer;
@@ -330,7 +328,7 @@ public class ClientEvents
 		event.registerEntityRenderer(GEntityTypes.SPECTERPILLAR.get(), SpecterpillarRenderer::new);
 		event.registerEntityRenderer(GEntityTypes.SPECTATOR_VISION.get(), SpectatorVisionRenderer::new);
 		event.registerEntityRenderer(GEntityTypes.BERSERKER.get(), BerserkerRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.PRESERVED.get(), PreservedRenderer::new);
+		event.registerEntityRenderer(GEntityTypes.PRESERVED_CORPSE.get(), PreservedRenderer::new);
 		event.registerEntityRenderer(GEntityTypes.PINK_SALT_PILLAR.get(), PinkSaltPillarRenderer::new);
 		event.registerEntityRenderer(GEntityTypes.PINK_SALT_SHARD.get(), PinkSaltShardRenderer::new);
 		event.registerBlockEntityRenderer(GBlockEntityTypes.GILDED_BEADS.get(), GildedBeadsRenderer::new);

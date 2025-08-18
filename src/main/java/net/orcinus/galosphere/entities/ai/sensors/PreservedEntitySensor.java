@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.NearestLivingEntitySensor;
-import net.orcinus.galosphere.entities.Preserved;
+import net.orcinus.galosphere.entities.PreservedCorpse;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class PreservedEntitySensor extends NearestLivingEntitySensor<Preserved> {
+public class PreservedEntitySensor extends NearestLivingEntitySensor<PreservedCorpse> {
 
     @Override
     public Set<MemoryModuleType<?>> requires() {
@@ -23,15 +23,15 @@ public class PreservedEntitySensor extends NearestLivingEntitySensor<Preserved> 
     }
 
     @Override
-    protected void doTick(ServerLevel serverLevel, Preserved preserved) {
-        super.doTick(serverLevel, preserved);
-        getClosest(preserved, livingEntity -> livingEntity.getType() == EntityType.PLAYER)
-                .or(() -> getClosest(preserved, livingEntity -> livingEntity.getType() != EntityType.PLAYER))
-                .ifPresentOrElse(livingEntity -> preserved.getBrain().setMemory(MemoryModuleType.NEAREST_ATTACKABLE, livingEntity), () -> preserved.getBrain().eraseMemory(MemoryModuleType.NEAREST_ATTACKABLE));
+    protected void doTick(ServerLevel serverLevel, PreservedCorpse preservedCorpse) {
+        super.doTick(serverLevel, preservedCorpse);
+        getClosest(preservedCorpse, livingEntity -> livingEntity.getType() == EntityType.PLAYER)
+                .or(() -> getClosest(preservedCorpse, livingEntity -> livingEntity.getType() != EntityType.PLAYER))
+                .ifPresentOrElse(livingEntity -> preservedCorpse.getBrain().setMemory(MemoryModuleType.NEAREST_ATTACKABLE, livingEntity), () -> preservedCorpse.getBrain().eraseMemory(MemoryModuleType.NEAREST_ATTACKABLE));
     }
 
-    private static Optional<LivingEntity> getClosest(Preserved preserved, Predicate<LivingEntity> predicate) {
-        return preserved.getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).stream().flatMap(Collection::stream).filter(preserved::canTargetEntity).filter(predicate).findFirst();
+    private static Optional<LivingEntity> getClosest(PreservedCorpse preservedCorpse, Predicate<LivingEntity> predicate) {
+        return preservedCorpse.getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).stream().flatMap(Collection::stream).filter(preservedCorpse::canTargetEntity).filter(predicate).findFirst();
     }
 
     @Override

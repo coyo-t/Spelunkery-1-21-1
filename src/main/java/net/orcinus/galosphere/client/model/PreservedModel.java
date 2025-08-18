@@ -14,10 +14,10 @@ import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.orcinus.galosphere.client.animations.PreservedAnimations;
-import net.orcinus.galosphere.entities.Preserved;
+import net.orcinus.galosphere.entities.PreservedCorpse;
 
 @OnlyIn(Dist.CLIENT)
-public class PreservedModel<T extends Preserved> extends HierarchicalModel<T>
+public class PreservedModel<T extends PreservedCorpse> extends HierarchicalModel<T>
 {
 	private final ModelPart root;
 	

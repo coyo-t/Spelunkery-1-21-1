@@ -26,6 +26,7 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.ProjectileWeaponItem
 import net.minecraft.world.item.alchemy.Potions
+import net.minecraft.world.level.block.ComposterBlock
 import net.minecraft.world.level.block.DispenserBlock
 import net.minecraft.world.level.block.ShulkerBoxBlock
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity
@@ -61,10 +62,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.orcinus.galosphere.api.SpectreBoundSpyglass
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock
 import net.orcinus.galosphere.config.GalosphereConfig
-import net.orcinus.galosphere.crafting.LumiereComposterDispenseItemBehavior
 import net.orcinus.galosphere.crafting.LumiereReformingManager
-import net.orcinus.galosphere.crafting.MonstrometerDispenseItemBehavior
-import net.orcinus.galosphere.crafting.WarpedAnchorDispenseItemBehavior
 import net.orcinus.galosphere.entities.*
 import net.orcinus.galosphere.init.*
 import net.orcinus.galosphere.items.SterlingArmorItem
@@ -78,7 +76,18 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 {
 	init
 	{
-		ev.addListener(::commonSetup)
+		ev.addListener<FMLCommonSetupEvent> {
+			it.enqueueWork {
+				GPlacedFeatures.init()
+
+				ComposterBlock.COMPOSTABLES.put(GBlocks.LICHEN_MOSS.get().asItem(), 0.85f)
+				ComposterBlock.COMPOSTABLES.put(GBlocks.BOWL_LICHEN.get().asItem(), 0.65f)
+				ComposterBlock.COMPOSTABLES.put(GBlocks.LICHEN_ROOTS.get().asItem(), 0.3f)
+				ComposterBlock.COMPOSTABLES.put(GBlocks.LICHEN_SHELF.get().asItem(), 0.45f)
+				ComposterBlock.COMPOSTABLES.put(GBlocks.LICHEN_CORDYCEPS.get().asItem(), 0.4f)
+				ComposterBlock.COMPOSTABLES.put(GItems.SALTED_JERKY.get(), 0.5f)
+			}
+		}
 
 		modContainer.registerConfig(ModConfig.Type.COMMON, GalosphereConfig.COMMON)
 
@@ -126,7 +135,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 				put(GEntityTypes.SPECTERPILLAR.get(), Specterpillar.createAttributes().build())
 				put(GEntityTypes.SPECTATOR_VISION.get(), SpectatorVision.createAttributes().build())
 				put(GEntityTypes.BERSERKER.get(), Berserker.createAttributes().build())
-				put(GEntityTypes.PRESERVED.get(), Preserved.createAttributes().build())
+				put(GEntityTypes.PRESERVED_CORPSE.get(), PreservedCorpse.createAttributes().build())
 			}
 		}
 
@@ -363,14 +372,9 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 				PlayCooldownSoundPacket.CODEC,
 				ClientEventsHandler::playCooldownSound,
 			)
-
-
 		}
 
 		ev.addListener<TagsUpdatedEvent> { event ->
-			DispenserBlock.registerBehavior(GBlocks.ALLURITE_BLOCK.get().asItem(), MonstrometerDispenseItemBehavior())
-			DispenserBlock.registerBehavior(GBlocks.ALLURITE_BLOCK.get().asItem(), WarpedAnchorDispenseItemBehavior())
-			DispenserBlock.registerBehavior(GItems.LUMIERE_SHARD.get(), LumiereComposterDispenseItemBehavior())
 			DispenserBlock.registerBehavior(GItems.GLOW_FLARE.get(), ProjectileDispenseBehavior(GItems.GLOW_FLARE.get()))
 		}
 
@@ -428,14 +432,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		//#endregion
 
 //		ev.register(MiscEvents())
-	}
-
-	private fun commonSetup(event: FMLCommonSetupEvent)
-	{
-		event.enqueueWork {
-			GPlacedFeatures.init()
-			GVanillaIntegration.init()
-		}
 	}
 
 	companion object

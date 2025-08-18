@@ -2,9 +2,7 @@ package net.orcinus.galosphere.init
 
 import net.minecraft.core.registries.Registries
 import net.minecraft.world.entity.EntityType
-import net.minecraft.world.entity.EntityType.EntityFactory
 import net.minecraft.world.entity.MobCategory
-import net.minecraft.world.level.Level
 import net.neoforged.neoforge.registries.DeferredRegister
 import net.orcinus.galosphere.Galosphere
 import net.orcinus.galosphere.entities.*
@@ -101,11 +99,11 @@ object GEntityTypes
 				.build(Galosphere.id("berserker").toString())
 		})
 	@JvmField
-	val PRESERVED = ENTITY_TYPES.register(
-		"preserved",
+	val PRESERVED_CORPSE = ENTITY_TYPES.register(
+		"preserved_corpse",
 		Supplier {
 			EntityType.Builder.of({ entityType, level ->
-				Preserved(
+				PreservedCorpse(
 					entityType,
 					level
 				)

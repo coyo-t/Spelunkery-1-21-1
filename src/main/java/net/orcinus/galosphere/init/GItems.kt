@@ -41,7 +41,7 @@ object GItems
 	val BERSERKER_SPAWN_EGG = regIt("berserker_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.BERSERKER, 15568753, 6057047, Item.Properties()) }
 
 	@JvmField
-	val PRESERVED_SPAWN_EGG = regIt("preserved_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.PRESERVED, 15703431, 7246179, Item.Properties()) }
+	val PRESERVED_SPAWN_EGG = regIt("preserved_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.PRESERVED_CORPSE, 15703431, 7246179, Item.Properties()) }
 
 	@JvmField
 	val BOTTLE_OF_SPECTRE = regIt("bottle_of_spectre") { SpectreBottleItem(Item.Properties().stacksTo(1)) }

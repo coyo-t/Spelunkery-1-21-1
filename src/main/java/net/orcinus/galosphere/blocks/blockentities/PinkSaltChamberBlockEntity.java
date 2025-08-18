@@ -22,7 +22,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.orcinus.galosphere.blocks.PinkSaltChamberBlock;
 import net.orcinus.galosphere.blocks.PinkSaltClusterBlock;
-import net.orcinus.galosphere.entities.Preserved;
+import net.orcinus.galosphere.entities.PreservedCorpse;
 import net.orcinus.galosphere.init.GBlockEntityTypes;
 import net.orcinus.galosphere.init.GBlocks;
 import net.orcinus.galosphere.init.GCriteriaTriggers;
@@ -34,7 +34,7 @@ import java.util.Optional;
 
 public class PinkSaltChamberBlockEntity extends BlockEntity
 {
-	private final List<Preserved> preserves = Lists.newArrayList();
+	private final List<PreservedCorpse> preserves = Lists.newArrayList();
 	public final int maxCooldown = 6000;
 	private int cooldown = 0;
 	
@@ -73,7 +73,7 @@ public class PinkSaltChamberBlockEntity extends BlockEntity
 		{
 			return;
 		}
-		Optional<Preserved> preserved = blockEntity.preserves.stream().filter(LivingEntity::isAlive).findAny();
+		Optional<PreservedCorpse> preserved = blockEntity.preserves.stream().filter(LivingEntity::isAlive).findAny();
 		if (!blockEntity.preserves.isEmpty() && preserved.isEmpty())
 		{
 			level.setBlock(blockPos, blockState.setValue(PinkSaltChamberBlock.PHASE, PinkSaltChamberBlock.ChamberPhase.COOLDOWN), 2);
@@ -159,12 +159,12 @@ public class PinkSaltChamberBlockEntity extends BlockEntity
 		}
 		else
 		{
-			Preserved preserved = GEntityTypes.PRESERVED.get().spawn(serverLevel, null, null, pos, MobSpawnType.TRIGGERED, true, true);
-			preserved.setPos(pos.getX(), pos.getY(), pos.getZ());
-			preserved.setPersistenceRequired();
-			preserved.setFromChamber(true);
-			serverLevel.addFreshEntityWithPassengers(preserved);
-			this.preserves.add(preserved);
+			PreservedCorpse preservedCorpse = GEntityTypes.PRESERVED_CORPSE.get().spawn(serverLevel, null, null, pos, MobSpawnType.TRIGGERED, true, true);
+			preservedCorpse.setPos(pos.getX(), pos.getY(), pos.getZ());
+			preservedCorpse.setPersistenceRequired();
+			preservedCorpse.setFromChamber(true);
+			serverLevel.addFreshEntityWithPassengers(preservedCorpse);
+			this.preserves.add(preservedCorpse);
 		}
 	}
 	
