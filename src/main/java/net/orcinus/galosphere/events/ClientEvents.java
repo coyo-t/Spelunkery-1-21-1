@@ -14,28 +14,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ChargedProjectiles;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterEntitySpectatorShadersEvent;
-import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.MutableHashedLinkedMap;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.orcinus.galosphere.Galosphere;
-import net.orcinus.galosphere.client.SpectatorTickHandler;
-import net.orcinus.galosphere.client.gui.SpectatorVisionOverlay;
-import net.orcinus.galosphere.client.model.*;
-import net.orcinus.galosphere.client.particles.CrystalRainParticle;
-import net.orcinus.galosphere.client.particles.ImpactParticle;
-import net.orcinus.galosphere.client.particles.IndicatorParticle;
-import net.orcinus.galosphere.client.particles.SpectateOrbParticle;
-import net.orcinus.galosphere.client.particles.providers.PinkSaltFallingDustProvider;
-import net.orcinus.galosphere.client.particles.providers.WarpedProvider;
-import net.orcinus.galosphere.client.renderer.*;
-import net.orcinus.galosphere.client.renderer.block.GildedBeadsRenderer;
-import net.orcinus.galosphere.init.*;
+import net.orcinus.galosphere.init.GEntityTypes;
+import net.orcinus.galosphere.init.GItems;
 import net.orcinus.galosphere.items.SaltboundTabletItem;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,12 +39,6 @@ public class ClientEvents
 	@SubscribeEvent
 	public static void onClientSetup (final FMLClientSetupEvent event)
 	{
-		IEventBus eventBus = NeoForge.EVENT_BUS;
-		eventBus.register(new SpectatorVisionOverlay());
-		eventBus.register(new CameraEvents());
-		
-		eventBus.addListener(ev -> SpectatorTickHandler.tick());
-		
 		event.enqueueWork(() -> {
 			ItemProperties.register(Items.CROSSBOW, Galosphere.id("glow_flare"), (itemStack, clientLevel, livingEntity, i) -> {
 				ChargedProjectiles chargedProjectiles = itemStack.get(DataComponents.CHARGED_PROJECTILES);
@@ -169,182 +149,7 @@ public class ClientEvents
 	@SubscribeEvent
 	public static void buildCreativeModeTabContents (BuildCreativeModeTabContentsEvent event)
 	{
-//		var entries = event.getSearchEntries();
-//		ResourceKey<CreativeModeTab> tabKey = event.getTabKey();
-//		if (tabKey.equals(CreativeModeTabs.BUILDING_BLOCKS))
-//		{
-//			addAfter(entries,
-//				Blocks.AMETHYST_BLOCK,
-//				GBlocks.AMETHYST_STAIRS.get(),
-//				GBlocks.AMETHYST_SLAB.get(),
-//				GBlocks.CHISELED_AMETHYST.get(),
-//				GBlocks.AMETHYST_LAMP.get(),
-//				GBlocks.SMOOTH_AMETHYST.get(),
-//				GBlocks.SMOOTH_AMETHYST_STAIRS.get(),
-//				GBlocks.SMOOTH_AMETHYST_SLAB.get(),
-//				GBlocks.AMETHYST_BRICKS.get(),
-//				GBlocks.AMETHYST_BRICK_STAIRS.get(),
-//				GBlocks.AMETHYST_BRICK_SLAB.get(),
-//				GBlocks.ALLURITE_BLOCK.get(),
-//				GBlocks.ALLURITE_STAIRS.get(),
-//				GBlocks.ALLURITE_SLAB.get(),
-//				GBlocks.CHISELED_ALLURITE.get(),
-//				GBlocks.ALLURITE_LAMP.get(),
-//				GBlocks.SMOOTH_ALLURITE.get(),
-//				GBlocks.SMOOTH_ALLURITE_STAIRS.get(),
-//				GBlocks.SMOOTH_ALLURITE_SLAB.get(),
-//				GBlocks.ALLURITE_BRICKS.get(),
-//				GBlocks.ALLURITE_BRICK_STAIRS.get(),
-//				GBlocks.ALLURITE_BRICK_SLAB.get(),
-//				GBlocks.LUMIERE_BLOCK.get(),
-//				GBlocks.LUMIERE_STAIRS.get(),
-//				GBlocks.LUMIERE_SLAB.get(),
-//				GBlocks.CHISELED_LUMIERE.get(),
-//				GBlocks.LUMIERE_LAMP.get(),
-//				GBlocks.SMOOTH_LUMIERE.get(),
-//				GBlocks.SMOOTH_LUMIERE_STAIRS.get(),
-//				GBlocks.SMOOTH_LUMIERE_SLAB.get(),
-//				GBlocks.LUMIERE_BRICKS.get(),
-//				GBlocks.LUMIERE_BRICK_STAIRS.get(),
-//				GBlocks.LUMIERE_BRICK_SLAB.get()
-//			);
-//			accept(entries, GBlocks.SILVER_BLOCK.get());
-//			accept(entries, GBlocks.SILVER_PANEL.get());
-//			accept(entries, GBlocks.SILVER_PANEL_STAIRS.get());
-//			accept(entries, GBlocks.SILVER_PANEL_SLAB.get());
-//			accept(entries, GBlocks.SILVER_TILES.get());
-//			accept(entries, GBlocks.SILVER_TILES_STAIRS.get());
-//			accept(entries, GBlocks.SILVER_TILES_SLAB.get());
-//			accept(entries, GBlocks.SILVER_LATTICE.get());
-//		}
-//
-//		if (tabKey.equals(CreativeModeTabs.NATURAL_BLOCKS))
-//		{
-//			addAfter(entries,
-//				Blocks.DEEPSLATE_IRON_ORE,
-//				GBlocks.SILVER_ORE.get(),
-//				GBlocks.DEEPSLATE_SILVER_ORE.get()
-//			);
-//			addAfter(entries,
-//				Blocks.RAW_GOLD_BLOCK,
-//				GBlocks.RAW_SILVER_BLOCK.get()
-//			);
-//			addAfter(entries,
-//				Blocks.AMETHYST_CLUSTER,
-//				GBlocks.GLINTED_AMETHYST_CLUSTER.get(),
-//				GBlocks.ALLURITE_BLOCK.get(),
-//				GBlocks.ALLURITE_CLUSTER.get(),
-//				GBlocks.GLINTED_ALLURITE_CLUSTER.get(),
-//				GBlocks.LUMIERE_BLOCK.get(),
-//				GBlocks.LUMIERE_CLUSTER.get(),
-//				GBlocks.GLINTED_LUMIERE_CLUSTER.get()
-//			);
-//			addAfter(entries,
-//				Blocks.GLOW_LICHEN,
-//				GBlocks.GLOW_INK_CLUMPS.get()
-//			);
-//			addAfter(entries,
-//				Blocks.PEARLESCENT_FROGLIGHT,
-//				GBlocks.AMETHYST_LAMP.get(),
-//				GBlocks.ALLURITE_LAMP.get(),
-//				GBlocks.LUMIERE_LAMP.get()
-//			);
-//		}
-//
-//		if (tabKey.equals(CreativeModeTabs.INGREDIENTS))
-//		{
-//			addAfter(entries, Items.RAW_GOLD, GItems.RAW_SILVER.get());
-//			addAfter(entries, Items.GOLD_INGOT, GItems.SILVER_INGOT.get());
-//			addAfter(entries, Items.GOLD_NUGGET, GItems.SILVER_NUGGET.get());
-//			addAfter(entries, Items.AMETHYST_SHARD, GItems.ALLURITE_SHARD.get(), GItems.LUMIERE_SHARD.get());
-//		}
-
-//		if (tabKey.equals(CreativeModeTabs.FUNCTIONAL_BLOCKS))
-//		{
-//			addAfter(entries, Blocks.END_ROD, GBlocks.CHANDELIER.get());
-//			addAfter(entries, Blocks.SMITHING_TABLE, GBlocks.COMBUSTION_TABLE.get());
-//			addAfter(entries, Blocks.RESPAWN_ANCHOR, GBlocks.MONSTROMETER.get(), GBlocks.WARPED_ANCHOR.get());
-//		}
-
-//		if (tabKey.equals(CreativeModeTabs.NATURAL_BLOCKS))
-//		{
-//			addAfter(entries, Blocks.SNOW, GBlocks.LICHEN_MOSS.get());
-//			addAfter(entries, Blocks.RED_MUSHROOM, GBlocks.BOWL_LICHEN.get());
-//			addAfter(entries, Blocks.CACTUS, GBlocks.LICHEN_SHELF.get(), GBlocks.LICHEN_ROOTS.get());
-//		}
-//
-//		if (tabKey.equals(CreativeModeTabs.FOOD_AND_DRINKS))
-//		{
-//			addAfter(entries, Items.GLOW_BERRIES, GItems.LICHEN_CORDYCEPS.get(), GItems.GOLDEN_LICHEN_CORDYCEPS.get());
-//		}
-
-//		if (tabKey.equals(CreativeModeTabs.SPAWN_EGGS))
-//		{
-//			addAfter(entries, Items.SHEEP_SPAWN_EGG, GItems.SPARKLE_SPAWN_EGG.get(), GItems.SPECTRE_SPAWN_EGG.get(), GItems.SPECTERPILLAR_SPAWN_EGG.get());
-//		}
-
-//		if (tabKey.equals(CreativeModeTabs.TOOLS_AND_UTILITIES))
-//		{
-//			addAfter(entries, Items.CLOCK, GItems.BAROMETER.get());
-//			addBefore(entries, Items.SADDLE, GItems.GLOW_FLARE.get(), GItems.SPECTRE_FLARE.get());
-//		}
-
-//		if (tabKey.equals(CreativeModeTabs.COMBAT))
-//		{
-//			addAfter(entries, Items.CHAINMAIL_BOOTS, GItems.STERLING_HELMET.get(), GItems.STERLING_CHESTPLATE.get(), GItems.STERLING_LEGGINGS.get(), GItems.STERLING_BOOTS.get());
-//			addAfter(entries, Items.LEATHER_HORSE_ARMOR, GItems.STERLING_HORSE_ARMOR.get());
-//			addAfter(entries, Items.TNT, GItems.SILVER_BOMB.get());
-//		}
-	
 	}
-	
-	@SubscribeEvent
-	public static void loadEntityShader (RegisterEntitySpectatorShadersEvent event)
-	{
-		event.register(GEntityTypes.SPECTRE.get(), Galosphere.id("shaders/post/spectre.json"));
-		event.register(GEntityTypes.SPECTATOR_VISION.get(), Galosphere.id("shaders/post/spectre.json"));
-	}
-	
-	@SubscribeEvent
-	public static void registerEntityLayers (EntityRenderersEvent.RegisterLayerDefinitions event)
-	{
-		event.registerLayerDefinition(GModelLayers.SPARKLE, SparkleModel::createBodyLayer);
-		event.registerLayerDefinition(GModelLayers.STERLING_HELMET, SterlingArmorModel::createBodyLayer);
-		event.registerLayerDefinition(GModelLayers.SPECTRE, SpectreModel::createBodyLayer);
-		event.registerLayerDefinition(GModelLayers.SPECTERPILLAR, SpecterpillarModel::createBodyLayer);
-		event.registerLayerDefinition(GModelLayers.GILDED_BEADS, GildedBeadsRenderer::createBodyLayer);
-		event.registerLayerDefinition(GModelLayers.BERSERKER, BerserkerModel::createBodyLayer);
-		event.registerLayerDefinition(GModelLayers.PRESERVED, PreservedModel::createBodyLayer);
-		event.registerLayerDefinition(GModelLayers.PINK_SALT_PILLAR, PinkSaltPillarModel::createBodyLayer);
-	}
-	
-	@SubscribeEvent
-	public static void registerEntityRenderers (EntityRenderersEvent.RegisterRenderers event)
-	{
-		event.registerEntityRenderer(GEntityTypes.SPARKLE.get(), SparkleRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.SPECTRE.get(), SpectreRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.GLOW_FLARE.get(), ThrowableLaunchedProjectileRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.SPECTRE_FLARE.get(), ThrowableLaunchedProjectileRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.SPECTERPILLAR.get(), SpecterpillarRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.SPECTATOR_VISION.get(), SpectatorVisionRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.BERSERKER.get(), BerserkerRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.PRESERVED_CORPSE.get(), PreservedRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.PINK_SALT_PILLAR.get(), PinkSaltPillarRenderer::new);
-		event.registerEntityRenderer(GEntityTypes.PINK_SALT_SHARD.get(), PinkSaltShardRenderer::new);
-		event.registerBlockEntityRenderer(GBlockEntityTypes.GILDED_BEADS.get(), GildedBeadsRenderer::new);
-	}
-	
-	@SubscribeEvent
-	public static void registerParticles (RegisterParticleProvidersEvent event)
-	{
-		event.registerSpriteSet(GParticleTypes.WARPED.get(), WarpedProvider::new);
-		event.registerSpriteSet(GParticleTypes.ALLURITE_RAIN.get(), CrystalRainParticle.Provider::new);
-		event.registerSpriteSet(GParticleTypes.LUMIERE_RAIN.get(), CrystalRainParticle.Provider::new);
-		event.registerSpriteSet(GParticleTypes.AMETHYST_RAIN.get(), CrystalRainParticle.Provider::new);
-		event.registerSpriteSet(GParticleTypes.AURA_RINGER_INDICATOR.get(), IndicatorParticle.Provider::new);
-		event.registerSpriteSet(GParticleTypes.SPECTATE_ORB.get(), SpectateOrbParticle.Provider::new);
-		event.registerSpriteSet(GParticleTypes.PINK_SALT_FALLING_DUST.get(), PinkSaltFallingDustProvider::new);
-		event.registerSpriteSet(GParticleTypes.IMPACT.get(), ImpactParticle.Provider::new);
-	}
+
 	
 }

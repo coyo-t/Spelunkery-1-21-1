@@ -6,7 +6,15 @@ import dissonance.util.extension.decremented
 import dissonance.util.extension.get
 import dissonance.util.extension.isa
 import net.minecraft.ChatFormatting
+import net.minecraft.client.Minecraft
+import net.minecraft.client.model.HumanoidModel.createMesh
+import net.minecraft.client.model.geom.PartPose
+import net.minecraft.client.model.geom.builders.CubeDeformation
+import net.minecraft.client.model.geom.builders.CubeListBuilder
+import net.minecraft.client.model.geom.builders.LayerDefinition
+import net.minecraft.client.model.geom.builders.MeshDefinition
 import net.minecraft.core.BlockPos
+import net.minecraft.core.BlockPos.MutableBlockPos
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.dispenser.ProjectileDispenseBehavior
 import net.minecraft.network.chat.Component
@@ -16,9 +24,7 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.tags.EntityTypeTags
-import net.minecraft.world.entity.EquipmentSlot
-import net.minecraft.world.entity.Mob
-import net.minecraft.world.entity.SpawnPlacementTypes
+import net.minecraft.world.entity.*
 import net.minecraft.world.entity.animal.horse.Horse
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.entity.player.Player
@@ -26,10 +32,11 @@ import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.item.ProjectileWeaponItem
 import net.minecraft.world.item.alchemy.Potions
-import net.minecraft.world.level.block.ComposterBlock
 import net.minecraft.world.level.block.DispenserBlock
+import net.minecraft.world.level.block.RenderShape
 import net.minecraft.world.level.block.ShulkerBoxBlock
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity
+import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.gameevent.GameEvent
 import net.minecraft.world.level.levelgen.Heightmap
 import net.minecraft.world.level.storage.ServerLevelData
@@ -42,6 +49,9 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.config.ModConfig
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.neoforge.client.event.*
+import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent.OverlayType
+import net.neoforged.neoforge.client.event.ViewportEvent.ComputeFogColor
 import net.neoforged.neoforge.event.AddReloadListenerEvent
 import net.neoforged.neoforge.event.LootTableLoadEvent
 import net.neoforged.neoforge.event.TagsUpdatedEvent
@@ -59,8 +69,18 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent
 import net.neoforged.neoforge.event.tick.PlayerTickEvent
 import net.neoforged.neoforge.network.PacketDistributor
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
+import net.orcinus.galosphere.api.Spectatable
 import net.orcinus.galosphere.api.SpectreBoundSpyglass
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock
+import net.orcinus.galosphere.client.model.*
+import net.orcinus.galosphere.client.particles.CrystalRainParticle
+import net.orcinus.galosphere.client.particles.ImpactParticle
+import net.orcinus.galosphere.client.particles.IndicatorParticle
+import net.orcinus.galosphere.client.particles.SpectateOrbParticle
+import net.orcinus.galosphere.client.particles.providers.PinkSaltFallingDustProvider
+import net.orcinus.galosphere.client.particles.providers.WarpedProvider
+import net.orcinus.galosphere.client.renderer.*
+import net.orcinus.galosphere.client.renderer.block.GildedBeadsRenderer
 import net.orcinus.galosphere.config.GalosphereConfig
 import net.orcinus.galosphere.entities.*
 import net.orcinus.galosphere.init.*
@@ -101,6 +121,219 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		GSensorTypes.SENSOR_TYPES.register(ev)
 		GSoundEvents.SOUND_EVENTS.register(ev)
 
+		//#region client events
+
+		ev.addListener<ComputeFogColor> { event ->
+			val camera = event.camera
+			if (renderShadowPhase(camera.entity) && getViewBlockingState(camera.entity as LivingEntity) != null)
+			{
+				event.red = 0f
+				event.green = 0f
+				event.blue = 0f
+			}
+		}
+
+		ev.addListener<RenderBlockScreenEffectEvent> { event ->
+			if (event.overlayType == OverlayType.BLOCK && event.player.hasEffect(GMobEffects.ASTRAL))
+			{
+				event.setCanceled(true)
+			}
+		}
+
+		ev.addListener<RenderHandEvent> { event ->
+			val game = Minecraft.getInstance()
+			val viewer = game.getCameraEntity()
+			val level = game.level
+			if (viewer is Spectatable && viewer.getManipulatorUUID() != null && level != null)
+			{
+				val player = level.getPlayerByUUID(viewer.getManipulatorUUID())
+				if (player === game.player)
+				{
+					event.setCanceled(true)
+				}
+			}
+		}
+
+		ev.addListener<RegisterParticleProvidersEvent> {
+			with (it) {
+				registerSpriteSet(GParticleTypes.WARPED.get(), ::WarpedProvider)
+				registerSpriteSet(GParticleTypes.ALLURITE_RAIN.get(), CrystalRainParticle::Provider)
+				registerSpriteSet(GParticleTypes.LUMIERE_RAIN.get(), CrystalRainParticle::Provider)
+				registerSpriteSet(GParticleTypes.AMETHYST_RAIN.get(), CrystalRainParticle::Provider)
+				registerSpriteSet(GParticleTypes.AURA_RINGER_INDICATOR.get(), IndicatorParticle::Provider)
+				registerSpriteSet(GParticleTypes.SPECTATE_ORB.get(), SpectateOrbParticle::Provider)
+				registerSpriteSet(GParticleTypes.PINK_SALT_FALLING_DUST.get(), ::PinkSaltFallingDustProvider)
+				registerSpriteSet(GParticleTypes.IMPACT.get(), ImpactParticle::Provider)
+			}
+		}
+
+		ev.addListener<EntityRenderersEvent.RegisterRenderers> {
+			with (it)
+			{
+				registerEntityRenderer(GEntityTypes.SPARKLE.get(), ::SparkleRenderer)
+				registerEntityRenderer(GEntityTypes.SPECTRE.get(), ::SpectreRenderer)
+				registerEntityRenderer(GEntityTypes.GLOW_FLARE.get(), ::ThrowableLaunchedProjectileRenderer)
+				registerEntityRenderer(GEntityTypes.SPECTRE_FLARE.get(), ::ThrowableLaunchedProjectileRenderer)
+				registerEntityRenderer(GEntityTypes.SPECTERPILLAR.get(), ::SpecterpillarRenderer)
+				registerEntityRenderer(GEntityTypes.SPECTATOR_VISION.get(), ::SpectatorVisionRenderer)
+				registerEntityRenderer(GEntityTypes.BERSERKER.get(), ::BerserkerRenderer)
+				registerEntityRenderer(GEntityTypes.PRESERVED_CORPSE.get(), ::PreservedRenderer)
+				registerEntityRenderer(GEntityTypes.PINK_SALT_PILLAR.get(), ::PinkSaltPillarRenderer)
+				registerEntityRenderer(GEntityTypes.PINK_SALT_SHARD.get(), ::PinkSaltShardRenderer)
+				registerBlockEntityRenderer(GBlockEntityTypes.GILDED_BEADS.get(), ::GildedBeadsRenderer)
+			}
+		}
+
+		ev.addListener<RegisterEntitySpectatorShadersEvent> {
+			it.register(GEntityTypes.SPECTRE.get(), id("shaders/post/spectre.json"))
+			it.register(GEntityTypes.SPECTATOR_VISION.get(), id("shaders/post/spectre.json"))
+		}
+
+		ev.addListener<EntityRenderersEvent.RegisterLayerDefinitions> {
+			with (it)
+			{
+				registerLayerDefinition(GModelLayers.SPARKLE, SparkleModel<*>::createBodyLayer)
+				registerLayerDefinition(GModelLayers.STERLING_HELMET) {
+					val meshdefinition = createMesh(CubeDeformation.NONE, 0.0f)
+					val partdefinition = meshdefinition.root
+
+					val head = partdefinition.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.ZERO)
+					val helmet = head.addOrReplaceChild(
+						"helmet",
+						CubeListBuilder.create().texOffs(0, 0)
+							.addBox(-1.0f, -12.25f, -6.0f, 2.0f, 12.0f, 12.0f, CubeDeformation(0.0f))
+							.texOffs(20, 16).addBox(-4.0f, -9.0f, -4.0f, 8.0f, 8.0f, 8.0f, CubeDeformation(1.0f)),
+						PartPose.offset(0.0f, 0.0f, 0.0f)
+					)
+					return@registerLayerDefinition LayerDefinition.create(meshdefinition, 64, 64)
+				}
+				registerLayerDefinition(GModelLayers.SPECTRE, SpectreModel<*>::createBodyLayer)
+				registerLayerDefinition(GModelLayers.SPECTERPILLAR, SpecterpillarModel<*>::createBodyLayer)
+				registerLayerDefinition(GModelLayers.GILDED_BEADS) {
+					val meshdefinition = MeshDefinition()
+					val partdefinition = meshdefinition.root
+					partdefinition.addOrReplaceChild(
+						"gilded_beads",
+						CubeListBuilder.create().texOffs(0, 0)
+							.addBox(-8.0f, -16.0f, 0.0f, 16.0f, 16.0f, 0.0f, CubeDeformation(0.0f)),
+						PartPose.offset(0.0f, 24.0f, 0.0f)
+					)
+					return@registerLayerDefinition LayerDefinition.create(meshdefinition, 32, 32)
+				}
+				registerLayerDefinition(GModelLayers.BERSERKER, BerserkerModel<*>::createBodyLayer)
+				registerLayerDefinition(GModelLayers.PRESERVED, PreservedModel<*>::createBodyLayer)
+				registerLayerDefinition(GModelLayers.PINK_SALT_PILLAR) {
+					val meshdefinition = MeshDefinition()
+					val partdefinition = meshdefinition.getRoot()
+
+					val root = partdefinition.addOrReplaceChild(
+						"root",
+						CubeListBuilder.create().texOffs(0, 0)
+							.addBox(-5.0f, -32.0f, -5.0f, 10.0f, 32.0f, 10.0f, CubeDeformation(0.0f)),
+						PartPose.offset(0.0f, 24.0f, 0.0f)
+					)
+					return@registerLayerDefinition LayerDefinition.create(meshdefinition, 48, 48)
+				}
+			}
+
+		}
+
+		//#endregion
+
+		entityEventz(ev)
+
+		miscEventz(ev)
+
+	}
+
+	private fun miscEventz(ev: IEventBus)
+	{
+		//#region Misc Eventz
+
+		ev.addListener<RegisterPayloadHandlersEvent> { event ->
+			val registrar = event.registrar("1").optional()
+			registrar.playToClient(
+				SendParticlesPacket.TYPE,
+				SendParticlesPacket.CODEC,
+				ClientEventsHandler::handleSendParticles,
+			)
+			registrar.playToClient(
+				BarometerPacket.TYPE,
+				BarometerPacket.CODEC,
+				ClientEventsHandler::sendBarometerInfo,
+			)
+			registrar.playToClient(
+				SendPerspectivePacket.TYPE,
+				SendPerspectivePacket.CODEC,
+				ClientEventsHandler::sendPerspective,
+			)
+			registrar.playToClient(
+				PlayCooldownSoundPacket.TYPE,
+				PlayCooldownSoundPacket.CODEC,
+				ClientEventsHandler::playCooldownSound,
+			)
+		}
+
+		ev.addListener<TagsUpdatedEvent> { event ->
+			DispenserBlock.registerBehavior(GItems.GLOW_FLARE.get(), ProjectileDispenseBehavior(GItems.GLOW_FLARE.get()))
+		}
+
+		ev.addListener<AddReloadListenerEvent> { event ->
+	//			event.addListener(LumiereReformingManager())
+		}
+
+		ev.addListener<LootTableLoadEvent> { event ->
+			val name = event.name
+			val pools = (event.table as LootTableAccessor).getPools()
+			if (name == BuiltInLootTables.ANCIENT_CITY.location() && GalosphereConfig.SPECTRE_FLARE_ANCIENT_CITY_LOOT.get())
+			{
+				pools.add(
+					LootPool.lootPool().add(
+						LootItem.lootTableItem(GItems.SPECTRE_FLARE.get()).setWeight(1)
+							.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0f, 2.0f)))
+					).build()
+				)
+			}
+			if ((name == BuiltInLootTables.PILLAGER_OUTPOST.location() || name == BuiltInLootTables.ABANDONED_MINESHAFT.location()) && GalosphereConfig.SILVER_UPGRADE_TEMPLATES_LOOT.get())
+			{
+				pools.add(
+					LootPool.lootPool().add(
+						LootItem.lootTableItem(GItems.SILVER_UPGRADE_SMITHING_TEMPLATE.get()).setWeight(1)
+							.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0f, 2.0f)))
+					).build()
+				)
+			}
+		}
+
+		ev.addListener<RegisterBrewingRecipesEvent> { event ->
+			event.builder.apply {
+				addMix(Potions.AWKWARD, GItems.CURED_MEMBRANE.get(), GPotions.ASTRAL)
+				addMix(GPotions.ASTRAL, Items.REDSTONE, GPotions.LONG_ASTRAL)
+			}
+		}
+
+		ev.addListener<LevelTickEvent.Post> { event ->
+			val serverLevel = event.level
+			if (serverLevel is ServerLevel)
+			{
+				val levelData = serverLevel.getLevelData() as ServerLevelData
+				PacketDistributor.sendToAllPlayers(BarometerPacket(if (levelData.clearWeatherTime > 0) levelData.clearWeatherTime else levelData.rainTime))
+	//				serverLevel
+	//				.getPlayers { true }
+	//				.forEach { serverPlayer ->
+	//					PacketDistributor.sendToPlayer(
+	//						serverPlayer,
+	//						BarometerPacket(if (levelData.clearWeatherTime > 0) levelData.clearWeatherTime else levelData.rainTime)
+	//					)
+	//				}
+			}
+		}
+
+		//#endregion
+	}
+
+	private fun entityEventz(ev: IEventBus)
+	{
 		//#region Entity Eventz
 		ev.addListener<RegisterSpawnPlacementsEvent> { event ->
 			event.register(
@@ -120,7 +353,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		}
 
 		ev.addListener<EntityAttributeCreationEvent> { event ->
-			with (event)
+			with(event)
 			{
 				put(GEntityTypes.SPARKLE.get(), Sparkle.createAttributes().build())
 				put(GEntityTypes.SPECTRE.get(), Spectre.createAttributes().build())
@@ -175,7 +408,14 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 					GCriteriaTriggers.WARPED_TELEPORT.get().trigger(player)
 					val pearlLevel = pearl.level()
 					pearlLevel.gameEvent(player, GameEvent.BLOCK_CHANGE, blockPos)
-					pearlLevel.playSound(null, blockPos, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1.0f, 1.0f)
+					pearlLevel.playSound(
+						null,
+						blockPos,
+						SoundEvents.RESPAWN_ANCHOR_SET_SPAWN,
+						SoundSource.BLOCKS,
+						1.0f,
+						1.0f
+					)
 					player.teleportTo(blockPos.x + 0.5, blockPos.y + 0.5, blockPos.z + 0.5)
 					player.resetFallDistance()
 					pearlLevel.setBlock(
@@ -199,12 +439,12 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		ev.addListener<PlayerEvent.Clone> { event ->
 			(event.entity as? ServerPlayer)?.let { player ->
 				event
-				.original
-				.getInventory()
-				.items
-				.stream()
-				.filter { GDataComponents.PRESERVED in it }
-				.forEach { player.getInventory().add(it) }
+					.original
+					.getInventory()
+					.items
+					.stream()
+					.filter { GDataComponents.PRESERVED in it }
+					.forEach { player.getInventory().add(it) }
 			}
 		}
 
@@ -219,7 +459,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 				}
 				if (blockEntity is ShulkerBoxBlockEntity && GDataComponents.PRESERVED in mainHandItem)
 				{
-					(blockEntity as PreservedShulkerBox).setPreserved(true)
+					(blockEntity as PreservedShulkerBox).isPreserved = true
 				}
 			}
 		}
@@ -231,8 +471,8 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			val player = event.player
 			val state = event.state
 			// TODO: may or may not work.
-//			if (blockEntity is ShulkerBoxBlockEntity && (blockEntity as PreservedShulkerBox).isPreserved())
-			if (blockEntity is ShulkerBoxBlockEntity && (blockEntity as PreservedShulkerBox).isPreserved())
+	//			if (blockEntity is ShulkerBoxBlockEntity && (blockEntity as PreservedShulkerBox).isPreserved())
+			if (blockEntity is ShulkerBoxBlockEntity && (blockEntity as PreservedShulkerBox).isPreserved)
 			{
 				val stack = ItemStack(ShulkerBoxBlock.getBlockByColor((state.block as ShulkerBoxBlock).color))
 				blockEntity.saveToItem(stack, world.registryAccess())
@@ -293,21 +533,22 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			{
 				if (!entity.level().isClientSide)
 				{
-					val spectreBound = (entity.level() as ServerLevel).getEntity(useItem.get(GDataComponents.SPECTRE_BOUND.get())!!.uuid)
+					val spectreBound =
+						(entity.level() as ServerLevel).getEntity(useItem.get(GDataComponents.SPECTRE_BOUND.get())!!.uuid)
 					Optional.ofNullable(spectreBound)
-					.filter(Spectre::class.java::isInstance)
-					.map(Spectre::class.java::cast)
-					.filter(Spectre::isAlive)
-					.ifPresent { spectre ->
-						if (spectre.manipulatorUUID !== entity.getUUID())
-						{
-							val MAX_DIST = (110 * 110)
-							if ((entity.x - spectre.x).pow(2.0) + (entity.z - spectre.z).pow(2.0) < MAX_DIST)
+						.filter(Spectre::class.java::isInstance)
+						.map(Spectre::class.java::cast)
+						.filter(Spectre::isAlive)
+						.ifPresent { spectre ->
+							if (spectre.manipulatorUUID !== entity.getUUID())
 							{
-								spectre.setCamera(entity)
+								val MAX_DIST = (110 * 110)
+								if ((entity.x - spectre.x).pow(2.0) + (entity.z - spectre.z).pow(2.0) < MAX_DIST)
+								{
+									spectre.setCamera(entity)
+								}
 							}
 						}
-					}
 				}
 			}
 		}
@@ -339,91 +580,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 		//#endregion
-
-		//#region Misc Eventz
-
-		ev.addListener<RegisterPayloadHandlersEvent> { event ->
-			val registrar = event.registrar("1").optional()
-			registrar.playToClient(
-				SendParticlesPacket.TYPE,
-				SendParticlesPacket.CODEC,
-				ClientEventsHandler::handleSendParticles,
-			)
-			registrar.playToClient(
-				BarometerPacket.TYPE,
-				BarometerPacket.CODEC,
-				ClientEventsHandler::sendBarometerInfo,
-			)
-			registrar.playToClient(
-				SendPerspectivePacket.TYPE,
-				SendPerspectivePacket.CODEC,
-				ClientEventsHandler::sendPerspective,
-			)
-			registrar.playToClient(
-				PlayCooldownSoundPacket.TYPE,
-				PlayCooldownSoundPacket.CODEC,
-				ClientEventsHandler::playCooldownSound,
-			)
-		}
-
-		ev.addListener<TagsUpdatedEvent> { event ->
-			DispenserBlock.registerBehavior(GItems.GLOW_FLARE.get(), ProjectileDispenseBehavior(GItems.GLOW_FLARE.get()))
-		}
-
-		ev.addListener<AddReloadListenerEvent> { event ->
-//			event.addListener(LumiereReformingManager())
-		}
-
-		ev.addListener<LootTableLoadEvent> { event ->
-			val name = event.name
-			val pools = (event.table as LootTableAccessor).getPools()
-			if (name == BuiltInLootTables.ANCIENT_CITY.location() && GalosphereConfig.SPECTRE_FLARE_ANCIENT_CITY_LOOT.get())
-			{
-				pools.add(
-					LootPool.lootPool().add(
-						LootItem.lootTableItem(GItems.SPECTRE_FLARE.get()).setWeight(1)
-							.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0f, 2.0f)))
-					).build()
-				)
-			}
-			if ((name == BuiltInLootTables.PILLAGER_OUTPOST.location() || name == BuiltInLootTables.ABANDONED_MINESHAFT.location()) && GalosphereConfig.SILVER_UPGRADE_TEMPLATES_LOOT.get())
-			{
-				pools.add(
-					LootPool.lootPool().add(
-						LootItem.lootTableItem(GItems.SILVER_UPGRADE_SMITHING_TEMPLATE.get()).setWeight(1)
-							.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0f, 2.0f)))
-					).build()
-				)
-			}
-		}
-
-		ev.addListener<RegisterBrewingRecipesEvent> { event ->
-			event.builder.apply {
-				addMix(Potions.AWKWARD, GItems.CURED_MEMBRANE.get(), GPotions.ASTRAL)
-				addMix(GPotions.ASTRAL, Items.REDSTONE, GPotions.LONG_ASTRAL)
-			}
-		}
-
-		ev.addListener<LevelTickEvent.Post> { event ->
-			val serverLevel = event.level
-			if (serverLevel is ServerLevel)
-			{
-				val levelData = serverLevel.getLevelData() as ServerLevelData
-				PacketDistributor.sendToAllPlayers(BarometerPacket(if (levelData.clearWeatherTime > 0) levelData.clearWeatherTime else levelData.rainTime))
-//				serverLevel
-//				.getPlayers { true }
-//				.forEach { serverPlayer ->
-//					PacketDistributor.sendToPlayer(
-//						serverPlayer,
-//						BarometerPacket(if (levelData.clearWeatherTime > 0) levelData.clearWeatherTime else levelData.rainTime)
-//					)
-//				}
-			}
-		}
-
-		//#endregion
-
-//		ev.register(MiscEvents())
 	}
 
 	companion object
@@ -434,5 +590,32 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 
 		@JvmStatic
 		fun id (path: String) = ResourceLocation.fromNamespaceAndPath(MODID, path)
+
+		private fun getViewBlockingState(player: LivingEntity): BlockState?
+		{
+			val mutableBlockPos = MutableBlockPos()
+			for (i in 0..7)
+			{
+				val xx = player.x + ((((i) % 2) - 0.5) * player.bbWidth * 0.8)
+				val yy = player.eyeY + ((((i shr 1) % 2) - 0.5) * 0.1)
+				val zz = player.z + ((((i shr 2) % 2) - 0.5) * player.bbWidth * 0.8)
+				val blockState = player.level().getBlockState(mutableBlockPos.set(xx, yy, zz))
+				if (blockState.renderShape == RenderShape.INVISIBLE || !blockState.isViewBlocking(
+						player.level(),
+						mutableBlockPos
+					)
+				)
+				{
+					continue
+				}
+				return blockState
+			}
+			return null
+		}
+
+		private fun renderShadowPhase(entity: Entity): Boolean
+		{
+			return entity is LivingEntity && entity.hasEffect(GMobEffects.ASTRAL)
+		}
 	}
 }

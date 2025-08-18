@@ -1,8 +1,6 @@
-package net.orcinus.galosphere.util;
+package net.orcinus.galosphere.util
 
-public interface PreservedShulkerBox
+interface PreservedShulkerBox
 {
-	void setPreserved (boolean preserved);
-	
-	boolean isPreserved ();
+	var isPreserved: Boolean
 }

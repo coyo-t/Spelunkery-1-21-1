@@ -65,20 +65,20 @@ public class SterlingArmorItem extends ArmorItem
 		return this.itemAttributeModifiersSupplier.get();
 	}
 	
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void initializeClient (Consumer<IClientItemExtensions> consumer)
-	{
-		super.initializeClient(consumer);
-		consumer.accept(new IClientItemExtensions()
-		{
-			@Override
-			public @NotNull HumanoidModel<?> getHumanoidArmorModel (LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original)
-			{
-				return equipmentSlot == EquipmentSlot.HEAD ? new SterlingArmorModel<>(SterlingArmorModel.createBodyLayer().bakeRoot()) : IClientItemExtensions.super.getHumanoidArmorModel(livingEntity, itemStack, equipmentSlot, original);
-			}
-		});
-	}
+//	@Override
+//	@OnlyIn(Dist.CLIENT)
+//	public void initializeClient (Consumer<IClientItemExtensions> consumer)
+//	{
+//		super.initializeClient(consumer);
+//		consumer.accept(new IClientItemExtensions()
+//		{
+//			@Override
+//			public @NotNull HumanoidModel<?> getHumanoidArmorModel (LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original)
+//			{
+//				return equipmentSlot == EquipmentSlot.HEAD ? new SterlingArmorModel<>(SterlingArmorModel.createBodyLayer().bakeRoot()) : IClientItemExtensions.super.getHumanoidArmorModel(livingEntity, itemStack, equipmentSlot, original);
+//			}
+//		});
+//	}
 	
 	public float getIllagerResistance (EquipmentSlot slot)
 	{
