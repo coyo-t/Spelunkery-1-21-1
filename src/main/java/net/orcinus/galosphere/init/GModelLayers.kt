@@ -1,20 +1,23 @@
-package net.orcinus.galosphere.init;
+package net.orcinus.galosphere.init
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.orcinus.galosphere.Galosphere;
+import net.minecraft.client.model.geom.ModelLayerLocation
+import net.orcinus.galosphere.Galosphere.Companion.id
 
-public class GModelLayers
+object GModelLayers
 {
-	
-	public static final ModelLayerLocation SPARKLE = new ModelLayerLocation(Galosphere.id("sparkle"), "main");
-	public static final ModelLayerLocation STERLING_HELMET = new ModelLayerLocation(Galosphere.id("sterling_helmet"), "main");
-	public static final ModelLayerLocation SPECTRE = new ModelLayerLocation(Galosphere.id("fay"), "main");
-	public static final ModelLayerLocation SPECTERPILLAR = new ModelLayerLocation(Galosphere.id("specterpillar"), "main");
-	public static final ModelLayerLocation GILDED_BEADS = new ModelLayerLocation(Galosphere.id("gilded_beads"), "main");
-	public static final ModelLayerLocation BERSERKER = new ModelLayerLocation(Galosphere.id("blighted"), "main");
-	public static final ModelLayerLocation PINK_SALT_PILLAR = new ModelLayerLocation(Galosphere.id("pink_salt_pillar"), "main");
-	public static final ModelLayerLocation IMPACT = new ModelLayerLocation(Galosphere.id("impact"), "main");
-	public static final ModelLayerLocation PRESERVED = new ModelLayerLocation(Galosphere.id("preserved"), "main");
-	
-	
+	@JvmField
+	val SPARKLE = ModelLayerLocation(id("sparkle"), "main")
+	val STERLING_HELMET = ModelLayerLocation(id("sterling_helmet"), "main")
+	@JvmField
+	val SPECTRE = ModelLayerLocation(id("fay"), "main")
+	@JvmField
+	val SPECTERPILLAR = ModelLayerLocation(id("specterpillar"), "main")
+	val GILDED_BEADS = ModelLayerLocation(id("gilded_beads"), "main")
+	@JvmField
+	val BERSERKER = ModelLayerLocation(id("blighted"), "main")
+	@JvmField
+	val PINK_SALT_PILLAR = ModelLayerLocation(id("pink_salt_pillar"), "main")
+	val IMPACT = ModelLayerLocation(id("impact"), "main")
+	@JvmField
+	val PRESERVED = ModelLayerLocation(id("preserved"), "main")
 }

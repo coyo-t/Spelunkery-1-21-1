@@ -6,6 +6,7 @@ import dissonance.util.extension.decremented
 import dissonance.util.extension.get
 import dissonance.util.extension.isa
 import net.minecraft.ChatFormatting
+import net.minecraft.client.CameraType
 import net.minecraft.client.Minecraft
 import net.minecraft.client.model.HumanoidModel.createMesh
 import net.minecraft.client.model.geom.PartPose
@@ -13,10 +14,15 @@ import net.minecraft.client.model.geom.builders.CubeDeformation
 import net.minecraft.client.model.geom.builders.CubeListBuilder
 import net.minecraft.client.model.geom.builders.LayerDefinition
 import net.minecraft.client.model.geom.builders.MeshDefinition
+import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction
+import net.minecraft.client.renderer.item.ItemProperties
+import net.minecraft.client.resources.sounds.SimpleSoundInstance
 import net.minecraft.core.BlockPos
 import net.minecraft.core.BlockPos.MutableBlockPos
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.dispenser.ProjectileDispenseBehavior
+import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
@@ -24,6 +30,7 @@ import net.minecraft.server.level.ServerPlayer
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.tags.EntityTypeTags
+import net.minecraft.util.Mth
 import net.minecraft.world.entity.*
 import net.minecraft.world.entity.animal.horse.Horse
 import net.minecraft.world.entity.item.ItemEntity
@@ -48,6 +55,7 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.config.ModConfig
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.client.event.*
 import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent.OverlayType
@@ -69,6 +77,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent
 import net.neoforged.neoforge.event.tick.PlayerTickEvent
 import net.neoforged.neoforge.network.PacketDistributor
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
+import net.neoforged.neoforge.network.handling.IPayloadContext
 import net.orcinus.galosphere.api.Spectatable
 import net.orcinus.galosphere.api.SpectreBoundSpyglass
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock
@@ -84,11 +93,14 @@ import net.orcinus.galosphere.client.renderer.block.GildedBeadsRenderer
 import net.orcinus.galosphere.config.GalosphereConfig
 import net.orcinus.galosphere.entities.*
 import net.orcinus.galosphere.init.*
+import net.orcinus.galosphere.items.SaltboundTabletItem
 import net.orcinus.galosphere.items.SterlingArmorItem
 import net.orcinus.galosphere.network.*
 import net.orcinus.galosphere.util.PreservedShulkerBox
 import org.apache.logging.log4j.LogManager
+import org.joml.Vector3d
 import java.util.*
+import kotlin.math.max
 import kotlin.math.pow
 
 class Galosphere(ev: IEventBus, modContainer: ModContainer)
@@ -122,6 +134,88 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		GSoundEvents.SOUND_EVENTS.register(ev)
 
 		//#region client events
+
+		ev.addListener<FMLClientSetupEvent> { event ->
+			event.enqueueWork(Runnable {
+				ItemProperties.register(
+					Items.CROSSBOW,
+					id("glow_flare")
+				) { itemStack, clientLevel, livingEntity, i ->
+					val chargedProjectiles = itemStack.get(
+						DataComponents.CHARGED_PROJECTILES
+					)
+					if (chargedProjectiles != null && chargedProjectiles.contains(GItems.GLOW_FLARE.get())) 1f else 0f
+				}
+				ItemProperties.register(
+					Items.CROSSBOW,
+					id("spectre_flare")
+				) { itemStack, clientLevel, livingEntity, i: Int ->
+					val chargedProjectiles = itemStack.get(
+						DataComponents.CHARGED_PROJECTILES
+					)
+					if (chargedProjectiles != null && chargedProjectiles.contains(GItems.SPECTRE_FLARE.get())) 1f else 0f
+				}
+				ItemProperties.register(GItems.BAROMETER.get(), id("weather_level"), object : ClampedItemPropertyFunction {
+					private var rotation = 0.0
+					private var ticksBeforeChange = 0
+
+					override fun unclampedCall(
+						itemStack: ItemStack,
+						clientLevel: ClientLevel?,
+						livingEntity: LivingEntity?,
+						i: Int
+					): Float
+					{
+						val entity = (livingEntity ?: itemStack.entityRepresentation) ?: return 0f
+						var clientLevel = (clientLevel ?: (entity.level() as? ClientLevel)) ?: return 0f
+
+						val speed = 0.00525f
+						val clearWeatherTime = clearWeatherTime
+						val index = if (clearWeatherTime < 5) 0 else max(0, clearWeatherTime / 1000)
+						val max = if (clearWeatherTime < 12000)
+						{
+							val predicates = arrayOf(
+								floatArrayOf(0.15f, 0.13f, 0.21f, 0.28f, 0.36f, 0.44f, 0.52f, 0.59f, 0.70f, 0.75f, 0.82f, 0.9f),
+								floatArrayOf(0.9f, 0.82f, 0.75f, 0.70f, 0.59f, 0.52f, 0.44f, 0.36f, 0.28f, 0.21f, 0.13f, 0.15f)
+							)
+							predicates[if (clientLevel.isRaining) 1 else 0][index]
+						}
+						else
+						{
+							if (clientLevel.getLevelData().isRaining) 0.0f else 1.0f
+						}
+						val rainLevel = clientLevel.getRainLevel(1.0f)
+						if ((rainLevel > 0.9f || rainLevel < 0.1f) && clearWeatherTime == 0 && this.ticksBeforeChange == 0)
+						{
+							this.ticksBeforeChange = 800
+						}
+						if (this.ticksBeforeChange > 0)
+						{
+							this.ticksBeforeChange--
+						}
+						if (!clientLevel.dimensionType().natural() && clientLevel.getRandom().nextFloat() < 0.1f)
+						{
+							this.rotation = Mth.positiveModulo(Math.random() - this.rotation, 1.0)
+						}
+						if (this.rotation < max && this.ticksBeforeChange == 0)
+						{
+							this.rotation += speed.toDouble()
+						}
+						if (this.rotation > max && this.ticksBeforeChange == 0)
+						{
+							this.rotation -= speed.toDouble()
+						}
+						return if (this.rotation >= 0.99) 1f else this.rotation.toFloat()
+					}
+				})
+				ItemProperties.register(GItems.SALTBOUND_TABLET.get(), id("using")) { stack, world, entity, i ->
+					if (entity != null && entity.getUseItem().item is SaltboundTabletItem) 1f else 0f
+				}
+				ItemProperties.register(GItems.SALTBOUND_TABLET.get(), id("cooldown")) { stack, world, entity, i ->
+					if (entity is Player && entity.cooldowns.isOnCooldown(GItems.SALTBOUND_TABLET.get())) 1f else 0f
+				}
+			})
+		}
 
 		ev.addListener<ComputeFogColor> { event ->
 			val camera = event.camera
@@ -248,29 +342,27 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 
 	private fun miscEventz(ev: IEventBus)
 	{
-		//#region Misc Eventz
-
 		ev.addListener<RegisterPayloadHandlersEvent> { event ->
 			val registrar = event.registrar("1").optional()
 			registrar.playToClient(
 				SendParticlesPacket.TYPE,
 				SendParticlesPacket.CODEC,
-				ClientEventsHandler::handleSendParticles,
+				::handleSendParticles,
 			)
 			registrar.playToClient(
 				BarometerPacket.TYPE,
 				BarometerPacket.CODEC,
-				ClientEventsHandler::sendBarometerInfo,
+				::sendBarometerInfo,
 			)
 			registrar.playToClient(
 				SendPerspectivePacket.TYPE,
 				SendPerspectivePacket.CODEC,
-				ClientEventsHandler::sendPerspective,
+				::sendPerspective,
 			)
 			registrar.playToClient(
 				PlayCooldownSoundPacket.TYPE,
 				PlayCooldownSoundPacket.CODEC,
-				ClientEventsHandler::playCooldownSound,
+				::playCooldownSound,
 			)
 		}
 
@@ -318,18 +410,8 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			{
 				val levelData = serverLevel.getLevelData() as ServerLevelData
 				PacketDistributor.sendToAllPlayers(BarometerPacket(if (levelData.clearWeatherTime > 0) levelData.clearWeatherTime else levelData.rainTime))
-	//				serverLevel
-	//				.getPlayers { true }
-	//				.forEach { serverPlayer ->
-	//					PacketDistributor.sendToPlayer(
-	//						serverPlayer,
-	//						BarometerPacket(if (levelData.clearWeatherTime > 0) levelData.clearWeatherTime else levelData.rainTime)
-	//					)
-	//				}
 			}
 		}
-
-		//#endregion
 	}
 
 	private fun entityEventz(ev: IEventBus)
@@ -582,34 +664,144 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		//#endregion
 	}
 
+	fun handleSendParticles(packet: SendParticlesPacket, ctx: IPayloadContext)
+	{
+		ctx.enqueueWork {
+			Minecraft.getInstance().level?.let { world ->
+				val randomsource = world.getRandom()
+				world.playLocalSound(
+					packet.blockPos,
+					GSoundEvents.GLOW_FLARE_SPREAD.get(),
+					SoundSource.BLOCKS,
+					1.0f,
+					1.0f,
+					false
+				)
+				val flag = world.getBlockState(packet.blockPos).isCollisionShapeFullBlock(world, packet.blockPos)
+				val l2 = if (flag) 40 else 20
+				val f9 = if (flag) 0.45f else 0.25f
+				for (k3 in 0..<l2)
+				{
+					val f12 = 2.0f * randomsource.nextFloat() - 1.0f
+					val f14 = 2.0f * randomsource.nextFloat() - 1.0f
+					val f15 = 2.0f * randomsource.nextFloat() - 1.0f
+					world.addParticle(
+						ParticleTypes.GLOW,
+						packet.blockPos.getX().toDouble() + 0.5 + (f12 * f9).toDouble(),
+						packet.blockPos.getY().toDouble() + 0.5 + (f14 * f9).toDouble(),
+						packet.blockPos.getZ().toDouble() + 0.5 + (f15 * f9).toDouble(),
+						(f12 * 0.07f).toDouble(),
+						(f14 * 0.07f).toDouble(),
+						(f15 * 0.07f).toDouble()
+					)
+				}
+				world.playLocalSound(
+					packet.blockPos,
+					GSoundEvents.GLOW_FLARE_SPREAD.get(),
+					SoundSource.BLOCKS,
+					1.0f,
+					1.0f,
+					false
+				)
+			}
+			ctx.handle(packet)
+		}
+	}
+
+	fun sendBarometerInfo(packet: BarometerPacket, ctx: IPayloadContext)
+	{
+		ctx.enqueueWork {
+			clearWeatherTime = packet.weatherTicks
+			ctx.handle(packet)
+		}
+	}
+
+	fun sendPerspective(packet: SendPerspectivePacket, ctx: IPayloadContext)
+	{
+		ctx.enqueueWork {
+			val client = Minecraft.getInstance()
+			val level = client.level
+			level?.let { world ->
+				val maybePlayer = world.getPlayerByUUID(packet.uuid)
+				if (maybePlayer == client.player)
+				{
+					level.getEntity(packet.id)?.let {
+						client.setCameraEntity(it)
+						if (!client.options.cameraType.isFirstPerson)
+						{
+							client.options.cameraType = CameraType.FIRST_PERSON
+						}
+					}
+				}
+			}
+			ctx.handle(packet)
+		}
+	}
+
+	fun playCooldownSound(packet: PlayCooldownSoundPacket, ctx: IPayloadContext)
+	{
+		ctx.enqueueWork {
+			val instance = Minecraft.getInstance()
+			val player = instance.player
+			if (player != null)
+			{
+				instance.soundManager
+					.play(SimpleSoundInstance.forUI(GSoundEvents.SALTBOUND_TABLET_COOLDOWN_OVER.get(), 1.0f))
+			}
+			ctx.handle(packet)
+		}
+	}
+
 	companion object
 	{
 		@JvmField
 		val LOGGER = LogManager.getLogger()
 		const val MODID = "galosphere"
 
+		@JvmField
+		var clearWeatherTime = 0
+
+
 		@JvmStatic
 		fun id (path: String) = ResourceLocation.fromNamespaceAndPath(MODID, path)
+
+		val occlusionCubeCornerPoints = buildList {
+			for (i in 0..7)
+			{
+				val xx = ((((i) and 1) - 0.5) * 0.8)
+				val yy = ((((i shr 1) and 1) - 0.5) * 0.1)
+				val zz = ((((i shr 2) and 1) - 0.5) * 0.8)
+				this += Vector3d(xx, yy, zz)
+			}
+		}
 
 		private fun getViewBlockingState(player: LivingEntity): BlockState?
 		{
 			val mutableBlockPos = MutableBlockPos()
-			for (i in 0..7)
+			val x = player.x
+			val y = player.eyeY
+			val z = player.z
+			val wide = player.bbWidth
+			val level = player.level()
+			for (p in occlusionCubeCornerPoints)
 			{
-				val xx = player.x + ((((i) % 2) - 0.5) * player.bbWidth * 0.8)
-				val yy = player.eyeY + ((((i shr 1) % 2) - 0.5) * 0.1)
-				val zz = player.z + ((((i shr 2) % 2) - 0.5) * player.bbWidth * 0.8)
-				val blockState = player.level().getBlockState(mutableBlockPos.set(xx, yy, zz))
-				if (blockState.renderShape == RenderShape.INVISIBLE || !blockState.isViewBlocking(
-						player.level(),
-						mutableBlockPos
-					)
-				)
+				val blockState = level.getBlockState(mutableBlockPos.set(p.x*wide+x, p.y+y, p.z*wide+z))
+				if (blockState.renderShape != RenderShape.INVISIBLE && blockState.isViewBlocking(level, mutableBlockPos))
 				{
-					continue
+					return blockState
 				}
-				return blockState
 			}
+//			for (i in 0..7)
+//			{
+//				val xx = x + ((((i) and 1) - 0.5) * wide * 0.8)
+//				val yy = y + ((((i shr 1) and 1) - 0.5) * 0.1)
+//				val zz = z + ((((i shr 2) and 1) - 0.5) * wide * 0.8)
+//				val blockState = level.getBlockState(mutableBlockPos.set(xx, yy, zz))
+//				if (blockState.renderShape != RenderShape.INVISIBLE && blockState.isViewBlocking(level, mutableBlockPos))
+//				{
+//					return blockState
+//				}
+//			}
 			return null
 		}
 
