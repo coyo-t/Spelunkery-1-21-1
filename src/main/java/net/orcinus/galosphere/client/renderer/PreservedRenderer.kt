@@ -1,30 +1,27 @@
-package net.orcinus.galosphere.client.renderer;
+package net.orcinus.galosphere.client.renderer
 
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.orcinus.galosphere.Galosphere;
-import net.orcinus.galosphere.client.model.PreservedModel;
-import net.orcinus.galosphere.entities.PreservedCorpse;
-import net.orcinus.galosphere.init.GModelLayers;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.client.renderer.entity.EntityRendererProvider
+import net.minecraft.client.renderer.entity.MobRenderer
+import net.minecraft.resources.ResourceLocation
+import net.neoforged.api.distmarker.Dist
+import net.neoforged.api.distmarker.OnlyIn
+import net.orcinus.galosphere.Galosphere.Companion.id
+import net.orcinus.galosphere.client.model.PreservedModel
+import net.orcinus.galosphere.entities.PreservedCorpse
+import net.orcinus.galosphere.init.GModelLayers
 
 @OnlyIn(Dist.CLIENT)
-public class PreservedRenderer extends MobRenderer<PreservedCorpse, PreservedModel<PreservedCorpse>>
+class PreservedRenderer(context: EntityRendererProvider.Context) :
+	MobRenderer<PreservedCorpse, PreservedModel<PreservedCorpse>>(
+		context,
+		PreservedModel(context.bakeLayer(GModelLayers.PRESERVED)),
+		0.5f
+	)
 {
-	private static final ResourceLocation
-	TEXTURE = Galosphere.id("textures/entity/preserved/preserved.png");
-	
-	public PreservedRenderer (EntityRendererProvider.Context context)
+	override fun getTextureLocation(entity: PreservedCorpse) = TEXTURE
+
+	companion object
 	{
-		super(context, new PreservedModel<>(context.bakeLayer(GModelLayers.PRESERVED)), 0.5F);
-	}
-	
-	@Override
-	public @NotNull ResourceLocation getTextureLocation (@NotNull PreservedCorpse entity)
-	{
-		return TEXTURE;
+		private val TEXTURE = id("textures/entity/preserved/preserved.png")
 	}
 }

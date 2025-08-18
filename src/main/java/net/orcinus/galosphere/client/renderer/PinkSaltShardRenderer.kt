@@ -1,26 +1,20 @@
-package net.orcinus.galosphere.client.renderer;
+package net.orcinus.galosphere.client.renderer
 
-import net.minecraft.client.renderer.entity.ArrowRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.orcinus.galosphere.Galosphere;
-import net.orcinus.galosphere.entities.PinkSaltShard;
+import net.minecraft.client.renderer.entity.ArrowRenderer
+import net.minecraft.client.renderer.entity.EntityRendererProvider
+import net.minecraft.resources.ResourceLocation
+import net.neoforged.api.distmarker.Dist
+import net.neoforged.api.distmarker.OnlyIn
+import net.orcinus.galosphere.Galosphere.Companion.id
+import net.orcinus.galosphere.entities.PinkSaltShard
 
 @OnlyIn(Dist.CLIENT)
-public class PinkSaltShardRenderer extends ArrowRenderer<PinkSaltShard>
+class PinkSaltShardRenderer(context: EntityRendererProvider.Context) : ArrowRenderer<PinkSaltShard>(context)
 {
-	public static final ResourceLocation TEXTURE = Galosphere.id("textures/entity/projectiles/pink_salt_shard.png");
-	
-	public PinkSaltShardRenderer (EntityRendererProvider.Context context)
+	override fun getTextureLocation(entity: PinkSaltShard) = TEXTURE
+
+	companion object
 	{
-		super(context);
-	}
-	
-	@Override
-	public ResourceLocation getTextureLocation (PinkSaltShard entity)
-	{
-		return TEXTURE;
+		val TEXTURE = id("textures/entity/projectiles/pink_salt_shard.png")
 	}
 }

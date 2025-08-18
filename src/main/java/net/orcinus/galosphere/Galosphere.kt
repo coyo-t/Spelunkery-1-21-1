@@ -60,7 +60,6 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent
 import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent
 import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent.OverlayType
-import net.neoforged.neoforge.client.event.RenderHandEvent
 import net.neoforged.neoforge.client.event.ViewportEvent.ComputeFogColor
 import net.neoforged.neoforge.common.ModConfigSpec
 import net.neoforged.neoforge.event.AddReloadListenerEvent
@@ -78,7 +77,6 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent
 import net.neoforged.neoforge.network.PacketDistributor
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.network.handling.IPayloadContext
-import net.orcinus.galosphere.api.Spectatable
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock
 import net.orcinus.galosphere.client.model.BerserkerModel
 import net.orcinus.galosphere.client.model.PreservedModel
@@ -233,20 +231,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			if (event.overlayType == OverlayType.BLOCK && event.player.hasEffect(GMobEffects.ASTRAL))
 			{
 				event.setCanceled(true)
-			}
-		}
-
-		ev.addListener<RenderHandEvent> { event ->
-			val game = Minecraft.getInstance()
-			val viewer = game.getCameraEntity()
-			val level = game.level
-			if (viewer is Spectatable && viewer.getManipulatorUUID() != null && level != null)
-			{
-				val player = level.getPlayerByUUID(viewer.getManipulatorUUID())
-				if (player === game.player)
-				{
-					event.setCanceled(true)
-				}
 			}
 		}
 

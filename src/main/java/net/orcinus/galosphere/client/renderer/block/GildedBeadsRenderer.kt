@@ -56,18 +56,19 @@ class GildedBeadsRenderer(context: BlockEntityRendererProvider.Context) : BlockE
 			)
 		)
 		poseStack.mulPose(Axis.XP.rotationDegrees(180f))
-		val vertexConsumer = FUNCTION.apply(blockEntity.blockState).buffer(multiBufferSource) { RenderType.entityCutoutNoCull(it) }
+		val vertexConsumer = gm(blockEntity.blockState).buffer(multiBufferSource, RenderType::entityCutoutNoCull)
 		this.gilded_beads.render(poseStack, vertexConsumer, i, j)
 		poseStack.popPose()
 	}
 
 	companion object
 	{
-		val FUNCTION: Function<BlockState, Material> = Function { state ->
-			Material(
-				TextureAtlas.LOCATION_BLOCKS,
-				id("entity/gilded_beads/" + (if (state.getValue(BlockStateProperties.BOTTOM)) "gilded_beads_head" else "gilded_beads_body"))
-			)
-		}
+		val RL_HEAD = id("entity/gilded_beads/gilded_beads_head")
+		val RL_BODY = id("entity/gilded_beads/gilded_beads_body")
+
+		private fun gm (state: BlockState) = Material(
+			TextureAtlas.LOCATION_BLOCKS,
+			if (state.getValue(BlockStateProperties.BOTTOM)) RL_HEAD else RL_BODY
+		)
 	}
 }

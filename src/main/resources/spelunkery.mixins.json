@@ -8,7 +8,6 @@
 		"NetherPortalBlockMixin",
 		"BlockStateBaseMixin",
 		"ChorusFruitItemMixin",
-		"EntityMixin",
 		"InventoryMixin",
 		"LivingEntityMixin",
 		"LootTableAccessor",

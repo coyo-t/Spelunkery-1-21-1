@@ -15,7 +15,7 @@ import net.orcinus.galosphere.client.animations.PinkSaltPillarAnimations
 import net.orcinus.galosphere.entities.PinkSaltPillar
 
 @OnlyIn(Dist.CLIENT)
-class PinkSaltPillarModel<T : PinkSaltPillar?>(root: ModelPart) : HierarchicalModel<T?>()
+class PinkSaltPillarModel<T : PinkSaltPillar>(root: ModelPart) : HierarchicalModel<T>()
 {
 	private val root: ModelPart
 
