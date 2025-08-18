@@ -2,7 +2,6 @@ package net.orcinus.galosphere.api;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.orcinus.galosphere.entities.Spectre;
 import net.orcinus.galosphere.init.GDataComponents;
 import net.orcinus.galosphere.init.GItems;
 

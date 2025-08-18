@@ -7,9 +7,7 @@
 		"BoatPaddleSoundMixin",
 		"NetherPortalBlockMixin",
 		"BlockStateBaseMixin",
-		"BuiltStateMixin",
 		"ChorusFruitItemMixin",
-		"CrossbowItemMixin",
 		"EntityMixin",
 		"InventoryMixin",
 		"LivingEntityMixin",
@@ -20,7 +18,7 @@
 		"ServerItemCooldownsMixin",
 		"ShulkerBoxBlockEntityMixin"
 	],
-	"client": [
+	"_client": [
 		"ClientLevelMixin",
 		"FogRendererMixin",
 		"GuiMixin",

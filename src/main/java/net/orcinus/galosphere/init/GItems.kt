@@ -29,22 +29,10 @@ object GItems
 	}
 
 	@JvmField
-	val SPARKLE_SPAWN_EGG = regIt("sparkle_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.SPARKLE, 0xF0F5F4, 0x24F6D8, Item.Properties()) }
-
-	@JvmField
-	val SPECTRE_SPAWN_EGG = regIt("spectre_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.SPECTRE, 0xFFF3DD, 0x9CCDB6, Item.Properties()) }
-
-	@JvmField
-	val SPECTERPILLAR_SPAWN_EGG = regIt("specterpillar_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.SPECTERPILLAR, 0xFFF3DD, 0xF7CF7B, Item.Properties()) }
-
-	@JvmField
 	val BERSERKER_SPAWN_EGG = regIt("berserker_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.BERSERKER, 15568753, 6057047, Item.Properties()) }
 
 	@JvmField
 	val PRESERVED_SPAWN_EGG = regIt("preserved_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.PRESERVED_CORPSE, 15703431, 7246179, Item.Properties()) }
-
-	@JvmField
-	val BOTTLE_OF_SPECTRE = regIt("bottle_of_spectre") { SpectreBottleItem(Item.Properties().stacksTo(1)) }
 
 	@JvmField
 	val ALLURITE_SHARD = regIt("allurite_shard")
@@ -105,19 +93,6 @@ object GItems
 	val GOLDEN_LICHEN_CORDYCEPS = regIt("golden_lichen_cordyceps") {
 		Item(
 			Item.Properties().food(GFoods.GOLDEN_LICHEN_CORDYCEPS)
-		)
-	}
-
-	@JvmField
-	val GLOW_FLARE = regIt("glow_flare") { GlowFlareItem(Item.Properties()) }
-
-	@JvmField
-	val SPECTRE_FLARE = regIt("spectre_flare") { SpectreFlareItem(Item.Properties()) }
-
-	@JvmField
-	val SPECTRE_BOUND_SPYGLASS = regIt("spectre_bound_spyglass") {
-		SpectreBoundSpyglassItem(
-			Item.Properties().stacksTo(1)
 		)
 	}
 

@@ -1,89 +1,80 @@
-package net.orcinus.galosphere.client.particles;
+package net.orcinus.galosphere.client.particles
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-import net.minecraft.client.Camera;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.util.Mth;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import org.jetbrains.annotations.Nullable;
+import com.mojang.blaze3d.vertex.VertexConsumer
+import com.mojang.math.Axis
+import net.minecraft.client.Camera
+import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.client.particle.*
+import net.minecraft.core.particles.SimpleParticleType
+import net.minecraft.util.Mth
+import net.neoforged.api.distmarker.Dist
+import net.neoforged.api.distmarker.OnlyIn
+import kotlin.math.max
 
 @OnlyIn(Dist.CLIENT)
-public class ImpactParticle extends TextureSheetParticle
+class ImpactParticle (clientLevel: ClientLevel, d: Double, e: Double, f: Double, sprites: SpriteSet):
+	TextureSheetParticle(clientLevel, d, e, f)
 {
-	private final SpriteSet sprites;
-	
-	public ImpactParticle (ClientLevel clientLevel, double d, double e, double f, SpriteSet sprites)
+	private val sprites: SpriteSet
+
+	init
 	{
-		super(clientLevel, d, e, f);
-		this.alpha = 0.8F;
-		this.quadSize = 1.3F;
-		this.lifetime = 48;
-		this.sprites = sprites;
-		this.rCol = 1.0F;
-		this.gCol = 1.0F;
-		this.bCol = 1.0F;
-		this.setSpriteFromAge(sprites);
+		this.alpha = 0.8f
+		this.quadSize = 1.3f
+		this.lifetime = 48
+		this.sprites = sprites
+		this.rCol = 1.0f
+		this.gCol = 1.0f
+		this.bCol = 1.0f
+		this.setSpriteFromAge(sprites)
 	}
-	
-	@Override
-	public void tick ()
+
+	override fun tick()
 	{
-		quadSize = Mth.lerp(0.25F, quadSize, 6);
+		quadSize = Mth.lerp(0.25f, quadSize, 6f)
 		if (age++ >= lifetime)
 		{
-			remove();
+			remove()
 		}
 		else
 		{
-			alpha = Mth.lerp(0.08F, alpha, 0);
+			alpha = Mth.lerp(0.08f, alpha, 0f)
 		}
-		if (alpha <= 0.01F) remove();
-		setSpriteFromAge(sprites);
+		if (alpha <= 0.01f) remove()
+		setSpriteFromAge(sprites)
 	}
-	
-	@Override
-	public void render (VertexConsumer consumer, Camera camera, float delta)
+
+	override fun render(consumer: VertexConsumer, camera: Camera, delta: Float)
 	{
-		this.renderRotatedQuad(consumer, camera, Axis.XP.rotation(Mth.PI / 2), delta);
-		this.renderRotatedQuad(consumer, camera, Axis.XN.rotation(Mth.PI / 2), delta);
+		renderRotatedQuad(consumer, camera, Axis.XP.rotation(Mth.PI / 2), delta)
+		renderRotatedQuad(consumer, camera, Axis.XN.rotation(Mth.PI / 2), delta)
 	}
-	
-	@Override
-	public ParticleRenderType getRenderType ()
+
+	override fun getRenderType(): ParticleRenderType
 	{
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT
 	}
-	
-	@Override
-	protected int getLightColor (float tint)
+
+	override fun getLightColor(tint: Float): Int
 	{
-		return Math.max(50, super.getLightColor(tint));
+		return max(50, super.getLightColor(tint))
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
-	public static class Provider implements ParticleProvider<SimpleParticleType>
+	class Provider(private val sprites: SpriteSet) : ParticleProvider<SimpleParticleType>
 	{
-		private final SpriteSet sprites;
-		
-		public Provider (SpriteSet sprites)
+		override fun createParticle(
+			particleOptions: SimpleParticleType,
+			clientLevel: ClientLevel,
+			d: Double,
+			e: Double,
+			f: Double,
+			g: Double,
+			h: Double,
+			i: Double
+		): Particle
 		{
-			this.sprites = sprites;
-		}
-		
-		@Nullable
-		@Override
-		public Particle createParticle (SimpleParticleType particleOptions, ClientLevel clientLevel, double d, double e, double f, double g, double h, double i)
-		{
-			return new ImpactParticle(clientLevel, d, e, f, this.sprites);
+			return ImpactParticle(clientLevel, d, e, f, sprites)
 		}
 	}
-	
 }

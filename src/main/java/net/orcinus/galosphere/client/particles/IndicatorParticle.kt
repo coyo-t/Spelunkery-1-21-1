@@ -1,112 +1,115 @@
-package net.orcinus.galosphere.client.particles;
+package net.orcinus.galosphere.client.particles
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-import net.minecraft.client.Camera;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.orcinus.galosphere.blocks.MonstrometerBlock;
-import org.joml.Vector3f;
+import com.mojang.blaze3d.vertex.VertexConsumer
+import com.mojang.math.Axis
+import net.minecraft.client.Camera
+import net.minecraft.client.multiplayer.ClientLevel
+import net.minecraft.client.particle.*
+import net.minecraft.core.BlockPos
+import net.minecraft.core.particles.SimpleParticleType
+import net.minecraft.util.Mth
+import net.minecraft.world.phys.Vec3
+import net.neoforged.api.distmarker.Dist
+import net.neoforged.api.distmarker.OnlyIn
+import net.orcinus.galosphere.blocks.MonstrometerBlock
+import org.joml.Vector3f
+import kotlin.math.max
 
 @OnlyIn(Dist.CLIENT)
-public class IndicatorParticle extends TextureSheetParticle
+class IndicatorParticle(
+	world: ClientLevel,
+	x: Double,
+	y: Double,
+	z: Double,
+	pQuadSizeMulitiplier: Double,
+	sprites: SpriteSet
+) : TextureSheetParticle(world, x, y, z)
 {
-	
-	private final SpriteSet sprites;
-	
-	private static final Vector3f SAFE_COLOR = Vec3.fromRGB24(0xFFB219).toVector3f();
-	private static final Vector3f UNSAFE_COLOR = Vec3.fromRGB24(0x93B9FF).toVector3f();
-	
-	public IndicatorParticle (ClientLevel world, double x, double y, double z, double pQuadSizeMulitiplier, SpriteSet sprites)
+	private val sprites: SpriteSet
+
+	init
 	{
-		super(world, x, y, z);
-		
-		alpha = 1;
-		quadSize = 0;
-		lifetime = 48;
-		
-		rCol = getColor().x();
-		gCol = getColor().y();
-		bCol = getColor().z();
-		
-		setSpriteFromAge(this.sprites = sprites);
+		alpha = 1f
+		quadSize = 0f
+		lifetime = 48
+
+		rCol = this.color.x()
+		gCol = this.color.y()
+		bCol = this.color.z()
+
+		setSpriteFromAge(sprites.also { this.sprites = it })
 	}
-	
-	private Vector3f getColor ()
+
+	private val color
+		get() = if (MonstrometerBlock.isUnsafe(level, BlockPos.containing(x, y, z)))
+			UNSAFE_COLOR
+		else
+			SAFE_COLOR
+
+	override fun tick()
 	{
-		return MonstrometerBlock.isUnsafe(level, BlockPos.containing(x, y, z)) ? UNSAFE_COLOR : SAFE_COLOR;
-	}
-	
-	@Override
-	public void tick ()
-	{
-		xo = x;
-		yo = y;
-		zo = z;
-		
-		quadSize = Mth.lerp(0.06F, quadSize, 0.5F);
-		
-		rCol = Mth.lerp(0.25F, rCol, getColor().x());
-		gCol = Mth.lerp(0.25F, gCol, getColor().y());
-		bCol = Mth.lerp(0.25F, bCol, getColor().z());
-		
+		xo = x
+		yo = y
+		zo = z
+
+		quadSize = Mth.lerp(0.06f, quadSize, 0.5f)
+
+		rCol = Mth.lerp(0.25f, rCol, this.color.x())
+		gCol = Mth.lerp(0.25f, gCol, this.color.y())
+		bCol = Mth.lerp(0.25f, bCol, this.color.z())
+
 		if (age++ >= lifetime)
 		{
-			remove();
+			remove()
 		}
 		else
 		{
 			if (age > (lifetime / 2))
 			{
-				alpha -= 0.04F;
+				alpha -= 0.04f
 			}
 		}
-		
-		setSpriteFromAge(sprites);
+
+		setSpriteFromAge(sprites)
 	}
-	
-	@Override
-	public ParticleRenderType getRenderType ()
+
+	override fun getRenderType(): ParticleRenderType
 	{
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT
 	}
-	
-	@Override
-	public void render (VertexConsumer consumer, Camera camera, float delta)
+
+	override fun render(consumer: VertexConsumer, camera: Camera, delta: Float)
 	{
-		this.renderRotatedQuad(consumer, camera, Axis.XP.rotation(Mth.PI / 2), delta);
-		this.renderRotatedQuad(consumer, camera, Axis.XN.rotation(Mth.PI / 2), delta);
+		this.renderRotatedQuad(consumer, camera, Axis.XP.rotation(Mth.PI / 2), delta)
+		this.renderRotatedQuad(consumer, camera, Axis.XN.rotation(Mth.PI / 2), delta)
 	}
-	
-	@Override
-	protected int getLightColor (float tint)
+
+	override fun getLightColor(tint: Float): Int
 	{
-		return Math.max(50, super.getLightColor(tint));
+		return max(50, super.getLightColor(tint))
 	}
-	
+
 	@OnlyIn(Dist.CLIENT)
-	public static class Provider implements ParticleProvider<SimpleParticleType>
+	class Provider(private val sprites: SpriteSet) : ParticleProvider<SimpleParticleType>
 	{
-		private final SpriteSet sprites;
-		
-		public Provider (SpriteSet sprites)
+		override fun createParticle(
+			pType: SimpleParticleType,
+			pLevel: ClientLevel,
+			pX: Double,
+			pY: Double,
+			pZ: Double,
+			speed: Double,
+			pYSpeed: Double,
+			pZSpeed: Double
+		): Particle
 		{
-			this.sprites = sprites;
+			return IndicatorParticle(pLevel, pX, pY, pZ, speed, sprites)
 		}
-		
-		public Particle createParticle (SimpleParticleType pType, ClientLevel pLevel, double pX, double pY, double pZ, double speed, double pYSpeed, double pZSpeed)
-		{
-			return new IndicatorParticle(pLevel, pX, pY, pZ, speed, sprites);
-		}
+	}
+
+	companion object
+	{
+		private val SAFE_COLOR = Vec3.fromRGB24(0xFFB219).toVector3f()
+		private val UNSAFE_COLOR = Vec3.fromRGB24(0x93B9FF).toVector3f()
 	}
 }

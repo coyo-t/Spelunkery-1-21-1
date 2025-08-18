@@ -15,33 +15,39 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class BerserkerEntitySensor extends NearestLivingEntitySensor<Berserker> {
-
-    @Override
-    public Set<MemoryModuleType<?>> requires() {
-        return ImmutableSet.copyOf(Iterables.concat(super.requires(), List.of(MemoryModuleType.NEAREST_ATTACKABLE)));
-    }
-
-    @Override
-    protected void doTick(ServerLevel serverLevel, Berserker blighted) {
-        super.doTick(serverLevel, blighted);
-        getClosest(blighted, livingEntity -> livingEntity.getType() == EntityType.PLAYER)
-                .or(() -> getClosest(blighted, livingEntity -> livingEntity.getType() != EntityType.PLAYER))
-                .ifPresentOrElse(livingEntity -> blighted.getBrain().setMemory(MemoryModuleType.NEAREST_ATTACKABLE, livingEntity), () -> blighted.getBrain().eraseMemory(MemoryModuleType.NEAREST_ATTACKABLE));
-    }
-
-    private static Optional<LivingEntity> getClosest(Berserker blighted, Predicate<LivingEntity> predicate) {
-        return blighted.getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).stream().flatMap(Collection::stream).filter(blighted::canTargetEntity).filter(predicate).findFirst();
-    }
-
-    @Override
-    protected int radiusXZ() {
-        return 24;
-    }
-
-    @Override
-    protected int radiusY() {
-        return 2;
-    }
-
+public class BerserkerEntitySensor extends NearestLivingEntitySensor<Berserker>
+{
+	
+	@Override
+	public Set<MemoryModuleType<?>> requires ()
+	{
+		return ImmutableSet.copyOf(Iterables.concat(super.requires(), List.of(MemoryModuleType.NEAREST_ATTACKABLE)));
+	}
+	
+	@Override
+	protected void doTick (ServerLevel serverLevel, Berserker blighted)
+	{
+		super.doTick(serverLevel, blighted);
+		getClosest(blighted, livingEntity -> livingEntity.getType() == EntityType.PLAYER)
+				  .or(() -> getClosest(blighted, livingEntity -> livingEntity.getType() != EntityType.PLAYER))
+				  .ifPresentOrElse(livingEntity -> blighted.getBrain().setMemory(MemoryModuleType.NEAREST_ATTACKABLE, livingEntity), () -> blighted.getBrain().eraseMemory(MemoryModuleType.NEAREST_ATTACKABLE));
+	}
+	
+	private static Optional<LivingEntity> getClosest (Berserker blighted, Predicate<LivingEntity> predicate)
+	{
+		return blighted.getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).stream().flatMap(Collection::stream).filter(blighted::canTargetEntity).filter(predicate).findFirst();
+	}
+	
+	@Override
+	protected int radiusXZ ()
+	{
+		return 24;
+	}
+	
+	@Override
+	protected int radiusY ()
+	{
+		return 2;
+	}
+	
 }

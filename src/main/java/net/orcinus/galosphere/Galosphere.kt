@@ -21,7 +21,6 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance
 import net.minecraft.core.BlockPos
 import net.minecraft.core.BlockPos.MutableBlockPos
 import net.minecraft.core.component.DataComponents
-import net.minecraft.core.dispenser.ProjectileDispenseBehavior
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
@@ -31,21 +30,21 @@ import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.tags.EntityTypeTags
 import net.minecraft.util.Mth
-import net.minecraft.world.entity.*
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.EquipmentSlot
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.Mob
 import net.minecraft.world.entity.animal.horse.Horse
 import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
-import net.minecraft.world.item.ProjectileWeaponItem
 import net.minecraft.world.item.alchemy.Potions
-import net.minecraft.world.level.block.DispenserBlock
 import net.minecraft.world.level.block.RenderShape
 import net.minecraft.world.level.block.ShulkerBoxBlock
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.gameevent.GameEvent
-import net.minecraft.world.level.levelgen.Heightmap
 import net.minecraft.world.level.storage.ServerLevelData
 import net.minecraft.world.level.storage.loot.BuiltInLootTables
 import net.minecraft.world.level.storage.loot.LootPool
@@ -57,52 +56,55 @@ import net.neoforged.fml.ModContainer
 import net.neoforged.fml.config.ModConfig
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
-import net.neoforged.neoforge.client.event.*
+import net.neoforged.neoforge.client.event.EntityRenderersEvent
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent
+import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent
 import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent.OverlayType
+import net.neoforged.neoforge.client.event.RenderHandEvent
 import net.neoforged.neoforge.client.event.ViewportEvent.ComputeFogColor
+import net.neoforged.neoforge.common.ModConfigSpec
 import net.neoforged.neoforge.event.AddReloadListenerEvent
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
 import net.neoforged.neoforge.event.LootTableLoadEvent
-import net.neoforged.neoforge.event.TagsUpdatedEvent
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent
-import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent
 import net.neoforged.neoforge.event.entity.item.ItemExpireEvent
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent
-import net.neoforged.neoforge.event.entity.living.LivingGetProjectileEvent
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
 import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import net.neoforged.neoforge.event.level.BlockEvent
 import net.neoforged.neoforge.event.tick.LevelTickEvent
-import net.neoforged.neoforge.event.tick.PlayerTickEvent
 import net.neoforged.neoforge.network.PacketDistributor
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.network.handling.IPayloadContext
 import net.orcinus.galosphere.api.Spectatable
-import net.orcinus.galosphere.api.SpectreBoundSpyglass
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock
-import net.orcinus.galosphere.client.model.*
+import net.orcinus.galosphere.client.model.BerserkerModel
+import net.orcinus.galosphere.client.model.PreservedModel
 import net.orcinus.galosphere.client.particles.CrystalRainParticle
 import net.orcinus.galosphere.client.particles.ImpactParticle
 import net.orcinus.galosphere.client.particles.IndicatorParticle
-import net.orcinus.galosphere.client.particles.SpectateOrbParticle
 import net.orcinus.galosphere.client.particles.providers.PinkSaltFallingDustProvider
 import net.orcinus.galosphere.client.particles.providers.WarpedProvider
-import net.orcinus.galosphere.client.renderer.*
+import net.orcinus.galosphere.client.renderer.BerserkerRenderer
+import net.orcinus.galosphere.client.renderer.PinkSaltPillarRenderer
+import net.orcinus.galosphere.client.renderer.PinkSaltShardRenderer
+import net.orcinus.galosphere.client.renderer.PreservedRenderer
 import net.orcinus.galosphere.client.renderer.block.GildedBeadsRenderer
-import net.orcinus.galosphere.config.GalosphereConfig
-import net.orcinus.galosphere.entities.*
+import net.orcinus.galosphere.entities.Berserker
+import net.orcinus.galosphere.entities.PreservedCorpse
 import net.orcinus.galosphere.init.*
 import net.orcinus.galosphere.items.SaltboundTabletItem
 import net.orcinus.galosphere.items.SterlingArmorItem
-import net.orcinus.galosphere.network.*
+import net.orcinus.galosphere.network.BarometerPacket
+import net.orcinus.galosphere.network.PlayCooldownSoundPacket
+import net.orcinus.galosphere.network.SendParticlesPacket
+import net.orcinus.galosphere.network.SendPerspectivePacket
 import net.orcinus.galosphere.util.PreservedShulkerBox
 import org.apache.logging.log4j.LogManager
 import org.joml.Vector3d
-import java.util.*
 import kotlin.math.max
-import kotlin.math.pow
 
 class Galosphere(ev: IEventBus, modContainer: ModContainer)
 {
@@ -114,7 +116,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		modContainer.registerConfig(ModConfig.Type.COMMON, GalosphereConfig.COMMON)
+		modContainer.registerConfig(ModConfig.Type.COMMON, Config.COMMON)
 
 		GBlocks.BLOCKS.register(ev)
 		GBlockEntityTypes.BLOCK_ENTITIES.register(ev)
@@ -255,7 +257,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 				registerSpriteSet(GParticleTypes.LUMIERE_RAIN.get(), CrystalRainParticle::Provider)
 				registerSpriteSet(GParticleTypes.AMETHYST_RAIN.get(), CrystalRainParticle::Provider)
 				registerSpriteSet(GParticleTypes.AURA_RINGER_INDICATOR.get(), IndicatorParticle::Provider)
-				registerSpriteSet(GParticleTypes.SPECTATE_ORB.get(), SpectateOrbParticle::Provider)
 				registerSpriteSet(GParticleTypes.PINK_SALT_FALLING_DUST.get(), ::PinkSaltFallingDustProvider)
 				registerSpriteSet(GParticleTypes.IMPACT.get(), ImpactParticle::Provider)
 			}
@@ -264,12 +265,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		ev.addListener<EntityRenderersEvent.RegisterRenderers> {
 			with(it)
 			{
-				registerEntityRenderer(GEntityTypes.SPARKLE.get(), ::SparkleRenderer)
-				registerEntityRenderer(GEntityTypes.SPECTRE.get(), ::SpectreRenderer)
-				registerEntityRenderer(GEntityTypes.GLOW_FLARE.get(), ::ThrowableLaunchedProjectileRenderer)
-				registerEntityRenderer(GEntityTypes.SPECTRE_FLARE.get(), ::ThrowableLaunchedProjectileRenderer)
-				registerEntityRenderer(GEntityTypes.SPECTERPILLAR.get(), ::SpecterpillarRenderer)
-				registerEntityRenderer(GEntityTypes.SPECTATOR_VISION.get(), ::SpectatorVisionRenderer)
 				registerEntityRenderer(GEntityTypes.BERSERKER.get(), ::BerserkerRenderer)
 				registerEntityRenderer(GEntityTypes.PRESERVED_CORPSE.get(), ::PreservedRenderer)
 				registerEntityRenderer(GEntityTypes.PINK_SALT_PILLAR.get(), ::PinkSaltPillarRenderer)
@@ -278,15 +273,9 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<RegisterEntitySpectatorShadersEvent> {
-			it.register(GEntityTypes.SPECTRE.get(), id("shaders/post/spectre.json"))
-			it.register(GEntityTypes.SPECTATOR_VISION.get(), id("shaders/post/spectre.json"))
-		}
-
 		ev.addListener<EntityRenderersEvent.RegisterLayerDefinitions> {
 			with(it)
 			{
-				registerLayerDefinition(GModelLayers.SPARKLE, SparkleModel<*>::createBodyLayer)
 				registerLayerDefinition(GModelLayers.STERLING_HELMET) {
 					val meshdefinition = createMesh(CubeDeformation.NONE, 0.0f)
 					val partdefinition = meshdefinition.root
@@ -301,8 +290,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 					)
 					return@registerLayerDefinition LayerDefinition.create(meshdefinition, 64, 64)
 				}
-				registerLayerDefinition(GModelLayers.SPECTRE, SpectreModel<*>::createBodyLayer)
-				registerLayerDefinition(GModelLayers.SPECTERPILLAR, SpecterpillarModel<*>::createBodyLayer)
 				registerLayerDefinition(GModelLayers.GILDED_BEADS) {
 					val meshdefinition = MeshDefinition()
 					val partdefinition = meshdefinition.root
@@ -318,7 +305,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 				registerLayerDefinition(GModelLayers.PRESERVED, PreservedModel<*>::createBodyLayer)
 				registerLayerDefinition(GModelLayers.PINK_SALT_PILLAR) {
 					val meshdefinition = MeshDefinition()
-					val partdefinition = meshdefinition.getRoot()
+					val partdefinition = meshdefinition.root
 
 					val root = partdefinition.addOrReplaceChild(
 						"root",
@@ -336,31 +323,29 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 	private fun miscEventz(ev: IEventBus)
 	{
 		ev.addListener<RegisterPayloadHandlersEvent> { event ->
-			val registrar = event.registrar("1").optional()
-			registrar.playToClient(
-				SendParticlesPacket.TYPE,
-				SendParticlesPacket.CODEC,
-				::handleSendParticles,
-			)
-			registrar.playToClient(
-				BarometerPacket.TYPE,
-				BarometerPacket.CODEC,
-				::sendBarometerInfo,
-			)
-			registrar.playToClient(
-				SendPerspectivePacket.TYPE,
-				SendPerspectivePacket.CODEC,
-				::sendPerspective,
-			)
-			registrar.playToClient(
-				PlayCooldownSoundPacket.TYPE,
-				PlayCooldownSoundPacket.CODEC,
-				::playCooldownSound,
-			)
-		}
-
-		ev.addListener<TagsUpdatedEvent> { event ->
-			DispenserBlock.registerBehavior(GItems.GLOW_FLARE.get(), ProjectileDispenseBehavior(GItems.GLOW_FLARE.get()))
+			with (event.registrar("1").optional())
+			{
+				playToClient(
+					SendParticlesPacket.TYPE,
+					SendParticlesPacket.CODEC,
+					::handleSendParticles,
+				)
+				playToClient(
+					BarometerPacket.TYPE,
+					BarometerPacket.CODEC,
+					::sendBarometerInfo,
+				)
+				playToClient(
+					SendPerspectivePacket.TYPE,
+					SendPerspectivePacket.CODEC,
+					::sendPerspective,
+				)
+				playToClient(
+					PlayCooldownSoundPacket.TYPE,
+					PlayCooldownSoundPacket.CODEC,
+					::playCooldownSound,
+				)
+			}
 		}
 
 		ev.addListener<AddReloadListenerEvent> { event ->
@@ -370,16 +355,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		ev.addListener<LootTableLoadEvent> { event ->
 			val name = event.name
 			val pools = (event.table as LootTableAccessor).getPools()
-			if (name == BuiltInLootTables.ANCIENT_CITY.location() && GalosphereConfig.SPECTRE_FLARE_ANCIENT_CITY_LOOT.get())
-			{
-				pools.add(
-					LootPool.lootPool().add(
-						LootItem.lootTableItem(GItems.SPECTRE_FLARE.get()).setWeight(1)
-							.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0f, 2.0f)))
-					).build()
-				)
-			}
-			if ((name == BuiltInLootTables.PILLAGER_OUTPOST.location() || name == BuiltInLootTables.ABANDONED_MINESHAFT.location()) && GalosphereConfig.SILVER_UPGRADE_TEMPLATES_LOOT.get())
+			if ((name == BuiltInLootTables.PILLAGER_OUTPOST.location() || name == BuiltInLootTables.ABANDONED_MINESHAFT.location()) && Config.SILVER_UPGRADE_TEMPLATES_LOOT.get())
 			{
 				pools.add(
 					LootPool.lootPool().add(
@@ -410,30 +386,11 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 	private fun entityEventz(ev: IEventBus)
 	{
 		//#region Entity Eventz
-		ev.addListener<RegisterSpawnPlacementsEvent> { event ->
-			event.register(
-				GEntityTypes.SPARKLE.get(),
-				SpawnPlacementTypes.ON_GROUND,
-				Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-				Sparkle::checkSparkleSpawnRules,
-				RegisterSpawnPlacementsEvent.Operation.OR,
-			)
-			event.register(
-				GEntityTypes.SPECTRE.get(),
-				SpawnPlacementTypes.ON_GROUND,
-				Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-				Mob::checkMobSpawnRules,
-				RegisterSpawnPlacementsEvent.Operation.OR,
-			)
-		}
+
 
 		ev.addListener<EntityAttributeCreationEvent> { event ->
 			with(event)
 			{
-				put(GEntityTypes.SPARKLE.get(), Sparkle.createAttributes().build())
-				put(GEntityTypes.SPECTRE.get(), Spectre.createAttributes().build())
-				put(GEntityTypes.SPECTERPILLAR.get(), Specterpillar.createAttributes().build())
-				put(GEntityTypes.SPECTATOR_VISION.get(), SpectatorVision.createAttributes().build())
 				put(GEntityTypes.BERSERKER.get(), Berserker.createAttributes().build())
 				put(GEntityTypes.PRESERVED_CORPSE.get(), PreservedCorpse.createAttributes().build())
 			}
@@ -568,63 +525,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 				world.removeBlock(pos, false)
 				state.block.playerWillDestroy(player.level(), pos, state, player)
 				event.setCanceled(true)
-			}
-		}
-
-		ev.addListener<LivingGetProjectileEvent> { event ->
-			val entity = event.entity
-			val weapon = event.projectileWeaponItemStack
-			if (weapon isa Items.CROSSBOW)
-			{
-				val ammo = ProjectileWeaponItem.getHeldProjectile(entity) { true }
-				if (ammo.isEmpty)
-				{
-					if (entity is Player)
-					{
-						for (i in 0..<entity.getInventory().containerSize)
-						{
-							val ist = entity.getInventory().getItem(i)
-							if (ist isa GItems.GLOW_FLARE || ist isa GItems.SPECTRE_FLARE)
-							{
-								event.projectileItemStack = ist
-							}
-						}
-					}
-				}
-				else
-				{
-					if (ammo isa GItems.GLOW_FLARE || ammo isa GItems.SPECTRE_FLARE)
-					{
-						event.projectileItemStack = ammo
-					}
-				}
-			}
-		}
-
-		ev.addListener<PlayerTickEvent.Post> { event ->
-			val entity = event.entity
-			val useItem = entity.getUseItem()
-			if (SpectreBoundSpyglass.canUseSpectreBoundedSpyglass(useItem))
-			{
-				if (!entity.level().isClientSide)
-				{
-					val spectreBound =
-						(entity.level() as ServerLevel).getEntity(useItem.get(GDataComponents.SPECTRE_BOUND.get())!!.uuid)
-					Optional.ofNullable(spectreBound)
-						.filter(Spectre::class.java::isInstance)
-						.map(Spectre::class.java::cast)
-						.filter(Spectre::isAlive)
-						.ifPresent { spectre ->
-							if (spectre.manipulatorUUID !== entity.getUUID())
-							{
-								val MAX_DIST = (110 * 110)
-								if ((entity.x - spectre.x).pow(2.0) + (entity.z - spectre.z).pow(2.0) < MAX_DIST)
-								{
-									spectre.setCamera(entity)
-								}
-							}
-						}
-				}
 			}
 		}
 
@@ -801,6 +701,29 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		private fun renderShadowPhase(entity: Entity): Boolean
 		{
 			return entity is LivingEntity && entity.hasEffect(GMobEffects.ASTRAL)
+		}
+
+		object Config
+		{
+			@JvmField
+			var COMMON: ModConfigSpec
+			var SPECTRE_FLARE_ANCIENT_CITY_LOOT: ModConfigSpec.BooleanValue
+			var SILVER_UPGRADE_TEMPLATES_LOOT: ModConfigSpec.BooleanValue
+
+			init
+			{
+				COMMON = ModConfigSpec.Builder().run {
+					SPECTRE_FLARE_ANCIENT_CITY_LOOT = run {
+						comment("Adds spectre flares to ancient city loot")
+						define("spectreFlareAncientCityLoot", true)
+					}
+					SILVER_UPGRADE_TEMPLATES_LOOT = run {
+						comment("Adds Silver Upgrade Template to Abandoned Mineshafts or Pillager Outposts loot")
+						define("silverUpgradeTemplatesLoot", true)
+					}
+					build()
+				}
+			}
 		}
 	}
 }
