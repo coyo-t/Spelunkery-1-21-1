@@ -37,9 +37,9 @@ public abstract class PlayerRendererMixin extends LivingEntityRenderer<AbstractC
 	@Inject(at=@At("HEAD"), method="renderHand", cancellable=true)
 	private void G$renderHand (PoseStack poseStack, MultiBufferSource multiBufferSource, int i, AbstractClientPlayer abstractClientPlayer, ModelPart modelPart, ModelPart modelPart2, CallbackInfo ci)
 	{
-		ResourceLocation resourceLocation = abstractClientPlayer.getSkin().texture();
 		if (abstractClientPlayer.hasEffect(GMobEffects.ASTRAL))
 		{
+			ResourceLocation resourceLocation = abstractClientPlayer.getSkin().texture();
 			PlayerModel<AbstractClientPlayer> playerModel = this.getModel();
 			this.setModelProperties(abstractClientPlayer);
 			playerModel.attackTime = 0.0f;

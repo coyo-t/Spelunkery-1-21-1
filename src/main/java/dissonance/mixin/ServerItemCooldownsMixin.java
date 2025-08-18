@@ -3,7 +3,9 @@ package dissonance.mixin;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ServerItemCooldowns;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.orcinus.galosphere.init.GItems;
+import net.orcinus.galosphere.network.PlayCooldownSoundPacket;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -11,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-//FIXME
+
 @Mixin(ServerItemCooldowns.class)
 public class ServerItemCooldownsMixin
 {
@@ -24,8 +26,7 @@ public class ServerItemCooldownsMixin
 	{
 		if (item.equals(GItems.SALTBOUND_TABLET.get()))
 		{
-//			GNetworkHandler.INSTANCE.send(new PlayCooldownSoundPacket(), PacketDistributor.PLAYER.with(this.player));
+			PacketDistributor.sendToPlayer(this.player, new PlayCooldownSoundPacket());
 		}
 	}
-	
 }
