@@ -20,7 +20,7 @@ class BerserkerModel<T : Berserker>(root: ModelPart) : HierarchicalModel<T>()
 	private val root = root.getChild("root")
 
 	override fun setupAnim(
-		entity: T?,
+		entity: T,
 		limbSwing: Float,
 		limbSwingAmount: Float,
 		ageInTicks: Float,
@@ -33,7 +33,7 @@ class BerserkerModel<T : Berserker>(root: ModelPart) : HierarchicalModel<T>()
 		head.xRot = headPitch * (Math.PI.toFloat() / 180)
 		head.yRot = netHeadYaw * (Math.PI.toFloat() / 180)
 		this.animateWalk(BerserkerAnimations.BERSERKER_WALK, limbSwing, limbSwingAmount, 3.0f, 4.5f)
-		this.animate(entity!!.attackAnimationState, BerserkerAnimations.BERSERKER_ATTACK, ageInTicks, 1.0f)
+		this.animate(entity.attackAnimationState, BerserkerAnimations.BERSERKER_ATTACK, ageInTicks, 1.0f)
 		this.animate(entity.impalingAnimationState, BerserkerAnimations.BERSERKER_IMPALING, ageInTicks, 1.0f)
 		this.animate(entity.roarAnimationState, BerserkerAnimations.BERSERKER_SHAKE, ageInTicks, 1.0f)
 		this.animate(entity.punchAnimationState, BerserkerAnimations.BERSERKER_PUNCH, ageInTicks, 1.0f)

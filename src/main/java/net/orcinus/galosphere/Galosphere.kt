@@ -285,8 +285,8 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 					)
 					return@registerLayerDefinition LayerDefinition.create(meshdefinition, 32, 32)
 				}
-				registerLayerDefinition(GModelLayers.BERSERKER, BerserkerModel<*>::createBodyLayer)
-				registerLayerDefinition(GModelLayers.PRESERVED, PreservedModel<*>::createBodyLayer)
+				registerLayerDefinition(GModelLayers.BERSERKER) { BerserkerModel.createBodyLayer() }
+				registerLayerDefinition(GModelLayers.PRESERVED) { PreservedModel.createBodyLayer() }
 				registerLayerDefinition(GModelLayers.PINK_SALT_PILLAR) {
 					val meshdefinition = MeshDefinition()
 					val partdefinition = meshdefinition.root

@@ -14,25 +14,28 @@ import net.orcinus.galosphere.Galosphere;
 
 import java.util.List;
 
-public class PinkSaltShrineStructurePools {
-    public static final ResourceKey<StructureTemplatePool> START = createKey("pink_salt_shrine/starts");
-
-    public static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
-        HolderGetter<StructureTemplatePool> holderGetter = context.lookup(Registries.TEMPLATE_POOL);
-        HolderGetter<StructureProcessorList> holderGetter1 = context.lookup(Registries.PROCESSOR_LIST);
-        context.register(
-                START,
-                new StructureTemplatePool(
-                        holderGetter.getOrThrow(Pools.EMPTY),
-                        List.of(
-                                Pair.of(StructurePoolElement.single("galosphere:pink_salt_shrine/temple_top", holderGetter1.getOrThrow(ProcessorLists.EMPTY)), 1)
-                        ),
-                        StructureTemplatePool.Projection.RIGID
-                )
-        );
-    }
-
-    public static ResourceKey<StructureTemplatePool> createKey(String name) {
-        return ResourceKey.create(Registries.TEMPLATE_POOL, Galosphere.id(name));
-    }
+public class PinkSaltShrineStructurePools
+{
+	public static final ResourceKey<StructureTemplatePool> START = createKey("pink_salt_shrine/starts");
+	
+	public static void bootstrap (BootstrapContext<StructureTemplatePool> context)
+	{
+		HolderGetter<StructureTemplatePool> holderGetter = context.lookup(Registries.TEMPLATE_POOL);
+		HolderGetter<StructureProcessorList> holderGetter1 = context.lookup(Registries.PROCESSOR_LIST);
+		context.register(
+				  START,
+				  new StructureTemplatePool(
+							 holderGetter.getOrThrow(Pools.EMPTY),
+							 List.of(
+										Pair.of(StructurePoolElement.single("galosphere:pink_salt_shrine/temple_top", holderGetter1.getOrThrow(ProcessorLists.EMPTY)), 1)
+							 ),
+							 StructureTemplatePool.Projection.RIGID
+				  )
+		);
+	}
+	
+	public static ResourceKey<StructureTemplatePool> createKey (String name)
+	{
+		return ResourceKey.create(Registries.TEMPLATE_POOL, Galosphere.id(name));
+	}
 }

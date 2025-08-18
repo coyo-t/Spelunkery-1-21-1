@@ -1,40 +1,60 @@
-package net.orcinus.galosphere.world.gen;
+package net.orcinus.galosphere.world.gen
 
-import dissonance.util.noizor.FastNoise;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.Block;
-import net.orcinus.galosphere.init.GBlocks;
+import dissonance.util.noizor.FastNoise
+import net.minecraft.core.BlockPos
+import net.minecraft.core.BlockPos.MutableBlockPos
+import net.minecraft.world.level.block.Block
+import net.orcinus.galosphere.init.GBlocks
+import kotlin.math.abs
 
-public interface PinkSaltUtil {
+object PinkSaltUtil
+{
+	@JvmStatic
+	fun getBlock(seed: Long, blockPos: BlockPos): Block?
+	{
+		return getBlock(seed, blockPos.mutable())
+	}
 
-    static Block getBlock(long seed, BlockPos blockPos) {
-        return PinkSaltUtil.getBlock(seed, blockPos.mutable());
-    }
+	@JvmStatic
+	fun getBlock(seed: Long, mutable: MutableBlockPos): Block?
+	{
+		return getBlock(
+			seed.toInt(),
+			mutable,
+			GBlocks.PASTEL_PINK_SALT.get(),
+			GBlocks.ROSE_PINK_SALT.get(),
+			GBlocks.PINK_SALT.get()
+		)
+	}
 
-    static Block getBlock(long seed, BlockPos.MutableBlockPos mutable) {
-        return PinkSaltUtil.getBlock((int) seed, mutable, GBlocks.PASTEL_PINK_SALT.get(), GBlocks.ROSE_PINK_SALT.get(), GBlocks.PINK_SALT.get());
-    }
+	@JvmStatic
+	fun getBlock(seed: Long, blockPos: BlockPos, pastel: Block?, rose: Block?, normal: Block?): Block?
+	{
+		return getBlock(seed.toInt(), blockPos.mutable(), pastel, rose, normal)
+	}
 
-    static Block getBlock(long seed, BlockPos blockPos, Block pastel, Block rose, Block normal) {
-        return PinkSaltUtil.getBlock((int)seed, blockPos.mutable(), pastel, rose, normal);
-    }
-
-    static Block getBlock(int seed, BlockPos.MutableBlockPos mutable, Block pastel, Block rose, Block normal) {
-        FastNoise fastNoise = new FastNoise(seed);
-        fastNoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
-        fastNoise.SetFractalOctaves(1);
-        fastNoise.SetFractalGain(0.3f);
-        fastNoise.SetFrequency(0.07F);
-        double noise2 = Math.abs(fastNoise.GetNoise(mutable.getX(), mutable.getZ()) + 1) * 3;
-        Block block;
-        if (noise2 > 4.0D) {
-            block = pastel;
-        } else if (noise2 > 3.0D) {
-            block = rose;
-        } else {
-            block = normal;
-        }
-        return block;
-    }
-
+	@JvmStatic
+	fun getBlock(seed: Int, mutable: MutableBlockPos, pastel: Block?, rose: Block?, normal: Block?): Block?
+	{
+		val fastNoise = FastNoise(seed)
+		fastNoise.SetNoiseType(FastNoise.NoiseType.SimplexFractal)
+		fastNoise.SetFractalOctaves(1)
+		fastNoise.SetFractalGain(0.3f)
+		fastNoise.SetFrequency(0.07f)
+		val noise2 = (abs(fastNoise.GetNoise(mutable.getX().toFloat(), mutable.getZ().toFloat()) + 1) * 3).toDouble()
+		val block: Block?
+		if (noise2 > 4.0)
+		{
+			block = pastel
+		}
+		else if (noise2 > 3.0)
+		{
+			block = rose
+		}
+		else
+		{
+			block = normal
+		}
+		return block
+	}
 }
