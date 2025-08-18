@@ -18,7 +18,9 @@ data class SendParticlesPacket(@JvmField val blockPos: BlockPos) : CustomPacketP
 
 	companion object
 	{
+		@JvmField
 		val CODEC = CustomPacketPayload.codec(SendParticlesPacket::write, ::SendParticlesPacket)
+		@JvmField
 		val TYPE = CustomPacketPayload.createType<SendParticlesPacket>("send_particles")
 	}
 }

@@ -14,7 +14,6 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.orcinus.galosphere.Galosphere;
 
 import java.io.BufferedReader;
@@ -51,7 +50,7 @@ public class LumiereReformingManager extends SimpleJsonResourceReloadListener
 						JsonArray entryList = jsonObject.get("entries").getAsJsonArray();
 						for (JsonElement entry: entryList)
 						{
-							REFORMING_TABLE.put(Registries.BLOCK.getValue(ResourceLocation.parse(entry.getAsJsonObject().get("accepted_block").getAsString())), ForgeRegistries.BLOCKS.getValue(ResourceLocation.parse(entry.getAsJsonObject().get("returned_block").getAsString())));
+							REFORMING_TABLE.put(Registries.BLOCK.getValue(ResourceLocation.parse(entry.getAsJsonObject().get("accepted_block").getAsString())), Registries.BLOCK.getValue(ResourceLocation.parse(entry.getAsJsonObject().get("returned_block").getAsString())));
 						}
 					}
 				} catch (RuntimeException | IOException exception)

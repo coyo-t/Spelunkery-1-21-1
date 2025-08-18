@@ -12,10 +12,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.DripstoneUtils;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.orcinus.galosphere.blocks.GlowInkClumpsBlock;
 import net.orcinus.galosphere.init.GBlockEntityTypes;
 import net.orcinus.galosphere.init.GBlocks;
-import net.orcinus.galosphere.init.GNetworkHandler;
 import net.orcinus.galosphere.network.SendParticlesPacket;
 
 public class GlowInkClumpsBlockEntity extends BlockEntity
@@ -70,8 +70,7 @@ public class GlowInkClumpsBlockEntity extends BlockEntity
 								}
 								if (delay == 0)
 								{
-									GNetworkHandler.sendToAllInRangeClients(offset, (ServerLevel)world, 16, new SendParticlesPacket(offset));
-									
+									PacketDistributor.sendToPlayersNear((ServerLevel)world, null, offset.getX(), offset.getY(), offset.getZ(), 16, new SendParticlesPacket(offset));
 									int age = 0;
 									if (x == 1 || x == -1 && z == 1 || z == -1)
 									{

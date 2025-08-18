@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.ShulkerBoxBlock
 import net.minecraft.world.level.block.entity.ShulkerBoxBlockEntity
 import net.minecraft.world.level.gameevent.GameEvent
 import net.minecraft.world.level.levelgen.Heightmap
+import net.minecraft.world.level.storage.ServerLevelData
 import net.minecraft.world.level.storage.loot.BuiltInLootTables
 import net.minecraft.world.level.storage.loot.LootPool
 import net.minecraft.world.level.storage.loot.entries.LootItem
@@ -53,7 +54,10 @@ import net.neoforged.neoforge.event.entity.living.LivingGetProjectileEvent
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent
 import net.neoforged.neoforge.event.entity.player.PlayerEvent
 import net.neoforged.neoforge.event.level.BlockEvent
+import net.neoforged.neoforge.event.tick.LevelTickEvent
 import net.neoforged.neoforge.event.tick.PlayerTickEvent
+import net.neoforged.neoforge.network.PacketDistributor
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.orcinus.galosphere.api.SpectreBoundSpyglass
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock
 import net.orcinus.galosphere.config.GalosphereConfig
@@ -62,9 +66,9 @@ import net.orcinus.galosphere.crafting.LumiereReformingManager
 import net.orcinus.galosphere.crafting.MonstrometerDispenseItemBehavior
 import net.orcinus.galosphere.crafting.WarpedAnchorDispenseItemBehavior
 import net.orcinus.galosphere.entities.*
-import net.orcinus.galosphere.events.MiscEvents
 import net.orcinus.galosphere.init.*
 import net.orcinus.galosphere.items.SterlingArmorItem
+import net.orcinus.galosphere.network.*
 import net.orcinus.galosphere.util.PreservedShulkerBox
 import org.apache.logging.log4j.LogManager
 import java.util.*
@@ -337,6 +341,32 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 
 		//#region Misc Eventz
 
+		ev.addListener<RegisterPayloadHandlersEvent> { event ->
+			val registrar = event.registrar("1").optional()
+			registrar.playToClient(
+				SendParticlesPacket.TYPE,
+				SendParticlesPacket.CODEC,
+				ClientEventsHandler::handleSendParticles,
+			)
+			registrar.playToClient(
+				BarometerPacket.TYPE,
+				BarometerPacket.CODEC,
+				ClientEventsHandler::sendBarometerInfo,
+			)
+			registrar.playToClient(
+				SendPerspectivePacket.TYPE,
+				SendPerspectivePacket.CODEC,
+				ClientEventsHandler::sendPerspective,
+			)
+			registrar.playToClient(
+				PlayCooldownSoundPacket.TYPE,
+				PlayCooldownSoundPacket.CODEC,
+				ClientEventsHandler::playCooldownSound,
+			)
+
+
+		}
+
 		ev.addListener<TagsUpdatedEvent> { event ->
 			DispenserBlock.registerBehavior(GBlocks.ALLURITE_BLOCK.get().asItem(), MonstrometerDispenseItemBehavior())
 			DispenserBlock.registerBehavior(GBlocks.ALLURITE_BLOCK.get().asItem(), WarpedAnchorDispenseItemBehavior())
@@ -378,9 +408,26 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
+		ev.addListener<LevelTickEvent.Post> { event ->
+			val serverLevel = event.level
+			if (serverLevel is ServerLevel)
+			{
+				val levelData = serverLevel.getLevelData() as ServerLevelData
+				PacketDistributor.sendToAllPlayers(BarometerPacket(if (levelData.clearWeatherTime > 0) levelData.clearWeatherTime else levelData.rainTime))
+//				serverLevel
+//				.getPlayers { true }
+//				.forEach { serverPlayer ->
+//					PacketDistributor.sendToPlayer(
+//						serverPlayer,
+//						BarometerPacket(if (levelData.clearWeatherTime > 0) levelData.clearWeatherTime else levelData.rainTime)
+//					)
+//				}
+			}
+		}
+
 		//#endregion
 
-		ev.register(MiscEvents())
+//		ev.register(MiscEvents())
 	}
 
 	private fun commonSetup(event: FMLCommonSetupEvent)
@@ -388,7 +435,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		event.enqueueWork {
 			GPlacedFeatures.init()
 			GVanillaIntegration.init()
-			GNetworkHandler.init()
 		}
 	}
 

@@ -7,6 +7,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.orcinus.galosphere.events.ClientEvents;
 import net.orcinus.galosphere.init.GSoundEvents;
 
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class ClientEventsHandler
 {
 	
-	public static void handleSendParticles (SendParticlesPacket packet, CustomPayloadEvent.Context ctx)
+	public static void handleSendParticles (SendParticlesPacket packet, IPayloadContext ctx)
 	{
 		ctx.enqueueWork(() -> {
 			Minecraft minecraft = Minecraft.getInstance();
@@ -34,19 +35,19 @@ public class ClientEventsHandler
 				}
 				world.playLocalSound(packet.blockPos, GSoundEvents.GLOW_FLARE_SPREAD.get(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
 			});
+			ctx.handle(packet);
 		});
-		ctx.setPacketHandled(true);
 	}
 	
-	public static void sendBarometerInfo (BarometerPacket packet, CustomPayloadEvent.Context ctx)
+	public static void sendBarometerInfo (BarometerPacket packet, IPayloadContext ctx)
 	{
 		ctx.enqueueWork(() -> {
 			ClientEvents.clearWeatherTime = packet.weatherTicks;
+			ctx.handle(packet);
 		});
-		ctx.setPacketHandled(true);
 	}
 	
-	public static void sendPerspective (SendPerspectivePacket packet, CustomPayloadEvent.Context ctx)
+	public static void sendPerspective (SendPerspectivePacket packet, IPayloadContext ctx)
 	{
 		ctx.enqueueWork(() -> {
 			Minecraft client = Minecraft.getInstance();
@@ -57,11 +58,11 @@ public class ClientEventsHandler
 					client.options.setCameraType(CameraType.FIRST_PERSON);
 				}
 			});
+			ctx.handle(packet);
 		});
-		ctx.setPacketHandled(true);
 	}
 	
-	public static void playCooldownSound (PlayCooldownSoundPacket packet, CustomPayloadEvent.Context ctx)
+	public static void playCooldownSound (PlayCooldownSoundPacket packet, IPayloadContext ctx)
 	{
 		ctx.enqueueWork(() -> {
 			Minecraft instance = Minecraft.getInstance();
@@ -70,7 +71,7 @@ public class ClientEventsHandler
 			{
 				instance.getSoundManager().play(SimpleSoundInstance.forUI(GSoundEvents.SALTBOUND_TABLET_COOLDOWN_OVER.get(), 1.0F));
 			}
+			ctx.handle(packet);
 		});
-		ctx.setPacketHandled(true);
 	}
 }

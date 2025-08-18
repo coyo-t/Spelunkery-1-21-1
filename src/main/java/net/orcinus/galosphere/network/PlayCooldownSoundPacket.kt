@@ -15,7 +15,9 @@ class PlayCooldownSoundPacket() : CustomPacketPayload
 
 	companion object
 	{
+		@JvmField
 		val CODEC = CustomPacketPayload.codec(PlayCooldownSoundPacket::write, ::PlayCooldownSoundPacket)
+		@JvmField
 		val TYPE = CustomPacketPayload.createType<PlayCooldownSoundPacket>("play_cooldown_sound")
 	}
 }

@@ -22,7 +22,9 @@ data class SendPerspectivePacket(@JvmField val uuid: UUID, @JvmField val id: Int
 
 	companion object
 	{
+		@JvmField
 		val CODEC = CustomPacketPayload.codec(SendPerspectivePacket::write, ::SendPerspectivePacket)
+		@JvmField
 		val TYPE = CustomPacketPayload.createType<SendPerspectivePacket>("send_perspective")
 	}
 }

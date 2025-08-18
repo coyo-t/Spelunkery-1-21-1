@@ -15,7 +15,9 @@ data class BarometerPacket(@JvmField val weatherTicks: Int) : CustomPacketPayloa
 
 	companion object
 	{
+		@JvmField
 		val CODEC = CustomPacketPayload.codec({ o, f -> f.writeInt(o.weatherTicks) }, ::BarometerPacket)
+		@JvmField
 		val TYPE = CustomPacketPayload.createType<BarometerPacket>("send_barometer_info")
 	}
 }
