@@ -62,7 +62,6 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.orcinus.galosphere.api.SpectreBoundSpyglass
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock
 import net.orcinus.galosphere.config.GalosphereConfig
-import net.orcinus.galosphere.crafting.LumiereReformingManager
 import net.orcinus.galosphere.entities.*
 import net.orcinus.galosphere.init.*
 import net.orcinus.galosphere.items.SterlingArmorItem
@@ -79,13 +78,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		ev.addListener<FMLCommonSetupEvent> {
 			it.enqueueWork {
 				GPlacedFeatures.init()
-
-				ComposterBlock.COMPOSTABLES.put(GBlocks.LICHEN_MOSS.get().asItem(), 0.85f)
-				ComposterBlock.COMPOSTABLES.put(GBlocks.BOWL_LICHEN.get().asItem(), 0.65f)
-				ComposterBlock.COMPOSTABLES.put(GBlocks.LICHEN_ROOTS.get().asItem(), 0.3f)
-				ComposterBlock.COMPOSTABLES.put(GBlocks.LICHEN_SHELF.get().asItem(), 0.45f)
-				ComposterBlock.COMPOSTABLES.put(GBlocks.LICHEN_CORDYCEPS.get().asItem(), 0.4f)
-				ComposterBlock.COMPOSTABLES.put(GItems.SALTED_JERKY.get(), 0.5f)
 			}
 		}
 
@@ -379,7 +371,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		}
 
 		ev.addListener<AddReloadListenerEvent> { event ->
-			event.addListener(LumiereReformingManager())
+//			event.addListener(LumiereReformingManager())
 		}
 
 		ev.addListener<LootTableLoadEvent> { event ->

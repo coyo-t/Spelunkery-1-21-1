@@ -159,7 +159,7 @@ public class PinkSaltChamberBlockEntity extends BlockEntity
 		}
 		else
 		{
-			PreservedCorpse preservedCorpse = GEntityTypes.PRESERVED_CORPSE.get().spawn(serverLevel, null, null, pos, MobSpawnType.TRIGGERED, true, true);
+			var preservedCorpse = GEntityTypes.PRESERVED_CORPSE.get().spawn(serverLevel, null, null, pos, MobSpawnType.TRIGGERED, true, true);
 			preservedCorpse.setPos(pos.getX(), pos.getY(), pos.getZ());
 			preservedCorpse.setPersistenceRequired();
 			preservedCorpse.setFromChamber(true);

@@ -12,7 +12,6 @@
 		"CrossbowItemMixin",
 		"EntityMixin",
 		"InventoryMixin",
-		"LightningBoltMixin",
 		"LivingEntityMixin",
 		"LootTableAccessor",
 		"OverworldBiomeBuilderMixin",

@@ -4,7 +4,7 @@ import com.ordana.spelunkery.items.magnetic_compass.MagneticCompassItemPropertyF
 import com.ordana.spelunkery.reg.*
 import com.ordana.spelunkery.reg.GameRulez.init
 import com.ordana.spelunkery.reg.ModItems.inititiititititialliziaation
-import com.ordana.spelunkery.utils.isItem
+import dissonance.util.extension.isa
 import net.mehvahdjukaar.moonlight.api.platform.ClientHelper
 import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.client.renderer.RenderType
@@ -175,7 +175,7 @@ class Spelunkery(ev: IEventBus, container: ModContainer)
 		private fun obsidianDraining(ev: UseItemOnBlockEvent)
 		{
 			val item = ev.itemStack
-			if (item isItem Items.GLASS_BOTTLE)
+			if (item isa Items.GLASS_BOTTLE)
 			{
 				val level = ev.level
 				val co = ev.pos

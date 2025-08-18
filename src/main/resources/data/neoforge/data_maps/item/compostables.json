@@ -1,68 +1,87 @@
 {
-	"cave_mushroom_stem": {
+	"spelunkery:cave_mushroom_stem": {
 		"chance": 0.85
 	},
-	"inkcap_mushroom_block": {
+	"spelunkery:inkcap_mushroom_block": {
 		"chance": 0.85
 	},
-	"white_inkcap_mushroom_block": {
+	"spelunkery:white_inkcap_mushroom_block": {
 		"chance": 0.85
 	},
-	"phosphor_fungus_block": {
+	"spelunkery:phosphor_fungus_block": {
 		"chance": 0.85
 	},
-	"phosphor_shroomlight": {
+	"spelunkery:phosphor_shroomlight": {
 		"chance": 0.65
 	},
-	"conk_fungus_block": {
+	"spelunkery:conk_fungus_block": {
 		"chance": 0.85
 	},
-	"portabella_block": {
+	"spelunkery:portabella_block": {
 		"chance": 0.85
 	},
-	"milly_bubcap_block": {
+	"spelunkery:milly_bubcap_block": {
 		"chance": 0.85
 	},
-	"grilled_portabella": {
+	"spelunkery:grilled_portabella": {
 		"chance": 0.85
 	},
-	"sporophyte": {
+	"spelunkery:sporophyte": {
 		"chance": 0.5
 	},
-	"tall_sporophyte": {
+	"spelunkery:tall_sporophyte": {
 		"chance": 0.5
 	},
-	"portabella": {
+	"spelunkery:portabella": {
 		"chance": 0.85
 	},
-	"crimini": {
+	"spelunkery:crimini": {
 		"chance": 0.65
 	},
-	"button_mushroom": {
+	"spelunkery:button_mushroom": {
 		"chance": 0.5
 	},
-	"inkcap_mushroom": {
+	"spelunkery:inkcap_mushroom": {
 		"chance": 0.65
 	},
-	"white_inkcap_mushroom": {
+	"spelunkery:white_inkcap_mushroom": {
 		"chance": 0.65
 	},
-	"phosphor_fungus": {
+	"spelunkery:phosphor_fungus": {
 		"chance": 0.65
 	},
-	"mushgloom_block": {
+	"spelunkery:mushgloom_block": {
 		"chance": 0.65
 	},
-	"conk_fungus": {
+	"spelunkery:conk_fungus": {
 		"chance": 0.5
 	},
-	"tangle_roots": {
+	"spelunkery:tangle_roots": {
 		"chance": 0.5
 	},
-	"tangle_roots_block": {
+	"spelunkery:tangle_roots_block": {
 		"chance": 0.85
 	},
-	"milly_bubcap": {
+	"spelunkery:milly_bubcap": {
 		"chance": 0.0
+	},
+
+	"galosphere:lichen_moss": {
+		"chance": 0.85
+	},
+	"galosphere:bowl_lichen": {
+		"chance": 0.65
+	},
+	"galosphere:lichen_roots": {
+		"chance":  0.3
+	},
+	"galosphere:lichen_shelf": {
+		"chance":  0.45
+	},
+	"galosphere:lichen_cordyceps": {
+		"chance":  0.4
+	},
+	"galosphere:salted_jerky": {
+		"chance":  0.5
 	}
 }

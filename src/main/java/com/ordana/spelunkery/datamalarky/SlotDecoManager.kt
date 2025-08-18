@@ -1,6 +1,6 @@
 package com.ordana.spelunkery.datamalarky
 
-import com.ordana.spelunkery.utils.LuaCoyote
+import dissonance.util.LuaCoyote
 import net.minecraft.client.renderer.texture.TextureManager
 import net.minecraft.core.component.DataComponentType
 import net.minecraft.core.registries.BuiltInRegistries

@@ -5,6 +5,7 @@ import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.DyeColor
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.*
+import net.minecraft.world.level.block.AmethystBlock
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.material.MapColor
 import net.minecraft.world.level.material.PushReaction
@@ -170,8 +171,7 @@ object GBlocks
 	val LUMIERE_BLOCK = registerBlock(
 		"lumiere_block"
 	) {
-		LumiereBlock(
-			false,
+		AmethystBlock(
 			BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_YELLOW).strength(1.5f).sound(GSoundEvents.LUMIERE)
 				.requiresCorrectToolForDrops()
 		)
@@ -179,8 +179,8 @@ object GBlocks
 
 	@JvmField
 	val CHARGED_LUMIERE_BLOCK = registerBlock("charged_lumiere_block") {
-		LumiereBlock(
-			true, BlockBehaviour.Properties.ofFullCopy(
+		AmethystBlock(
+			BlockBehaviour.Properties.ofFullCopy(
 				LUMIERE_BLOCK.get()
 			).requiresCorrectToolForDrops()
 		)
