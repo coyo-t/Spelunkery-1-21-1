@@ -1,7 +1,6 @@
 package net.orcinus.galosphere.init
 
 import dissonance.util.enumMapOf
-import net.minecraft.Util
 import net.minecraft.core.Holder
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
@@ -56,11 +55,13 @@ object GArmorMaterials
 		list: List<ArmorMaterial.Layer>
 	): Holder<ArmorMaterial>
 	{
-		val enumMap2 = EnumMap<ArmorItem.Type, Int>(ArmorItem.Type::class.java)
-		for (type in ArmorItem.Type.entries.toTypedArray())
-		{
-			enumMap2.put(type, enumMap.get(type))
+		val enumMap2 = enumMapOf<ArmorItem.Type, Int>().apply {
+			putAll(ArmorItem.Type.entries.map { it to enumMap[it] })
 		}
+//		for (type in ArmorItem.Type.entries.toTypedArray())
+//		{
+//			enumMap2.put(type, enumMap.get(type))
+//		}
 		return Registry.registerForHolder(
 			BuiltInRegistries.ARMOR_MATERIAL,
 			Galosphere.id(string),
