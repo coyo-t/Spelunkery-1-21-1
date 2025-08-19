@@ -15,12 +15,12 @@ import net.orcinus.galosphere.client.animations.GAnims
 import net.orcinus.galosphere.entities.Berserker
 
 @OnlyIn(Dist.CLIENT)
-class BerserkerModel<T : Berserker>(root: ModelPart) : HierarchicalModel<T>()
+class BerserkerModel(root: ModelPart) : HierarchicalModel<Berserker>()
 {
 	private val root = root.getChild("root")
 
 	override fun setupAnim(
-		entity: T,
+		entity: Berserker,
 		limbSwing: Float,
 		limbSwingAmount: Float,
 		ageInTicks: Float,

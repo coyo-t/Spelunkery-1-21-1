@@ -14,7 +14,7 @@ import net.orcinus.galosphere.init.GModelLayers
 import java.util.function.Consumer
 
 @OnlyIn(Dist.CLIENT)
-class BerserkerRenderer(context: EntityRendererProvider.Context) : MobRenderer<Berserker, BerserkerModel<Berserker>>(
+class BerserkerRenderer(context: EntityRendererProvider.Context) : MobRenderer<Berserker, BerserkerModel>(
 	context,
 	BerserkerModel(context.bakeLayer(GModelLayers.BERSERKER)),
 	0.9f

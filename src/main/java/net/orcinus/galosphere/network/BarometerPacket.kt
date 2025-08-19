@@ -5,6 +5,7 @@ import net.minecraft.network.codec.StreamCodec
 import net.minecraft.network.codec.StreamDecoder
 import net.minecraft.network.codec.StreamMemberEncoder
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
+import net.orcinus.galosphere.Galosphere
 
 @JvmRecord
 data class BarometerPacket(@JvmField val weatherTicks: Int) : CustomPacketPayload
@@ -18,6 +19,6 @@ data class BarometerPacket(@JvmField val weatherTicks: Int) : CustomPacketPayloa
 		@JvmField
 		val CODEC = CustomPacketPayload.codec({ o, f -> f.writeInt(o.weatherTicks) }, ::BarometerPacket)
 		@JvmField
-		val TYPE = CustomPacketPayload.createType<BarometerPacket>("send_barometer_info")
+		val TYPE = CustomPacketPayload.Type<BarometerPacket>(Galosphere.id("send_barometer_info"))
 	}
 }

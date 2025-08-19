@@ -50,9 +50,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 import net.neoforged.bus.api.IEventBus
-import net.neoforged.fml.ModContainer
-import net.neoforged.fml.common.Mod
-import net.neoforged.fml.config.ModConfig
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.client.event.EntityRenderersEvent
@@ -61,6 +58,7 @@ import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent
 import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent.OverlayType
 import net.neoforged.neoforge.client.event.ViewportEvent.ComputeFogColor
 import net.neoforged.neoforge.common.ModConfigSpec
+import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.AddReloadListenerEvent
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
 import net.neoforged.neoforge.event.LootTableLoadEvent
@@ -98,7 +96,7 @@ import org.joml.Vector3d
 import kotlin.math.max
 
 //@Mod(Galosphere.MODID)
-class Galosphere(ev: IEventBus, modContainer: ModContainer)
+class Galosphere(ev: IEventBus)
 {
 	init
 	{
@@ -211,7 +209,8 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<ComputeFogColor> { event ->
+		val evBus = NeoForge.EVENT_BUS
+		evBus.addListener<ComputeFogColor> { event ->
 			val camera = event.camera
 			if (renderShadowPhase(camera.entity) && getViewBlockingState(camera.entity as LivingEntity) != null)
 			{
@@ -221,7 +220,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<RenderBlockScreenEffectEvent> { event ->
+		evBus.addListener<RenderBlockScreenEffectEvent> { event ->
 			if (event.overlayType == OverlayType.BLOCK && event.player.hasEffect(GMobEffects.ASTRAL))
 			{
 				event.setCanceled(true)
@@ -316,11 +315,11 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<AddReloadListenerEvent> { event ->
+		NeoForge.EVENT_BUS.addListener<AddReloadListenerEvent> { event ->
 	//			event.addListener(LumiereReformingManager())
 		}
 
-		ev.addListener<LootTableLoadEvent> { event ->
+		NeoForge.EVENT_BUS.addListener<LootTableLoadEvent> { event ->
 			val name = event.name
 			val pools = (event.table as LootTableAccessor).getPools()
 			if ((name == BuiltInLootTables.PILLAGER_OUTPOST.location() || name == BuiltInLootTables.ABANDONED_MINESHAFT.location()))
@@ -334,14 +333,15 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<RegisterBrewingRecipesEvent> { event ->
+		NeoForge.EVENT_BUS.addListener<RegisterBrewingRecipesEvent> { event ->
 			event.builder.apply {
 				addMix(Potions.AWKWARD, GItems.CURED_MEMBRANE.get(), GPotions.ASTRAL)
 				addMix(GPotions.ASTRAL, Items.REDSTONE, GPotions.LONG_ASTRAL)
 			}
 		}
 
-		ev.addListener<LevelTickEvent.Post> { event ->
+
+		NeoForge.EVENT_BUS.addListener<LevelTickEvent.Post> { event ->
 			val serverLevel = event.level
 			if (serverLevel is ServerLevel)
 			{
@@ -355,7 +355,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 	{
 		//#region Entity Eventz
 
-
+		val evBus = NeoForge.EVENT_BUS
 		ev.addListener<EntityAttributeCreationEvent> { event ->
 			with(event)
 			{
@@ -364,7 +364,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<ItemExpireEvent> { event ->
+		evBus.addListener<ItemExpireEvent> { event ->
 			val entity = event.entity
 			val level = entity.level()
 			if (!level.isClientSide)
@@ -377,7 +377,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<EntityTeleportEvent.EnderPearl> { event ->
+		evBus.addListener<EntityTeleportEvent.EnderPearl> { event ->
 			val pearl = event.pearlEntity
 			val poses = mutableListOf<BlockPos>()
 			val player = event.player
@@ -429,14 +429,14 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<ItemTooltipEvent> { event ->
+		evBus.addListener<ItemTooltipEvent> { event ->
 			if (GDataComponents.PRESERVED in event.itemStack)
 			{
 				event.toolTip.add(Component.translatable("item.galosphere.preserved").withStyle(ChatFormatting.DARK_PURPLE))
 			}
 		}
 
-		ev.addListener<PlayerEvent.Clone> { event ->
+		evBus.addListener<PlayerEvent.Clone> { event ->
 			(event.entity as? ServerPlayer)?.let { player ->
 				event
 					.original
@@ -448,7 +448,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<BlockEvent.EntityPlaceEvent> { event ->
+		evBus.addListener<BlockEvent.EntityPlaceEvent> { event ->
 			(event.entity as? Player)?.run {
 				val level = level()
 				val blockEntity = level.getBlockEntity(event.pos)
@@ -464,7 +464,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<BlockEvent.BreakEvent> { event ->
+		evBus.addListener<BlockEvent.BreakEvent> { event ->
 			val world = event.level
 			val pos = event.pos
 			val blockEntity = world.getBlockEntity(pos)
@@ -496,7 +496,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		ev.addListener<LivingDamageEvent.Pre> { event ->
+		evBus.addListener<LivingDamageEvent.Pre> { event ->
 			val entity = event.entity
 			val mob = event.source.entity
 			if (mob is Mob && (mob.type.`is`(EntityTypeTags.ILLAGER) || mob.type.`is`(GEntityTypeTags.STERLING_IMMUNE_ENTITY_TYPES)))
@@ -529,7 +529,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 	{
 		ctx.enqueueWork {
 			clearWeatherTime = packet.weatherTicks
-			ctx.handle(packet)
+//			ctx.handle(packet)
 		}
 	}
 
@@ -543,7 +543,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 				instance.soundManager
 					.play(SimpleSoundInstance.forUI(GSoundEvents.SALTBOUND_TABLET_COOLDOWN_OVER.get(), 1.0f))
 			}
-			ctx.handle(packet)
+//			ctx.handle(packet)
 		}
 	}
 

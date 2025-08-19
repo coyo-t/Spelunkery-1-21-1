@@ -2,6 +2,7 @@ package net.orcinus.galosphere.network
 
 import net.minecraft.network.FriendlyByteBuf
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload
+import net.orcinus.galosphere.Galosphere
 
 class PlayCooldownSoundPacket() : CustomPacketPayload
 {
@@ -18,6 +19,6 @@ class PlayCooldownSoundPacket() : CustomPacketPayload
 		@JvmField
 		val CODEC = CustomPacketPayload.codec(PlayCooldownSoundPacket::write, ::PlayCooldownSoundPacket)
 		@JvmField
-		val TYPE = CustomPacketPayload.createType<PlayCooldownSoundPacket>("play_cooldown_sound")
+		val TYPE = CustomPacketPayload.Type<PlayCooldownSoundPacket>(Galosphere.id("play_cooldown_sound"))
 	}
 }

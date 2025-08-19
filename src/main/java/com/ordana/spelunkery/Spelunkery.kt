@@ -32,28 +32,31 @@ import net.minecraft.world.level.material.Fluid
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.bus.api.SubscribeEvent
-import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.EventBusSubscriber
 import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
+import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent
 import net.neoforged.neoforge.registries.DeferredRegister
+import net.orcinus.galosphere.Galosphere
 import org.apache.logging.log4j.LogManager
 import java.util.*
 import java.util.function.Supplier
 
 
 @Mod(Spelunkery.MOD_ID)
-class Spelunkery(ev: IEventBus, container: ModContainer)
+class Spelunkery(ev: IEventBus)
 {
+	val galosphere = Galosphere(ev)
+
 	init
 	{
+		val evBus = NeoForge.EVENT_BUS
 		ev.addListener(::commonInit)
 		ev.addListener(::clientSetup)
-//		ev.addListener(::obsidianDraining)
+		evBus.addListener(::obsidianDraining)
 
-		ev.addListener<UseItemOnBlockEvent> { obsidianDraining(it) }
 
 		with (DeferredRegister.create(Registries.SOUND_EVENT, MOD_ID))
 		{
