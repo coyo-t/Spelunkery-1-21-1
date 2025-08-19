@@ -1,10 +1,16 @@
 package net.orcinus.galosphere.client.animations
 
+import dissonance.util.Animationz
 import dissonance.util.LuaCoyote
 import dissonance.util.buildAnimation
+import net.minecraft.client.animation.AnimationChannel
 import net.minecraft.client.animation.AnimationDefinition
+import net.minecraft.client.animation.Keyframe
+import net.minecraft.client.animation.KeyframeAnimations
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
+import net.orcinus.galosphere.Galosphere
+import party.iroiro.luajava.Lua
 import party.iroiro.luajava.value.LuaTableValue
 import java.io.InputStreamReader
 
@@ -38,7 +44,7 @@ object GAnims
 		}
 		catch (e: Throwable)
 		{
-			println(e.stackTrace)
+			Galosphere.LOGGER.error("animation script exception", e)
 			return mapOf()
 		}
 		finally
@@ -46,9 +52,95 @@ object GAnims
 			L.top = 0
 		}
 
+		val outAnimations = mutableMapOf<String, AnimationDefinition>()
+		for ((k, v) in parseResult.entries)
+		{
+			val animName = k.toString()
+			try
+			{
+				val animData = v as LuaTableValue
+				val animationLength = animData["duration"].toNumber().toFloat()
+				val bonesTable = animData["bones"] as LuaTableValue
+				val newAnim = AnimationDefinition.Builder.withLength(animationLength)
 
+				if (animData["looping"].toBoolean())
+				{
+					newAnim.looping()
+				}
+				for ((bk, bv) in bonesTable.entries)
+				{
+					val boneName = bk.toString()
+					try
+					{
+						(bv["location"] as? LuaTableValue)?.let { lt ->
+							val pData = buildList {
+								for ((tk, av) in lt.entries)
+								{
+									val co = av["value"] as LuaTableValue
+									this += Keyframe(
+										tk.toNumber().toFloat(),
+										KeyframeAnimations.posVec(
+											co[1].toNumber().toFloat(),
+											co[2].toNumber().toFloat(),
+											co[3].toNumber().toFloat(),
+										),
+										Animationz.interpolationFromName(av["interpolation"].toString())
+									)
+								}
+							}
+							newAnim.addAnimation(boneName, AnimationChannel(AnimationChannel.Targets.POSITION, *pData.toTypedArray()))
+						}
+						(bv["rotation"] as? LuaTableValue)?.let { lt ->
+							val pData = buildList {
+								for ((tk, av) in lt.entries)
+								{
+									val co = av["value"] as LuaTableValue
+									this += Keyframe(
+										tk.toNumber().toFloat(),
+										KeyframeAnimations.degreeVec(
+											co[1].toNumber().toFloat(),
+											co[2].toNumber().toFloat(),
+											co[3].toNumber().toFloat(),
+										),
+										Animationz.interpolationFromName(av["interpolation"].toString())
+									)
+								}
+							}
+							newAnim.addAnimation(boneName, AnimationChannel(AnimationChannel.Targets.ROTATION, *pData.toTypedArray()))
+						}
+						(bv["scale"] as? LuaTableValue)?.let { lt ->
+							val pData = buildList {
+								for ((tk, av) in lt.entries)
+								{
+									val co = av["value"] as LuaTableValue
+									this += Keyframe(
+										tk.toNumber().toFloat(),
+										KeyframeAnimations.scaleVec(
+											co[1].toNumber(),
+											co[2].toNumber(),
+											co[3].toNumber(),
+										),
+										Animationz.interpolationFromName(av["interpolation"].toString())
+									)
+								}
+							}
+							newAnim.addAnimation(boneName, AnimationChannel(AnimationChannel.Targets.SCALE, *pData.toTypedArray()))
+						}
+					}
+					catch (e: Throwable)
+					{
+						Galosphere.LOGGER.error("animation parse error for bone '$boneName'", e)
+					}
+				}
+				outAnimations[animName] = newAnim.build()
 
-		TODO()
+			}
+			catch (e: Throwable)
+			{
+				Galosphere.LOGGER.error("animation parse error for '$animName'", e)
+			}
+		}
+		return outAnimations
 	}
 
 	object PinkSaltPillar

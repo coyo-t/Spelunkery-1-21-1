@@ -1,7 +1,10 @@
 package net.orcinus.galosphere
 
 import dissonance.mixin.LootTableAccessor
+import dissonance.util.contains
+import dissonance.util.decremented
 import dissonance.util.get
+import dissonance.util.isa
 import net.minecraft.ChatFormatting
 import net.minecraft.client.Minecraft
 import net.minecraft.client.model.HumanoidModel.createMesh
@@ -17,7 +20,6 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance
 import net.minecraft.core.BlockPos
 import net.minecraft.core.BlockPos.MutableBlockPos
 import net.minecraft.core.component.DataComponents
-import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
@@ -89,7 +91,6 @@ import net.orcinus.galosphere.items.SaltboundTabletItem
 import net.orcinus.galosphere.items.SterlingArmorItem
 import net.orcinus.galosphere.network.BarometerPacket
 import net.orcinus.galosphere.network.PlayCooldownSoundPacket
-import net.orcinus.galosphere.network.SendParticlesPacket
 import net.orcinus.galosphere.util.PreservedShulkerBox
 import org.apache.logging.log4j.LogManager
 import org.joml.Vector3d
@@ -300,11 +301,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		ev.addListener<RegisterPayloadHandlersEvent> { event ->
 			with (event.registrar("1").optional())
 			{
-				playToClient(
-					SendParticlesPacket.TYPE,
-					SendParticlesPacket.CODEC,
-					::handleSendParticles,
-				)
 				playToClient(
 					BarometerPacket.TYPE,
 					BarometerPacket.CODEC,
@@ -525,50 +521,6 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 		//#endregion
-	}
-
-	fun handleSendParticles(packet: SendParticlesPacket, ctx: IPayloadContext)
-	{
-		ctx.enqueueWork {
-			Minecraft.getInstance().level?.let { world ->
-				val randomsource = world.getRandom()
-				world.playLocalSound(
-					packet.blockPos,
-					GSoundEvents.GLOW_FLARE_SPREAD.get(),
-					SoundSource.BLOCKS,
-					1.0f,
-					1.0f,
-					false
-				)
-				val flag = world.getBlockState(packet.blockPos).isCollisionShapeFullBlock(world, packet.blockPos)
-				val l2 = if (flag) 40 else 20
-				val f9 = if (flag) 0.45f else 0.25f
-				for (k3 in 0..<l2)
-				{
-					val f12 = 2.0f * randomsource.nextFloat() - 1.0f
-					val f14 = 2.0f * randomsource.nextFloat() - 1.0f
-					val f15 = 2.0f * randomsource.nextFloat() - 1.0f
-					world.addParticle(
-						ParticleTypes.GLOW,
-						packet.blockPos.getX().toDouble() + 0.5 + (f12 * f9).toDouble(),
-						packet.blockPos.getY().toDouble() + 0.5 + (f14 * f9).toDouble(),
-						packet.blockPos.getZ().toDouble() + 0.5 + (f15 * f9).toDouble(),
-						(f12 * 0.07f).toDouble(),
-						(f14 * 0.07f).toDouble(),
-						(f15 * 0.07f).toDouble()
-					)
-				}
-				world.playLocalSound(
-					packet.blockPos,
-					GSoundEvents.GLOW_FLARE_SPREAD.get(),
-					SoundSource.BLOCKS,
-					1.0f,
-					1.0f,
-					false
-				)
-			}
-			ctx.handle(packet)
-		}
 	}
 
 	fun sendBarometerInfo(packet: BarometerPacket, ctx: IPayloadContext)
