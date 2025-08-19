@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
 import net.orcinus.galosphere.Galosphere;
+import org.apache.commons.lang3.NotImplementedException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -171,7 +172,8 @@ public class GBiomeModifiers
 	@NotNull
 	private static ResourceKey<BiomeModifier> register (String name)
 	{
-		return ResourceKey.create(Registries.BIOME_MODIFIERS, Galosphere.id(name));
+		throw new NotImplementedException(name);
+//		return ResourceKey.create(Registries.BIOME_MODIFIERS, Galosphere.id(name));
 	}
 	
 }

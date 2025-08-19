@@ -4,6 +4,7 @@ import com.ordana.spelunkery.items.magnetic_compass.MagneticCompassItemPropertyF
 import com.ordana.spelunkery.reg.*
 import com.ordana.spelunkery.reg.GameRulez.init
 import com.ordana.spelunkery.reg.ModItems.inititiititititialliziaation
+import dissonance.util.isa
 import net.mehvahdjukaar.moonlight.api.platform.ClientHelper
 import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.client.renderer.RenderType
@@ -33,6 +34,7 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.fml.ModContainer
 import net.neoforged.fml.common.EventBusSubscriber
+import net.neoforged.fml.common.Mod
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent
@@ -42,13 +44,16 @@ import java.util.*
 import java.util.function.Supplier
 
 
+@Mod(Spelunkery.MOD_ID)
 class Spelunkery(ev: IEventBus, container: ModContainer)
 {
 	init
 	{
 		ev.addListener(::commonInit)
 		ev.addListener(::clientSetup)
-		ev.addListener(::obsidianDraining)
+//		ev.addListener(::obsidianDraining)
+
+		ev.addListener<UseItemOnBlockEvent> { obsidianDraining(it) }
 
 		with (DeferredRegister.create(Registries.SOUND_EVENT, MOD_ID))
 		{

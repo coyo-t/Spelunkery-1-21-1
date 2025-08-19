@@ -12,12 +12,6 @@ object GSensorTypes
 	@JvmField
 	val SENSOR_TYPES = DeferredRegister.create(Registries.SENSOR_TYPE, Galosphere.MODID)
 
-
-	@JvmField
-	val BLIGHTED_ENTITY_SENSOR = SENSOR_TYPES.register("blighted_entity_sensor") { rs ->
-		SensorType { BerserkerEntitySensor() }
-	}
-
 	@JvmField
 	val PRESERVED_ENTITY_SENSOR = SENSOR_TYPES.register("preserved_entity_sensor") { rs ->
 		SensorType { PreservedEntitySensor() }

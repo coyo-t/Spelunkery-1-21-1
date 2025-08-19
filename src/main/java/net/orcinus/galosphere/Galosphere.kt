@@ -51,6 +51,7 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator
 import net.neoforged.bus.api.IEventBus
 import net.neoforged.fml.ModContainer
+import net.neoforged.fml.common.Mod
 import net.neoforged.fml.config.ModConfig
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent
@@ -96,6 +97,7 @@ import org.apache.logging.log4j.LogManager
 import org.joml.Vector3d
 import kotlin.math.max
 
+//@Mod(Galosphere.MODID)
 class Galosphere(ev: IEventBus, modContainer: ModContainer)
 {
 	init
@@ -106,7 +108,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 			}
 		}
 
-		modContainer.registerConfig(ModConfig.Type.COMMON, Config.COMMON)
+//		modContainer.registerConfig(ModConfig.Type.COMMON, Config.COMMON)
 
 		GBlocks.BLOCKS.register(ev)
 		GBlockEntityTypes.BLOCK_ENTITIES.register(ev)
@@ -321,7 +323,7 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		ev.addListener<LootTableLoadEvent> { event ->
 			val name = event.name
 			val pools = (event.table as LootTableAccessor).getPools()
-			if ((name == BuiltInLootTables.PILLAGER_OUTPOST.location() || name == BuiltInLootTables.ABANDONED_MINESHAFT.location()) && Config.SILVER_UPGRADE_TEMPLATES_LOOT.get())
+			if ((name == BuiltInLootTables.PILLAGER_OUTPOST.location() || name == BuiltInLootTables.ABANDONED_MINESHAFT.location()))
 			{
 				pools.add(
 					LootPool.lootPool().add(
@@ -607,20 +609,10 @@ class Galosphere(ev: IEventBus, modContainer: ModContainer)
 		{
 			@JvmField
 			var COMMON: ModConfigSpec
-			var SPECTRE_FLARE_ANCIENT_CITY_LOOT: ModConfigSpec.BooleanValue
-			var SILVER_UPGRADE_TEMPLATES_LOOT: ModConfigSpec.BooleanValue
 
 			init
 			{
 				COMMON = ModConfigSpec.Builder().run {
-					SPECTRE_FLARE_ANCIENT_CITY_LOOT = run {
-						comment("Adds spectre flares to ancient city loot")
-						define("spectreFlareAncientCityLoot", true)
-					}
-					SILVER_UPGRADE_TEMPLATES_LOOT = run {
-						comment("Adds Silver Upgrade Template to Abandoned Mineshafts or Pillager Outposts loot")
-						define("silverUpgradeTemplatesLoot", true)
-					}
 					build()
 				}
 			}

@@ -27,12 +27,8 @@ object GCreativeModeTabs
 				output += GItems.SILVER_UPGRADE_SMITHING_TEMPLATE
 				output += GItems.PRESERVED_TEMPLATE
 				output += GItems.SALTBOUND_TABLET
-				output += GItems.SPARKLE_SPAWN_EGG
-				output += GItems.SPECTRE_SPAWN_EGG
-				output += GItems.SPECTERPILLAR_SPAWN_EGG
 				output += GItems.BERSERKER_SPAWN_EGG
 				output += GItems.PRESERVED_SPAWN_EGG
-				output += GItems.BOTTLE_OF_SPECTRE
 				output += GItems.ALLURITE_SHARD
 				output += GItems.LUMIERE_SHARD
 				output += GItems.PINK_SALT_SHARD
@@ -50,8 +46,6 @@ object GCreativeModeTabs
 				output += GItems.SALTED_JERKY
 				output += GItems.PRESERVED_FLESH
 				output += GItems.CURED_MEMBRANE
-				output += GItems.GLOW_FLARE
-				output += GItems.SPECTRE_FLARE
 				output += GItems.CHANDELIER
 				output += GBlocks.GILDED_BEADS
 				output += GBlocks.MONSTROMETER

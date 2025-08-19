@@ -1,601 +1,604 @@
-package net.orcinus.galosphere.entities;
+package net.orcinus.galosphere.entities
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
-import com.mojang.serialization.Dynamic;
-import net.minecraft.Util;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Unit;
-import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffectUtil;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.LookControl;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.sensing.Sensor;
-import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.animal.AbstractGolem;
-import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.animal.Turtle;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.npc.AbstractVillager;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
-import net.orcinus.galosphere.entities.ai.BerserkerAi;
-import net.orcinus.galosphere.init.GEntityTypeTags;
-import net.orcinus.galosphere.init.GMemoryModuleTypes;
-import net.orcinus.galosphere.init.GMobEffects;
-import net.orcinus.galosphere.init.GParticleTypes;
-import net.orcinus.galosphere.init.GSensorTypes;
-import net.orcinus.galosphere.init.GSoundEvents;
-import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.Dynamic
+import net.minecraft.advancements.CriteriaTriggers
+import net.minecraft.core.BlockPos
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.network.syncher.EntityDataAccessor
+import net.minecraft.network.syncher.EntityDataSerializers
+import net.minecraft.network.syncher.SynchedEntityData
+import net.minecraft.server.level.ServerLevel
+import net.minecraft.server.level.ServerPlayer
+import net.minecraft.sounds.SoundEvent
+import net.minecraft.util.Unit
+import net.minecraft.util.valueproviders.UniformInt
+import net.minecraft.world.Difficulty
+import net.minecraft.world.DifficultyInstance
+import net.minecraft.world.damagesource.DamageSource
+import net.minecraft.world.effect.MobEffectInstance
+import net.minecraft.world.effect.MobEffectUtil
+import net.minecraft.world.effect.MobEffects
+import net.minecraft.world.entity.*
+import net.minecraft.world.entity.ai.Brain
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier
+import net.minecraft.world.entity.ai.attributes.Attributes
+import net.minecraft.world.entity.ai.control.LookControl
+import net.minecraft.world.entity.ai.memory.MemoryModuleType
+import net.minecraft.world.entity.ai.sensing.SensorType
+import net.minecraft.world.entity.animal.AbstractGolem
+import net.minecraft.world.entity.animal.IronGolem
+import net.minecraft.world.entity.animal.Turtle
+import net.minecraft.world.entity.monster.Monster
+import net.minecraft.world.entity.npc.AbstractVillager
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.entity.projectile.AbstractArrow
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.ServerLevelAccessor
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.phys.Vec3
+import net.orcinus.galosphere.entities.ai.BerserkerAi
+import net.orcinus.galosphere.init.*
+import java.util.function.Consumer
+import java.util.function.Predicate
+import kotlin.math.max
+import kotlin.math.min
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-
-public class Berserker extends Monster
+class Berserker(entityType: EntityType<out Monster>, level: Level) : Monster(entityType, level)
 {
-	protected static final ImmutableList<? extends SensorType<? extends Sensor<? super Berserker>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY, GSensorTypes.BLIGHTED_ENTITY_SENSOR);
-	protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
-		MemoryModuleType.BREED_TARGET,
-		MemoryModuleType.NEAREST_LIVING_ENTITIES,
-		MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
-		MemoryModuleType.NEAREST_VISIBLE_PLAYER,
-		MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER,
-		MemoryModuleType.LOOK_TARGET,
-		MemoryModuleType.WALK_TARGET,
-		MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-		MemoryModuleType.PATH,
-		MemoryModuleType.ATTACK_TARGET,
-		MemoryModuleType.ATTACK_COOLING_DOWN,
-		MemoryModuleType.AVOID_TARGET,
-		MemoryModuleType.HURT_BY,
-		MemoryModuleType.HURT_BY_ENTITY,
-		MemoryModuleType.NEAREST_ATTACKABLE,
-		GMemoryModuleTypes.IMPALING_COOLDOWN.get(),
-		GMemoryModuleTypes.IMPALING_COUNT.get(),
-		GMemoryModuleTypes.IS_SMASHING.get(),
-		GMemoryModuleTypes.IS_IMPALING.get(),
-		GMemoryModuleTypes.IS_SUMMONING.get(),
-		GMemoryModuleTypes.SUMMONING_COOLDOWN.get(),
-		GMemoryModuleTypes.SUMMON_COUNT.get(),
-		GMemoryModuleTypes.SMASHING_COOLDOWN.get(),
-		GMemoryModuleTypes.HURT_COUNT.get(),
-		GMemoryModuleTypes.RAMPAGE_TICKS.get(),
-		MemoryModuleType.ROAR_SOUND_COOLDOWN,
-		MemoryModuleType.ROAR_SOUND_DELAY,
-		GMemoryModuleTypes.IS_SHAKING.get()
-	);
-	private static final EntityDataAccessor<String> PHASE = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.STRING);
-	private static final EntityDataAccessor<Integer> STATIONARY_TICKS = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Boolean> SHEDDING = SynchedEntityData.defineId(Berserker.class, EntityDataSerializers.BOOLEAN);
-	private final List<Holder<MobEffect>> selectedEffects = Util.make(Lists.newArrayList(), list -> {
-		list.add(GMobEffects.BLOCK_BANE);
-		list.add(MobEffects.DIG_SLOWDOWN);
-	});
-	public AnimationState roarAnimationState = new AnimationState();
-	public AnimationState attackAnimationState = new AnimationState();
-	public AnimationState punchAnimationState = new AnimationState();
-	public AnimationState impalingAnimationState = new AnimationState();
-	public AnimationState summoningAnimationState = new AnimationState();
-	
-	public Berserker (EntityType<? extends Monster> entityType, Level level)
+	private val selectedEffects = listOf(
+		GMobEffects.BLOCK_BANE,
+		MobEffects.DIG_SLOWDOWN,
+	)
+//	private val selectedEffects = Util.make(
+//		Lists.newArrayList<Holder<MobEffect?>?>(),
+//		Consumer { list: ArrayList<Holder<MobEffect?>?> ->
+//			list.add(GMobEffects.BLOCK_BANE)
+//			list.add(MobEffects.DIG_SLOWDOWN)
+//		})
+	var roarAnimationState = AnimationState()
+	var attackAnimationState = AnimationState()
+	var punchAnimationState = AnimationState()
+	var impalingAnimationState = AnimationState()
+	var summoningAnimationState = AnimationState()
+
+	init
 	{
-		super(entityType, level);
-		this.lookControl = new BerserkerLookControl(this);
+		this.lookControl = BerserkerLookControl(this)
 	}
-	
-	@Override
-	public boolean isInvulnerableTo (DamageSource damageSource)
+
+	override fun isInvulnerableTo(damageSource: DamageSource): Boolean
 	{
-		if (damageSource.getEntity() instanceof Player player && !player.getAbilities().instabuild && this.getStationaryTicks() > 0)
+		val maybePlayer = damageSource.entity
+		if (maybePlayer is Player && !maybePlayer.abilities.instabuild && this.stationaryTicks > 0)
 		{
-			return true;
+			return true
 		}
-		return super.isInvulnerableTo(damageSource);
+		return super.isInvulnerableTo(damageSource)
 	}
-	
-	@Override
-	public float maxUpStep ()
+
+	override fun maxUpStep(): Float
 	{
-		return 1.0F;
+		return 1.0f
 	}
-	
-	@Override
-	protected void defineSynchedData (SynchedEntityData.Builder builder)
+
+	override fun defineSynchedData(builder: SynchedEntityData.Builder)
 	{
-		super.defineSynchedData(builder);
-		builder.define(PHASE, Phase.IDLING.name());
-		builder.define(STATIONARY_TICKS, 0);
-		builder.define(SHEDDING, false);
+		super.defineSynchedData(builder)
+		builder.define(PHASE, Phase.IDLING.name)
+		builder.define(STATIONARY_TICKS, 0)
+		builder.define(SHEDDING, false)
 	}
-	
-	@Override
-	public void readAdditionalSaveData (CompoundTag compoundTag)
+
+	override fun readAdditionalSaveData(compoundTag: CompoundTag)
 	{
-		super.readAdditionalSaveData(compoundTag);
-		String phase = compoundTag.getString("Phase");
+		super.readAdditionalSaveData(compoundTag)
+		val phase = compoundTag.getString("Phase")
 		if (!phase.isEmpty())
 		{
-			this.setPhase(Phase.valueOf(phase));
+			this.phase = Phase.valueOf(phase)
 		}
-		this.setStationaryTicks(compoundTag.getInt("StationaryTicks"));
-		this.setShedding(compoundTag.getBoolean("Shedding"));
+		this.stationaryTicks = compoundTag.getInt("StationaryTicks")
+		this.isShedding = compoundTag.getBoolean("Shedding")
 	}
-	
-	@Override
-	public void addAdditionalSaveData (CompoundTag compoundTag)
+
+	override fun addAdditionalSaveData(compoundTag: CompoundTag)
 	{
-		super.addAdditionalSaveData(compoundTag);
-		compoundTag.putString("Phase", this.getPhase().name());
-		compoundTag.putInt("StationaryTicks", this.getStationaryTicks());
-		compoundTag.putBoolean("Shedding", this.isShedding());
+		super.addAdditionalSaveData(compoundTag)
+		compoundTag.putString("Phase", this.phase.name)
+		compoundTag.putInt("StationaryTicks", this.stationaryTicks)
+		compoundTag.putBoolean("Shedding", this.isShedding)
 	}
-	
-	public boolean shouldAttack ()
+
+	fun shouldAttack() = this.phase == Phase.IDLING && !this.isStationary
+
+	val stage: Int
+		get()
+		{
+			val health = this.health / this.maxHealth
+			return when
+			{
+				isStationary ->
+					3
+				health > 0.66f ->
+					0
+				health <= 0.66f && health > 0.33f ->
+					1
+				else ->
+					2
+			}
+		}
+
+	var isShedding: Boolean
+		get() = this.entityData.get(SHEDDING)
+		set(shedding)
+		{
+			this.entityData.set(SHEDDING, shedding)
+		}
+
+	var stationaryTicks: Int
+		get() = this.entityData.get(STATIONARY_TICKS)
+		set(stationaryTicks)
+		{
+			this.entityData.set(
+				STATIONARY_TICKS,
+				stationaryTicks
+			)
+		}
+
+	override fun handleEntityEvent(b: Byte)
 	{
-		return this.getPhase() == Phase.IDLING && !this.isStationary();
-	}
-	
-	public int getStage ()
-	{
-		float health = this.getHealth() / this.getMaxHealth();
-		if (this.isStationary())
+		when
 		{
-			return 3;
-		}
-		else if (health > 0.66F)
-		{
-			return 0;
-		}
-		else if (health <= 0.66F && health > 0.33F)
-		{
-			return 1;
-		}
-		else
-		{
-			return 2;
-		}
-	}
-	
-	public void setShedding (boolean shedding)
-	{
-		this.entityData.set(SHEDDING, shedding);
-	}
-	
-	public boolean isShedding ()
-	{
-		return this.entityData.get(SHEDDING);
-	}
-	
-	public void setStationaryTicks (int stationaryTicks)
-	{
-		this.entityData.set(STATIONARY_TICKS, stationaryTicks);
-	}
-	
-	public int getStationaryTicks ()
-	{
-		return this.entityData.get(STATIONARY_TICKS);
-	}
-	
-	public void setPhase (Phase phase)
-	{
-		if (phase == Phase.IDLING)
-		{
-			this.setPose(Pose.STANDING);
-		}
-		else if (phase == Phase.SMASH)
-		{
-			this.level().broadcastEntityEvent(this, (byte)4);
-		}
-		else if (phase == Phase.UNDERMINE)
-		{
-			this.level().broadcastEntityEvent(this, (byte)6);
-		}
-		else if (phase == Phase.SUMMONING)
-		{
-			this.level().broadcastEntityEvent(this, (byte)7);
-		}
-		this.entityData.set(PHASE, phase.name());
-	}
-	
-	@Override
-	public void handleEntityEvent (byte b)
-	{
-		if (b == 4)
-		{
-			this.attackAnimationState.start(this.tickCount);
-		}
-		else if (b == 5)
-		{
-			this.punchAnimationState.start(this.tickCount);
-		}
-		else if (b == 6)
-		{
-			this.impalingAnimationState.start(this.tickCount);
-		}
-		else if (b == 7)
-		{
-			this.summoningAnimationState.start(this.tickCount);
-		}
-		else if (b == 32)
-		{
-			BlockPos blockPos = this.getOnPos();
-			this.level().addParticle(GParticleTypes.IMPACT.get(), blockPos.getX() + 0.5D, blockPos.getY() + 1.15, blockPos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-		}
-		else
-		{
-			super.handleEntityEvent(b);
+			b.toInt() == 4 ->
+			{
+				this.attackAnimationState.start(this.tickCount)
+			}
+			b.toInt() == 5 ->
+			{
+				this.punchAnimationState.start(this.tickCount)
+			}
+			b.toInt() == 6 ->
+			{
+				this.impalingAnimationState.start(this.tickCount)
+			}
+			b.toInt() == 7 ->
+			{
+				this.summoningAnimationState.start(this.tickCount)
+			}
+			b.toInt() == 32 ->
+			{
+				val blockPos = this.getOnPos()
+				this.level().addParticle(
+					GParticleTypes.IMPACT.get(),
+					blockPos.getX() + 0.5,
+					blockPos.getY() + 1.15,
+					blockPos.getZ() + 0.5,
+					0.0,
+					0.0,
+					0.0
+				)
+			}
+			else ->
+			{
+				super.handleEntityEvent(b)
+			}
 		}
 	}
-	
-	public Phase getPhase ()
+
+	var phase: Phase
+		get() = Phase.valueOf(this.entityData.get<String>(PHASE))
+		set(phase)
+		{
+			when (phase)
+			{
+				Phase.IDLING ->
+					this.pose = Pose.STANDING
+				Phase.SMASH ->
+					this.level().broadcastEntityEvent(this, 4.toByte())
+				Phase.UNDERMINE ->
+					this.level().broadcastEntityEvent(this, 6.toByte())
+				Phase.SUMMONING ->
+					this.level().broadcastEntityEvent(this, 7.toByte())
+			}
+			this.entityData.set(PHASE, phase.name)
+		}
+
+	override fun aiStep()
 	{
-		String s = this.entityData.get(PHASE);
-		return Phase.valueOf(s);
-	}
-	
-	@Override
-	public void aiStep ()
-	{
-		super.aiStep();
-		double range = 0.75D;
-		double threshold = range - 0.6D;
-		double increment = 0.2D;
+		super.aiStep()
+		val range = 0.75
+		val threshold = range - 0.6
+		val increment = 0.2
 		if (!this.level().isClientSide)
 		{
-			int count = 250;
-			boolean stationary = this.isStationary();
-			boolean shedding = this.isShedding();
-			if (this.getHealth() < this.getMaxHealth() && this.tickCount % count == 0)
+			val count = 250
+			val stationary = this.isStationary
+			val shedding = this.isShedding
+			if (this.health < this.maxHealth && this.tickCount % count == 0)
 			{
-				this.heal(10.0f);
+				this.heal(10.0f)
 			}
 			if (stationary)
 			{
-				this.getBrain().getMemories().keySet().stream().filter(memoryModuleType -> {
-					return memoryModuleType.equals(MemoryModuleType.WALK_TARGET) || memoryModuleType.equals(MemoryModuleType.LOOK_TARGET);
-				}).forEach(this.getBrain()::eraseMemory);
-				List<Player> list = this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(3.0D)).stream().filter(p -> !p.isCreative() && p.isAlive()).toList();
-				Optional<Player> player = list.stream().findAny();
+				val brain1 = getBrain()
+				brain1
+				.getMemories()
+				.keys
+				.stream()
+				.filter { it == MemoryModuleType.WALK_TARGET || it == MemoryModuleType.LOOK_TARGET }
+				.forEach { brain1.eraseMemory(it) }
+
+				val list = this.level()
+				.getEntitiesOfClass(Player::class.java, this.boundingBox.inflate(3.0))
+				.stream()
+				.filter { !it.isCreative && it.isAlive }
+				.toList()
+
+				val player = list.stream().findAny()
 				if (!shedding)
 				{
-					player.ifPresent(this::setTarget);
+					player.ifPresent(this::setTarget)
 				}
 				else
 				{
-					list.stream().filter(ServerPlayer.class::isInstance).map(ServerPlayer.class::cast).forEach(serverPlayer -> CriteriaTriggers.SUMMONED_ENTITY.trigger(serverPlayer, this));
-					if (this.getStationaryTicks() == 32)
+					list
+					.stream()
+					.filter(ServerPlayer::class.java::isInstance)
+					.map(ServerPlayer::class.java::cast)
+					.forEach { CriteriaTriggers.SUMMONED_ENTITY.trigger(it, this) }
+					if (this.stationaryTicks == 32)
 					{
-						this.getBrain().setMemory(GMemoryModuleTypes.IS_SHAKING.get(), Unit.INSTANCE);
+						brain1.setMemory(GMemoryModuleTypes.IS_SHAKING.get(), Unit.INSTANCE)
 					}
-					this.setStationaryTicks(this.getStationaryTicks() - 1);
-					this.addParticles(range, increment, threshold);
+					this.stationaryTicks = this.stationaryTicks - 1
+					this.addParticles(range, increment, threshold)
 				}
 			}
 			else
 			{
 				if (shedding)
 				{
-					this.setShedding(false);
-					this.setPersistenceRequired();
+					this.isShedding = false
+					this.setPersistenceRequired()
 				}
 			}
 		}
 	}
-	
-	private void addParticles (double range, double increment, double threshold)
+
+	private fun addParticles(range: Double, increment: Double, threshold: Double)
 	{
-		if (this.tickCount % 20 == 0)
+		if (this.tickCount % 20 != 0) return
+		var y = 0.0
+		while (y <= 1.95)
 		{
-			for (double y = 0; y <= 1.95D; y += 0.35D)
+			var x = -range
+			while (x <= range)
 			{
-				for (double x = -range; x <= range; x += increment)
+				var z = -range
+				while (z <= range)
 				{
-					for (double z = -range; z <= range; z += increment)
+					if (x >= -threshold && x <= threshold || z >= -threshold && z <= threshold)
 					{
-						if (x >= -threshold && x <= threshold || z >= -threshold && z <= threshold)
-						{
-							continue;
-						}
-						((ServerLevel)this.level()).sendParticles(GParticleTypes.PINK_SALT_FALLING_DUST.get(), this.getX() + x, this.getY() + y, this.getZ() + z, 1, 0.0, 0.0, 0.0, 0.0);
+						z += increment
+						continue
 					}
+					(this.level() as ServerLevel).sendParticles(
+						GParticleTypes.PINK_SALT_FALLING_DUST.get(),
+						this.getX() + x,
+						this.getY() + y,
+						this.getZ() + z,
+						1,
+						0.0,
+						0.0,
+						0.0,
+						0.0
+					)
+					z += increment
 				}
+				x += increment
 			}
+			y += 0.35
 		}
 	}
-	
-	public boolean isStationary ()
+
+	val isStationary: Boolean
+		get() = this.stationaryTicks > 0
+
+	private fun setTarget(player: Player?)
 	{
-		return this.getStationaryTicks() > 0;
+		val brain = this.getBrain()
+		brain.setMemory(MemoryModuleType.ATTACK_TARGET, player)
+		this.isShedding = true
 	}
-	
-	private void setTarget (Player player)
-	{
-		Brain<Berserker> brain = this.getBrain();
-		brain.setMemory(MemoryModuleType.ATTACK_TARGET, player);
-		this.setShedding(true);
-	}
-	
-	@Nullable
-	@Override
-	public SpawnGroupData finalizeSpawn (ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData)
+
+	override fun finalizeSpawn(
+		serverLevelAccessor: ServerLevelAccessor,
+		difficultyInstance: DifficultyInstance,
+		mobSpawnType: MobSpawnType,
+		spawnGroupData: SpawnGroupData?
+	): SpawnGroupData?
 	{
 		if (mobSpawnType == MobSpawnType.STRUCTURE)
 		{
-			this.setStationaryTicks(100);
+			this.stationaryTicks = 100
 		}
-		return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
+		return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData)
 	}
-	
-	@Nullable
-	@Override
-	protected SoundEvent getAmbientSound ()
+
+	override fun getAmbientSound(): SoundEvent?
 	{
-		return this.isStationary() ? null : GSoundEvents.BERSERKER_IDLE.get();
+		return if (this.isStationary) null else GSoundEvents.BERSERKER_IDLE.get()
 	}
-	
-	@Override
-	protected SoundEvent getHurtSound (DamageSource damageSource)
+
+	override fun getHurtSound(damageSource: DamageSource): SoundEvent
 	{
-		return GSoundEvents.BERSERKER_HURT.get();
+		return GSoundEvents.BERSERKER_HURT.get()
 	}
-	
-	@Override
-	protected SoundEvent getDeathSound ()
+
+	override fun getDeathSound(): SoundEvent
 	{
-		return GSoundEvents.BERSERKER_DEATH.get();
+		return GSoundEvents.BERSERKER_DEATH.get()
 	}
-	
-	protected SoundEvent getStepSound ()
+
+	protected val stepSound: SoundEvent
+		get() = GSoundEvents.BERSERKER_STEP.get()
+
+	override fun playStepSound(blockPos: BlockPos, blockState: BlockState)
 	{
-		return GSoundEvents.BERSERKER_STEP.get();
+		playSound(this.stepSound, 1f, 1f)
 	}
-	
-	@Override
-	protected void playStepSound (BlockPos blockPos, BlockState blockState)
+
+	fun canTargetEntity(entity: Entity): Boolean
 	{
-		playSound(getStepSound(), 1, 1);
-	}
-	
-	public boolean canTargetEntity (@Nullable Entity entity)
-	{
-		if (!(entity instanceof LivingEntity livingEntity))
+		if (entity !is LivingEntity)
 		{
-			return false;
+			return false
 		}
-		Predicate<LivingEntity> predicate = e -> e.getType().is(GEntityTypeTags.BERSERKER_INVALID_TARGETS);
-		if (livingEntity.isInvulnerable() || livingEntity.isDeadOrDying() || predicate.test(livingEntity))
+		val predicate = Predicate<LivingEntity> { it.type.`is`(GEntityTypeTags.BERSERKER_INVALID_TARGETS) }
+		if (entity.isInvulnerable || entity.isDeadOrDying || predicate.test(entity))
 		{
-			return false;
+			return false
 		}
-		DamageSource lastSource = this.getLastDamageSource();
-		Entity e;
-		if (lastSource != null && (e = lastSource.getEntity()) instanceof LivingEntity living && e == livingEntity && !predicate.test(living))
+		val lastSource = this.getLastDamageSource()
+		val e = lastSource?.entity
+		if (e is LivingEntity && e === entity && !predicate.test(e))
 		{
-			return true;
+			return true
 		}
-		if (this.level() != entity.level() || !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) || this.isAlliedTo(entity) || !this.level().getWorldBorder().isWithinBounds(livingEntity.getBoundingBox()))
+		if (this.level() !== entity.level() || !EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity) || this.isAlliedTo(
+				entity
+			) || !this.level().worldBorder.isWithinBounds(entity.getBoundingBox())
+		)
 		{
-			return false;
+			return false
 		}
-		return livingEntity instanceof Player || livingEntity instanceof AbstractVillager || livingEntity instanceof IronGolem || livingEntity instanceof Turtle;
+		return entity is Player || entity is AbstractVillager || entity is IronGolem || entity is Turtle
 	}
-	
-	@Override
-	protected void updateWalkAnimation (float f)
+
+	override fun updateWalkAnimation(f: Float)
 	{
-		float g = Math.min(f * 10.0F, 1.0f);
-		this.walkAnimation.update(g, 0.2f);
+		val g = min(f * 10.0f, 1.0f)
+		this.walkAnimation.update(g, 0.2f)
 	}
-	
-	@Override
-	public void onSyncedDataUpdated (EntityDataAccessor<?> entityDataAccessor)
+
+	override fun onSyncedDataUpdated(entityDataAccessor: EntityDataAccessor<*>)
 	{
-		if (DATA_POSE.equals(entityDataAccessor))
+		if (DATA_POSE == entityDataAccessor)
 		{
 			if (this.getPose() == Pose.EMERGING)
 			{
-				this.roarAnimationState.start(this.tickCount);
+				this.roarAnimationState.start(this.tickCount)
 			}
 		}
-		super.onSyncedDataUpdated(entityDataAccessor);
+		super.onSyncedDataUpdated(entityDataAccessor)
 	}
-	
-	public boolean shouldUseMeleeAttack ()
+
+	fun shouldUseMeleeAttack(): Boolean
 	{
-		Optional<LivingEntity> memory = this.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
-		return memory.filter(livingEntity ->
-				  this.isWithinMeleeAttackRange(livingEntity) &&
-							 this.getPhase() != Phase.SMASH &&
-							 this.shouldAttack() &&
-							 this.isInHardMode() &&
-							 this.getBrain().getMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get()).isPresent() &&
-							 this.getBrain().getMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get()).get() > 0
-		).isPresent();
+		val brain1 = this.getBrain()
+		val memory = brain1.getMemory(MemoryModuleType.ATTACK_TARGET)
+		return memory.filter {
+			this.isWithinMeleeAttackRange(it) && this.phase != Phase.SMASH &&
+					  this.shouldAttack() &&
+					  this.isInHardMode &&
+					  brain1.getMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get()).isPresent && brain1
+				.getMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get()).get() > 0
+		}.isPresent
 	}
-	
-	public boolean isInHardMode ()
+
+	val isInHardMode: Boolean
+		get() = this.level().getDifficulty() == Difficulty.HARD
+
+	override fun doHurtTarget(entity: Entity): Boolean
 	{
-		return this.level().getDifficulty() == Difficulty.HARD;
-	}
-	
-	@Override
-	public boolean doHurtTarget (Entity entity)
-	{
-		if (entity instanceof LivingEntity livingEntity)
+		if (entity is LivingEntity)
 		{
-			if (livingEntity instanceof AbstractGolem || livingEntity instanceof TamableAnimal)
+			if (entity is AbstractGolem || entity is TamableAnimal)
 			{
-				double dist = Math.max(1, this.distanceTo(livingEntity));
-				livingEntity.hurt(this.level().damageSources().mobAttack(this), (float)((livingEntity.getMaxHealth()) / (dist / 2)));
+				val dist = max(1f, this.distanceTo(entity)).toDouble()
+				entity.hurt(this.level().damageSources().mobAttack(this), ((entity.getMaxHealth()) / (dist / 2)).toFloat())
 			}
 			if (this.shouldUseMeleeAttack())
 			{
-				Vec3 start = this.position().add(0, 1.6f, 0);
-				Vec3 diff = entity.getEyePosition().subtract(start);
-				Vec3 normalized = diff.normalize();
-				double knockbackX = 0.25 * (1 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-				double knockbackY = 1.5 * (1 - livingEntity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-				livingEntity.push(normalized.x() * knockbackY, normalized.y() * knockbackX, normalized.z() * knockbackY);
-				this.level().broadcastEntityEvent(this, (byte)5);
-				this.playSound(GSoundEvents.BERSERKER_PUNCH.get(), 1, 1);
+				val start = this.position().add(0.0, 1.6, 0.0)
+				val diff = entity.getEyePosition().subtract(start)
+				val normalized = diff.normalize()
+				val knockbackX = 0.25 * (1 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE))
+				val knockbackY = 1.5 * (1 - entity.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE))
+				entity.push(normalized.x() * knockbackY, normalized.y() * knockbackX, normalized.z() * knockbackY)
+				this.level().broadcastEntityEvent(this, 5.toByte())
+				this.playSound(GSoundEvents.BERSERKER_PUNCH.get(), 1f, 1f)
 			}
-			boolean flag = true;
-			if (livingEntity instanceof Player player && player.getAbilities().instabuild)
+			var flag = true
+			if (entity is Player && entity.abilities.instabuild)
 			{
-				flag = false;
+				flag = false
 			}
 			if (flag)
 			{
-				livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100));
+				entity.addEffect(MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100))
 			}
 		}
-		return super.doHurtTarget(entity);
+		return super.doHurtTarget(entity)
 	}
-	
-	@Override
-	public boolean canDisableShield ()
+
+	override fun canDisableShield(): Boolean
 	{
-		return true;
+		return true
 	}
-	
-	@Override
-	public boolean hurt (DamageSource damageSource, float f)
+
+	override fun hurt(damageSource: DamageSource, f: Float): Boolean
 	{
-		if (!this.level().isClientSide && this.getPhase() != Phase.IDLING && this.isInHardMode())
+		if (!this.level().isClientSide && this.phase != Phase.IDLING && this.isInHardMode)
 		{
 			if (this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT.get()).isEmpty())
 			{
-				this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT.get(), 0);
+				this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT.get(), 0)
 			}
 			else
 			{
-				int i = this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT.get()).get() + 1;
+				val i = this.getBrain().getMemory(GMemoryModuleTypes.HURT_COUNT.get()).get() + 1
 				if (i > 2)
 				{
-					this.getBrain().setMemory(GMemoryModuleTypes.RAMPAGE_TICKS.get(), UniformInt.of(30, 150).sample(this.getRandom()));
+					this.getBrain().setMemory(
+						GMemoryModuleTypes.RAMPAGE_TICKS.get(),
+						UniformInt.of(30, 150).sample(this.getRandom())
+					)
 				}
-				this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT.get(), i);
+				this.getBrain().setMemory(GMemoryModuleTypes.HURT_COUNT.get(), i)
 			}
 		}
-		if (damageSource.getDirectEntity() instanceof AbstractArrow && this.getPhase() != Phase.IDLING)
+		if (damageSource.directEntity is AbstractArrow && this.phase != Phase.IDLING)
 		{
-			return false;
+			return false
 		}
-		return super.hurt(damageSource, f);
+		return super.hurt(damageSource, f)
 	}
-	
-	public static AttributeSupplier.Builder createAttributes ()
+
+	override fun brainProvider() = Brain.provider<Berserker>(MEMORY_TYPES, SENSOR_TYPES)
+
+	override fun makeBrain(dynamic: Dynamic<*>): Brain<*>
 	{
-		return Berserker.createMonsterAttributes().add(Attributes.MAX_HEALTH, 155.0).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 10.0D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D).add(Attributes.ATTACK_KNOCKBACK, 1.5D);
+		return BerserkerAi.makeBrain(this, this.brainProvider().makeBrain(dynamic))
 	}
-	
-	@Override
-	protected Brain.Provider<Berserker> brainProvider ()
+
+	override fun getBrain(): Brain<Berserker>
 	{
-		return Brain.provider(MEMORY_TYPES, SENSOR_TYPES);
+		return super.getBrain() as Brain<Berserker>
 	}
-	
-	@Override
-	protected Brain<?> makeBrain (Dynamic<?> dynamic)
+
+	override fun customServerAiStep()
 	{
-		return BerserkerAi.makeBrain(this, this.brainProvider().makeBrain(dynamic));
-	}
-	
-	@Override
-	public Brain<Berserker> getBrain ()
-	{
-		return (Brain<Berserker>)super.getBrain();
-	}
-	
-	@Override
-	protected void customServerAiStep ()
-	{
-		this.level().getProfiler().push("berserkerBrain");
-		this.getBrain().tick((ServerLevel)this.level(), this);
-		this.level().getProfiler().pop();
-		BerserkerAi.updateActivity(this);
-		super.customServerAiStep();
-		if ((this.tickCount + this.getId()) % 1200 == 0)
+		this.level().profiler.push("berserkerBrain")
+		this.getBrain().tick(this.level() as ServerLevel, this)
+		this.level().profiler.pop()
+		BerserkerAi.updateActivity(this)
+		super.customServerAiStep()
+		if ((this.tickCount + this.id) % 1200 == 0)
 		{
-			this.selectedEffects.forEach(mobEffect -> {
-				MobEffectInstance mobEffectInstance = new MobEffectInstance(mobEffect, 6000, 2);
-				MobEffectUtil.addEffectToPlayersAround((ServerLevel)this.level(), this, this.position(), 50.0, mobEffectInstance, 1200);
-			});
+			this.selectedEffects.forEach {
+				val mobEffectInstance = MobEffectInstance(it, 6000, 2)
+				MobEffectUtil.addEffectToPlayersAround(
+					this.level() as ServerLevel,
+					this,
+					this.position(),
+					50.0,
+					mobEffectInstance,
+					1200
+				)
+			}
 		}
-		if (this.getBrain().getMemory(MemoryModuleType.HURT_BY_ENTITY).isEmpty() && this.getPhase() != Phase.IDLING)
+		if (this.getBrain().getMemory(MemoryModuleType.HURT_BY_ENTITY)
+				.isEmpty && this.phase != Phase.IDLING
+		)
 		{
-			this.setPhase(Phase.IDLING);
+			this.phase = Phase.IDLING
 		}
 	}
-	
-	@Override
-	public void travel (Vec3 vec3)
+
+	override fun travel(vec3: Vec3)
 	{
-		if (this.isStationary() && this.onGround())
+		var vec3 = vec3
+		if (this.isStationary && this.onGround())
 		{
-			this.setDeltaMovement(this.getDeltaMovement().multiply(0.0, 1.0, 0.0));
-			vec3 = vec3.multiply(0.0, 1.0, 0.0);
+			this.setDeltaMovement(this.getDeltaMovement().multiply(0.0, 1.0, 0.0))
+			vec3 = vec3.multiply(0.0, 1.0, 0.0)
 		}
-		super.travel(vec3);
+		super.travel(vec3)
 	}
-	
-	public class BerserkerLookControl extends LookControl
+
+	inner class BerserkerLookControl(mob: Mob) : LookControl(mob)
 	{
-		
-		public BerserkerLookControl (Mob mob)
+		override fun tick()
 		{
-			super(mob);
-		}
-		
-		@Override
-		public void tick ()
-		{
-			if (!Berserker.this.isStationary())
+			if (!this@Berserker.isStationary)
 			{
-				super.tick();
+				super.tick()
 			}
 		}
 	}
-	
-	public enum Phase
+
+	enum class Phase
 	{
 		IDLING,
 		SMASH,
 		UNDERMINE,
 		SUMMONING
 	}
-	
+
+	companion object
+	{
+		private val SENSOR_TYPES = listOf(
+			SensorType.NEAREST_LIVING_ENTITIES,
+			SensorType.NEAREST_PLAYERS,
+			SensorType.HURT_BY,
+		)
+		private val MEMORY_TYPES = listOf(
+			MemoryModuleType.BREED_TARGET,
+			MemoryModuleType.NEAREST_LIVING_ENTITIES,
+			MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
+			MemoryModuleType.NEAREST_VISIBLE_PLAYER,
+			MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER,
+			MemoryModuleType.LOOK_TARGET,
+			MemoryModuleType.WALK_TARGET,
+			MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
+			MemoryModuleType.PATH,
+			MemoryModuleType.ATTACK_TARGET,
+			MemoryModuleType.ATTACK_COOLING_DOWN,
+			MemoryModuleType.AVOID_TARGET,
+			MemoryModuleType.HURT_BY,
+			MemoryModuleType.HURT_BY_ENTITY,
+			MemoryModuleType.NEAREST_ATTACKABLE,
+			GMemoryModuleTypes.IMPALING_COOLDOWN.get(),
+			GMemoryModuleTypes.IMPALING_COUNT.get(),
+			GMemoryModuleTypes.IS_SMASHING.get(),
+			GMemoryModuleTypes.IS_IMPALING.get(),
+			GMemoryModuleTypes.IS_SUMMONING.get(),
+			GMemoryModuleTypes.SUMMONING_COOLDOWN.get(),
+			GMemoryModuleTypes.SUMMON_COUNT.get(),
+			GMemoryModuleTypes.SMASHING_COOLDOWN.get(),
+			GMemoryModuleTypes.HURT_COUNT.get(),
+			GMemoryModuleTypes.RAMPAGE_TICKS.get(),
+			MemoryModuleType.ROAR_SOUND_COOLDOWN,
+			MemoryModuleType.ROAR_SOUND_DELAY,
+			GMemoryModuleTypes.IS_SHAKING.get()
+		)
+		private val PHASE =
+			SynchedEntityData.defineId(Berserker::class.java, EntityDataSerializers.STRING)
+		private val STATIONARY_TICKS =
+			SynchedEntityData.defineId(Berserker::class.java, EntityDataSerializers.INT)
+		private val SHEDDING =
+			SynchedEntityData.defineId(Berserker::class.java, EntityDataSerializers.BOOLEAN)
+
+		fun createAttributes(): AttributeSupplier.Builder
+		{
+			return createMonsterAttributes().apply {
+				add(Attributes.MAX_HEALTH, 155.0)
+				add(Attributes.MOVEMENT_SPEED, 0.3)
+				add(Attributes.ATTACK_DAMAGE, 10.0)
+				add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+				add(Attributes.ATTACK_KNOCKBACK, 1.5)
+			}
+		}
+	}
 }

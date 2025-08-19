@@ -28,10 +28,7 @@ public class CordycepsBlockEntity extends BlockEntity
 		}
 		int stage = state.getValue(CordycepsBlock.ALIVE_STAGE);
 		int delay = te.getDelay();
-		if (te.getGrowthTick() == 6000)
-		{
-			Optional.ofNullable(GEntityTypes.SPECTRE.get().create(world)).ifPresent(spectre -> te.spawnSpectre(world, pos, spectre));
-		}
+
 		if (delay > 0)
 		{
 			te.setDelay(delay - 1);
@@ -53,14 +50,6 @@ public class CordycepsBlockEntity extends BlockEntity
 				te.setGrowthTick(te.getGrowthTick() + 1);
 			}
 		}
-	}
-	
-	private void spawnSpectre (Level world, BlockPos pos, Spectre spectre)
-	{
-		spectre.moveTo(pos.getX() + 0.5D, (double)pos.getY() + 0.5D, pos.getZ() + 0.5D, 0.0F, 0.0f);
-		spectre.setPersistenceRequired();
-		world.addFreshEntity(spectre);
-		world.destroyBlock(pos, true);
 	}
 	
 	public void setDelay (int delay)

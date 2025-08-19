@@ -20,7 +20,7 @@ class BerserkerRenderer(context: EntityRendererProvider.Context) : MobRenderer<B
 	0.9f
 )
 {
-	override fun getTextureLocation(entity: Berserker) = TEXTURES[entity.getStage()]!!
+	override fun getTextureLocation(entity: Berserker) = TEXTURES[entity.stage]!!
 
 	override fun isShaking(livingEntity: Berserker) = livingEntity.isShedding
 
