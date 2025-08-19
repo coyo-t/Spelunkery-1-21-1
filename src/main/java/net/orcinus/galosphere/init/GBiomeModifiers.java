@@ -1,16 +1,19 @@
 package net.orcinus.galosphere.init;
 
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
 import net.orcinus.galosphere.Galosphere;
@@ -34,6 +37,7 @@ public class GBiomeModifiers
 	
 	public static void bootstrap (BootstrapContext<BiomeModifier> bootstapContext)
 	{
+		
 		bootstapContext.register(
 			ADD_CRYSTAL_CANYONS_FEATURES,
 			new BiomeModifiers.AddFeaturesBiomeModifier(

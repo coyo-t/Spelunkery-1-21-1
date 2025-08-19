@@ -950,13 +950,6 @@ object GBlocks
 	}
 
 	@JvmField
-	val GILDED_BEADS = registerBlock("gilded_beads") {
-		GildedBeadsBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.GOLD).noCollission().sound(GSoundEvents.GILDED_BEADS)
-		)
-	}
-
-	@JvmField
 	val SILVER_BALANCE = registerBlock("silver_balance") {
 		SilverBalanceBlock(
 			BlockBehaviour.Properties.of().mapColor(DyeColor.CYAN).strength(3.0f, 6.0f).noOcclusion()

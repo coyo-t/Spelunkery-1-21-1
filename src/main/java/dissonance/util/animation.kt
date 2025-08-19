@@ -1,13 +1,6 @@
 package dissonance.util
 
 import net.minecraft.client.animation.AnimationChannel
-import net.minecraft.client.animation.AnimationDefinition.Builder as AnimBuilder
-
-fun buildAnimation (len:Number, cb: AnimBuilder.()->Unit)
-	= AnimBuilder.withLength(len.toFloat()).run {
-		cb()
-		build()
-	}
 
 
 object Animationz

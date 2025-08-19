@@ -50,18 +50,6 @@ object GBlockEntityTypes
 				}, GBlocks.LICHEN_CORDYCEPS.get()).build(null)
 			})
 	@JvmField
-	val GILDED_BEADS =
-		BLOCK_ENTITIES.register(
-			"gilded_beads",
-			Supplier {
-				BlockEntityType.Builder.of(BlockEntityType.BlockEntitySupplier { blockPos, blockState ->
-					GildedBeadsBlockEntity(
-						blockPos,
-						blockState
-					)
-				}, GBlocks.GILDED_BEADS.get()).build(null)
-			})
-	@JvmField
 	val PINK_SALT_CHAMBER =
 		BLOCK_ENTITIES.register(
 			"pink_salt_chamber",

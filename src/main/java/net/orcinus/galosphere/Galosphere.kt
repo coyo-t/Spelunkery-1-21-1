@@ -85,7 +85,6 @@ import net.orcinus.galosphere.client.particles.ImpactParticle
 import net.orcinus.galosphere.client.particles.IndicatorParticle
 import net.orcinus.galosphere.client.particles.providers.PinkSaltFallingDustProvider
 import net.orcinus.galosphere.client.particles.providers.WarpedProvider
-import net.orcinus.galosphere.client.renderer.GildedBeadsRenderer
 import net.orcinus.galosphere.client.renderer.PinkSaltPillarRenderer
 import net.orcinus.galosphere.client.renderer.PinkSaltShardRenderer
 import net.orcinus.galosphere.client.renderer.PreservedRenderer
@@ -114,22 +113,17 @@ class Galosphere(ev: IEventBus)
 			}
 		}
 
-		val creativeTabRegistar = CreativeTabLoadingTHingy.run {
-			L.uhh("creative tab.lua")
-		}
-
-
 		val registars = listOf(
 			GBlocks.BLOCKS,
 			GBlockEntityTypes.BLOCK_ENTITIES,
-//			GCreativeModeTabs.CREATIVE_MODE_TABS,
-			creativeTabRegistar,
+			CreativeTabLoadingTHingy.run {
+				L.uhh("creative tab.lua")
+			},
 			GDataComponents.DATA_COMPONENT_TYPES,
 			GEnchantmentEffectComponents.DATA_COMPONENTS,
 			GEntityTypes.ENTITY_TYPES,
 			GFeatures.FEATURES,
 			GItems.ITEMS,
-			GMemoryModuleTypes.MEMORY_MODULE_TYPES,
 			GMobEffects.MOB_EFFECTS,
 			GPotions.POTIONS,
 			GParticleTypes.PARTICLES,
@@ -240,7 +234,6 @@ class Galosphere(ev: IEventBus)
 				registerSpriteSet(GParticleTypes.AMETHYST_RAIN.get(), CrystalRainParticle::Provider)
 				registerSpriteSet(GParticleTypes.AURA_RINGER_INDICATOR.get(), IndicatorParticle::Provider)
 				registerSpriteSet(GParticleTypes.PINK_SALT_FALLING_DUST.get(), ::PinkSaltFallingDustProvider)
-				registerSpriteSet(GParticleTypes.IMPACT.get(), ImpactParticle::Provider)
 			}
 		}
 
@@ -250,7 +243,6 @@ class Galosphere(ev: IEventBus)
 				registerEntityRenderer(GEntityTypes.PRESERVED_CORPSE.get(), ::PreservedRenderer)
 				registerEntityRenderer(GEntityTypes.PINK_SALT_PILLAR.get(), ::PinkSaltPillarRenderer)
 				registerEntityRenderer(GEntityTypes.PINK_SALT_SHARD.get(), ::PinkSaltShardRenderer)
-				registerBlockEntityRenderer(GBlockEntityTypes.GILDED_BEADS.get(), ::GildedBeadsRenderer)
 			}
 		}
 

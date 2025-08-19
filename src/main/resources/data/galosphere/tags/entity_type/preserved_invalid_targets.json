@@ -1,6 +1,6 @@
 {
-  "values": [
-    "minecraft:armor_stand",
-    "galosphere:preserved"
-  ]
+	"values": [
+		"minecraft:armor_stand",
+		"galosphere:preserved"
+	]
 }

@@ -41,14 +41,12 @@ public class SterlingArmorItem extends ArmorItem
 	@Override
 	public @Nullable ResourceLocation getArmorTexture (ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean inner)
 	{
-		ResourceLocation name;
-		switch (slot)
+		return switch (slot)
 		{
-			case HEAD -> name = HELMET_TEXTURE;
-			case LEGS -> name = LEGS_TEXTURE;
-			default -> name = TEXTURE;
-		}
-		return name;
+			case HEAD -> HELMET_TEXTURE;
+			case LEGS -> LEGS_TEXTURE;
+			default -> TEXTURE;
+		};
 	}
 	
 	@Override

@@ -25,7 +25,6 @@ return {
 		':preserved_flesh',
 		':cured_membrane',
 		':chandelier',
-		':gilded_beads',
 		':monstrometer',
 		':warped_anchor',
 		':silver_balance',

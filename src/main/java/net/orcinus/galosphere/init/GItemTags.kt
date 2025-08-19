@@ -8,13 +8,11 @@ import net.orcinus.galosphere.Galosphere
 object GItemTags
 {
 	@JvmField
-	val SPARKLE_TEMPT_ITEMS = create("sparkle_tempt_items")
-	@JvmField
-	val SPECTRE_TEMPT_ITEMS = create("spectre_tempt_items")
-	@JvmField
 	val NON_SINKABLES_HORSE_ARMORS = create("non_sinkable_horse_armors")
 	@JvmField
 	val SALTBOUND_TABLET_ENCHANTABLE = create("saltbound_tablet_enchantable")
+	@JvmField
+	val REPAIRS_PRESERVED_FLESH = create("repairs_preserved_flesh")
 
 	private fun create(name: String) = TagKey.create(Registries.ITEM, Galosphere.id(name))
 }

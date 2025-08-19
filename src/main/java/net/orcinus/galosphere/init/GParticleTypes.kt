@@ -16,9 +16,7 @@ object GParticleTypes
 	@JvmField val ALLURITE_RAIN = rp("allurite_rain")
 	@JvmField val LUMIERE_RAIN = rp("lumiere_rain")
 	@JvmField val AMETHYST_RAIN = rp("amethyst_rain")
-	@JvmField val SPECTATE_ORB = rp("spectate_orb")
 	@JvmField val PINK_SALT_FALLING_DUST = rp("pink_salt_falling_dust")
-	@JvmField val IMPACT = rp("impact")
 
 	private fun rp(key: String)
 		= PARTICLES.register(key, Supplier { SimpleParticleType(false) })

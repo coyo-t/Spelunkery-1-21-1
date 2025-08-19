@@ -13,6 +13,6 @@ object GSensorTypes
 
 	@JvmField
 	val PRESERVED_ENTITY_SENSOR = SENSOR_TYPES.register("preserved_entity_sensor") { rs ->
-		SensorType { PreservedEntitySensor() }
+		SensorType(::PreservedEntitySensor)
 	}
 }

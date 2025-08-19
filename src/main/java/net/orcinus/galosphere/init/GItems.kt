@@ -1,15 +1,21 @@
 package net.orcinus.galosphere.init
 
+import net.minecraft.core.BlockPos
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.food.FoodProperties
 import net.minecraft.world.item.AnimalArmorItem
 import net.minecraft.world.item.ArmorItem
+import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.context.BlockPlaceContext
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.state.BlockState
 import net.neoforged.neoforge.common.DeferredSpawnEggItem
 import net.neoforged.neoforge.registries.DeferredRegister
 import net.orcinus.galosphere.Galosphere
+import net.orcinus.galosphere.blocks.ChandelierBlock
 import net.orcinus.galosphere.items.*
 import java.util.function.Supplier
 
@@ -84,7 +90,9 @@ object GItems
 	val CURED_MEMBRANE = regIt("cured_membrane")
 
 	@JvmField
-	val LICHEN_CORDYCEPS = regIt("lichen_cordyceps") { LichenCordycepsItem(GBlocks.LICHEN_CORDYCEPS.get(), Item.Properties().food(GFoods.LICHEN_CORDYCEPS)) }
+	val LICHEN_CORDYCEPS = regIt("lichen_cordyceps") {
+		LichenCordycepsItem(GBlocks.LICHEN_CORDYCEPS.get(), Item.Properties().food(GFoods.LICHEN_CORDYCEPS))
+	}
 
 	@JvmField
 	val GOLDEN_LICHEN_CORDYCEPS = regIt("golden_lichen_cordyceps") {
@@ -94,7 +102,25 @@ object GItems
 	}
 
 	@JvmField
-	val CHANDELIER = regIt("chandelier") { ChandelierItem(GBlocks.CHANDELIER.get(), Item.Properties()) }
+	val CHANDELIER = regIt("chandelier") {
+		object : BlockItem(GBlocks.CHANDELIER.get(), Item.Properties()) {
+			override fun placeBlock(blockPlaceContext: BlockPlaceContext, blockState: BlockState): Boolean
+			{
+				val level = blockPlaceContext.level
+				val blockPos: BlockPos
+				val blockState2 = if (level.isWaterAt(blockPlaceContext.clickedPos.relative(blockState.getValue(ChandelierBlock.VERTICAL_DIRECTION)).also { blockPos = it }))
+				{
+					Blocks.WATER.defaultBlockState()
+				}
+				else
+				{
+					Blocks.AIR.defaultBlockState()
+				}
+				level.setBlock(blockPos, blockState2, 0b11011)
+				return super.placeBlock(blockPlaceContext, blockState)
+			}
+		}
+	}
 
 	@JvmField
 	val SALTBOUND_TABLET = regIt("saltbound_tablet") { SaltboundTabletItem(Item.Properties().stacksTo(1).durability(432)) }
