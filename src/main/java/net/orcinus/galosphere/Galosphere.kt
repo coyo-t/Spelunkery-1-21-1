@@ -145,14 +145,7 @@ class Galosphere(ev: IEventBus)
 		entityEventz(ev)
 		miscEventz(ev)
 
-		ev.addListener(::loadCreativeTabz)
 	}
-
-	private fun loadCreativeTabz (event: BuildCreativeModeTabContentsEvent)
-	{
-
-	}
-
 
 	private fun clientEventz(ev: IEventBus)
 	{
