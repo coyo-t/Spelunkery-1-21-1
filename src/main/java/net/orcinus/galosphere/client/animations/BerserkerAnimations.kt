@@ -1237,78 +1237,95 @@ object BerserkerAnimations
 
 	@JvmField
 	val BERSERKER_WALK = buildAnimation(2) {
-		//*
+		/*
 		looping()
 		addAnimation(
 			"head",
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, -0.7f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, -0.7f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.posVec(0f, -0.49f, 0f),
+					0.125f,
+					KeyframeAnimations.posVec(0f, -0.49f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.posVec(0f, 0.49f, 0f),
+					0.375f,
+					KeyframeAnimations.posVec(0f, 0.49f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.posVec(0f, 0.7f, 0f),
+					0.5f,
+					KeyframeAnimations.posVec(0f, 0.7f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.posVec(0f, 0.49f, 0f),
+					0.625f,
+					KeyframeAnimations.posVec(0f, 0.49f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.75f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.875f, KeyframeAnimations.posVec(0f, -0.49f, 0f),
+					0.875f,
+					KeyframeAnimations.posVec(0f, -0.49f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1f, KeyframeAnimations.posVec(0f, -0.7f, 0f),
+					1f,
+					KeyframeAnimations.posVec(0f, -0.7f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.posVec(0f, -0.49f, 0f),
+					1.125f,
+					KeyframeAnimations.posVec(0f, -0.49f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.25f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.375f, KeyframeAnimations.posVec(0f, 0.49f, 0f),
+					1.375f,
+					KeyframeAnimations.posVec(0f, 0.49f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.5f, KeyframeAnimations.posVec(0f, 0.7f, 0f),
+					1.5f,
+					KeyframeAnimations.posVec(0f, 0.7f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.625f, KeyframeAnimations.posVec(0f, 0.49f, 0f),
+					1.625f,
+					KeyframeAnimations.posVec(0f, 0.49f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.75f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.875f, KeyframeAnimations.posVec(0f, -0.49f, 0f),
+					1.875f,
+					KeyframeAnimations.posVec(0f, -0.49f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2f, KeyframeAnimations.posVec(0f, -0.7f, 0f),
+					2f,
+					KeyframeAnimations.posVec(0f, -0.7f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -1318,71 +1335,88 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(0f, 0f, 2.43f),
+					0f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.43f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.degreeVec(1.7f, 0f, 2.92f),
+					0.125f,
+					KeyframeAnimations.degreeVec(1.7f, 0f, 2.92f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(2.4f, 0f, 2.96f),
+					0.25f,
+					KeyframeAnimations.degreeVec(2.4f, 0f, 2.96f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(1.7f, 0f, 2.56f),
+					0.375f,
+					KeyframeAnimations.degreeVec(1.7f, 0f, 2.56f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(0f, 0f, 1.76f),
+					0.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 1.76f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(-1.7f, 0f, 0.7f),
+					0.625f,
+					KeyframeAnimations.degreeVec(-1.7f, 0f, 0.7f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.degreeVec(-2.4f, 0f, -0.47f),
+					0.75f,
+					KeyframeAnimations.degreeVec(-2.4f, 0f, -0.47f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.875f, KeyframeAnimations.degreeVec(-1.7f, 0f, -1.57f),
+					0.875f,
+					KeyframeAnimations.degreeVec(-1.7f, 0f, -1.57f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(0f, 0f, -2.43f),
+					1f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.43f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.degreeVec(1.7f, 0f, -2.92f),
+					1.125f,
+					KeyframeAnimations.degreeVec(1.7f, 0f, -2.92f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.degreeVec(2.4f, 0f, -2.96f),
+					1.25f,
+					KeyframeAnimations.degreeVec(2.4f, 0f, -2.96f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.375f, KeyframeAnimations.degreeVec(1.7f, 0f, -2.56f),
+					1.375f,
+					KeyframeAnimations.degreeVec(1.7f, 0f, -2.56f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.5f, KeyframeAnimations.degreeVec(0f, 0f, -1.76f),
+					1.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, -1.76f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.625f, KeyframeAnimations.degreeVec(-1.7f, 0f, -0.7f),
+					1.625f,
+					KeyframeAnimations.degreeVec(-1.7f, 0f, -0.7f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.degreeVec(-2.4f, 0f, 0.47f),
+					1.75f,
+					KeyframeAnimations.degreeVec(-2.4f, 0f, 0.47f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.875f, KeyframeAnimations.degreeVec(-1.7f, 0f, 1.57f),
+					1.875f,
+					KeyframeAnimations.degreeVec(-1.7f, 0f, 1.57f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2f, KeyframeAnimations.degreeVec(0f, 0f, 2.43f),
+					2f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.43f),
 					Interpolations.LINEAR
 				)
 			)
@@ -1392,71 +1426,88 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.posVec(0f, 0.11f, 0f),
+					0.125f,
+					KeyframeAnimations.posVec(0f, 0.11f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.posVec(0f, 0.15f, 0f),
+					0.25f,
+					KeyframeAnimations.posVec(0f, 0.15f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.posVec(0f, 0.11f, 0f),
+					0.375f,
+					KeyframeAnimations.posVec(0f, 0.11f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.posVec(0f, -0.11f, 0f),
+					0.625f,
+					KeyframeAnimations.posVec(0f, -0.11f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.posVec(0f, -0.15f, 0f),
+					0.75f,
+					KeyframeAnimations.posVec(0f, -0.15f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.875f, KeyframeAnimations.posVec(0f, -0.11f, 0f),
+					0.875f,
+					KeyframeAnimations.posVec(0f, -0.11f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.posVec(0f, 0.11f, 0f),
+					1.125f,
+					KeyframeAnimations.posVec(0f, 0.11f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.posVec(0f, 0.15f, 0f),
+					1.25f,
+					KeyframeAnimations.posVec(0f, 0.15f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.375f, KeyframeAnimations.posVec(0f, 0.11f, 0f),
+					1.375f,
+					KeyframeAnimations.posVec(0f, 0.11f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.5f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.5f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.625f, KeyframeAnimations.posVec(0f, -0.11f, 0f),
+					1.625f,
+					KeyframeAnimations.posVec(0f, -0.11f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.posVec(0f, -0.15f, 0f),
+					1.75f,
+					KeyframeAnimations.posVec(0f, -0.15f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.875f, KeyframeAnimations.posVec(0f, -0.11f, 0f),
+					1.875f,
+					KeyframeAnimations.posVec(0f, -0.11f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					2f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -1466,71 +1517,88 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(1.8f, 1.71f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(1.8f, 1.71f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.degreeVec(1.27f, 1.37f, 0f),
+					0.125f,
+					KeyframeAnimations.degreeVec(1.27f, 1.37f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(0f, 0.82f, 0f),
+					0.25f,
+					KeyframeAnimations.degreeVec(0f, 0.82f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(-1.27f, 0.14f, 0f),
+					0.375f,
+					KeyframeAnimations.degreeVec(-1.27f, 0.14f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(-1.8f, -0.56f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(-1.8f, -0.56f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(-1.27f, -1.17f, 0f),
+					0.625f,
+					KeyframeAnimations.degreeVec(-1.27f, -1.17f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.degreeVec(0f, -1.6f, 0f),
+					0.75f,
+					KeyframeAnimations.degreeVec(0f, -1.6f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.875f, KeyframeAnimations.degreeVec(1.27f, -1.79f, 0f),
+					0.875f,
+					KeyframeAnimations.degreeVec(1.27f, -1.79f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(1.8f, -1.71f, 0f),
+					1f,
+					KeyframeAnimations.degreeVec(1.8f, -1.71f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.degreeVec(1.27f, -1.37f, 0f),
+					1.125f,
+					KeyframeAnimations.degreeVec(1.27f, -1.37f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.degreeVec(0f, -0.82f, 0f),
+					1.25f,
+					KeyframeAnimations.degreeVec(0f, -0.82f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.375f, KeyframeAnimations.degreeVec(-1.27f, -0.14f, 0f),
+					1.375f,
+					KeyframeAnimations.degreeVec(-1.27f, -0.14f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.5f, KeyframeAnimations.degreeVec(-1.8f, 0.56f, 0f),
+					1.5f,
+					KeyframeAnimations.degreeVec(-1.8f, 0.56f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.625f, KeyframeAnimations.degreeVec(-1.27f, 1.17f, 0f),
+					1.625f,
+					KeyframeAnimations.degreeVec(-1.27f, 1.17f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.degreeVec(0f, 1.6f, 0f),
+					1.75f,
+					KeyframeAnimations.degreeVec(0f, 1.6f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.875f, KeyframeAnimations.degreeVec(1.27f, 1.79f, 0f),
+					1.875f,
+					KeyframeAnimations.degreeVec(1.27f, 1.79f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2f, KeyframeAnimations.degreeVec(1.8f, 1.71f, 0f),
+					2f,
+					KeyframeAnimations.degreeVec(1.8f, 1.71f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -1540,19 +1608,23 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.posVec(0f, 2f, 0f),
+					0.375f,
+					KeyframeAnimations.posVec(0f, 2f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.posVec(0f, 2f, 0f),
+					0.75f,
+					KeyframeAnimations.posVec(0f, 2f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -1562,71 +1634,88 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(12f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(12f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
+					0.125f,
+					KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
+					0.375f,
+					KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
+					0.625f,
+					KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
+					0.75f,
+					KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.875f, KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
+					0.875f,
+					KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(-12f, 0f, 0f),
+					1f,
+					KeyframeAnimations.degreeVec(-12f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
+					1.125f,
+					KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
+					1.25f,
+					KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.375f, KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
+					1.375f,
+					KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.625f, KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
+					1.625f,
+					KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
+					1.75f,
+					KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.875f, KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
+					1.875f,
+					KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2f, KeyframeAnimations.degreeVec(12f, 0f, 0f),
+					2f,
+					KeyframeAnimations.degreeVec(12f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -1636,19 +1725,23 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0.9583434f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.9583434f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.3433333f, KeyframeAnimations.posVec(0f, 2f, 0f),
+					1.3433333f,
+					KeyframeAnimations.posVec(0f, 2f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.7083433f, KeyframeAnimations.posVec(0f, 2f, 0f),
+					1.7083433f,
+					KeyframeAnimations.posVec(0f, 2f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.9583433f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.9583433f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -1658,71 +1751,88 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(-12f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(-12f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
+					0.125f,
+					KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
+					0.375f,
+					KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
+					0.625f,
+					KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
+					0.75f,
+					KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.875f, KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
+					0.875f,
+					KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(12f, 0f, 0f),
+					1f,
+					KeyframeAnimations.degreeVec(12f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
+					1.125f,
+					KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
+					1.25f,
+					KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.375f, KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
+					1.375f,
+					KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.625f, KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
+					1.625f,
+					KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
+					1.75f,
+					KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.875f, KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
+					1.875f,
+					KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2f, KeyframeAnimations.degreeVec(-12f, 0f, 0f),
+					2f,
+					KeyframeAnimations.degreeVec(-12f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -1732,19 +1842,23 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0.625f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.625f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1f, KeyframeAnimations.posVec(0f, 2f, 0f),
+					1f,
+					KeyframeAnimations.posVec(0f, 2f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.375f, KeyframeAnimations.posVec(0f, 2f, 0f),
+					1.375f,
+					KeyframeAnimations.posVec(0f, 2f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.625f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.625f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -1754,71 +1868,88 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
+					0.125f,
+					KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
+					0.375f,
+					KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(12f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(12f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
+					0.625f,
+					KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
+					0.75f,
+					KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.875f, KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
+					0.875f,
+					KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
+					1.125f,
+					KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
+					1.25f,
+					KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.375f, KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
+					1.375f,
+					KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.5f, KeyframeAnimations.degreeVec(-12f, 0f, 0f),
+					1.5f,
+					KeyframeAnimations.degreeVec(-12f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.625f, KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
+					1.625f,
+					KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
+					1.75f,
+					KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.875f, KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
+					1.875f,
+					KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					2f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -1828,23 +1959,28 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 2f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 2f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.posVec(0f, 2f, 0f),
+					0.375f,
+					KeyframeAnimations.posVec(0f, 2f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.625f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.625f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.625f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2f, KeyframeAnimations.posVec(0f, 2f, 0f),
+					2f,
+					KeyframeAnimations.posVec(0f, 2f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -1854,71 +1990,88 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
+					0.125f,
+					KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
+					0.375f,
+					KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(-12f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(-12f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
+					0.625f,
+					KeyframeAnimations.degreeVec(-11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
+					0.75f,
+					KeyframeAnimations.degreeVec(-8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.875f, KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
+					0.875f,
+					KeyframeAnimations.degreeVec(-4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
+					1.125f,
+					KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
+					1.25f,
+					KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.375f, KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
+					1.375f,
+					KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.5f, KeyframeAnimations.degreeVec(12f, 0f, 0f),
+					1.5f,
+					KeyframeAnimations.degreeVec(12f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.625f, KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
+					1.625f,
+					KeyframeAnimations.degreeVec(11.09f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
+					1.75f,
+					KeyframeAnimations.degreeVec(8.49f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.875f, KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
+					1.875f,
+					KeyframeAnimations.degreeVec(4.59f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					2f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -1928,115 +2081,140 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.041676664f, KeyframeAnimations.posVec(0f, 0.05f, 0f),
+					0.041676664f,
+					KeyframeAnimations.posVec(0f, 0.05f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.08343333f, KeyframeAnimations.posVec(0f, -0.08f, 0f),
+					0.08343333f,
+					KeyframeAnimations.posVec(0f, -0.08f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.posVec(0f, 0.09f, 0f),
+					0.125f,
+					KeyframeAnimations.posVec(0f, 0.09f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.16766666f, KeyframeAnimations.posVec(0f, -0.09f, 0f),
+					0.16766666f,
+					KeyframeAnimations.posVec(0f, -0.09f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.20834331f, KeyframeAnimations.posVec(0f, 0.07f, 0f),
+					0.20834331f,
+					KeyframeAnimations.posVec(0f, 0.07f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.24999999999999997f, KeyframeAnimations.posVec(0f, -0.04f, 0f),
+					0.24999999999999997f,
+					KeyframeAnimations.posVec(0f, -0.04f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.2916767f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.2916767f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.9583434f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.9583434f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.0416767f, KeyframeAnimations.posVec(0f, 0.05f, 0f),
+					1.0416767f,
+					KeyframeAnimations.posVec(0f, 0.05f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.0834333f, KeyframeAnimations.posVec(0f, -0.08f, 0f),
+					1.0834333f,
+					KeyframeAnimations.posVec(0f, -0.08f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.posVec(0f, 0.09f, 0f),
+					1.125f,
+					KeyframeAnimations.posVec(0f, 0.09f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.1676667f, KeyframeAnimations.posVec(0f, -0.09f, 0f),
+					1.1676667f,
+					KeyframeAnimations.posVec(0f, -0.09f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.2083433f, KeyframeAnimations.posVec(0f, 0.07f, 0f),
+					1.2083433f,
+					KeyframeAnimations.posVec(0f, 0.07f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.posVec(0f, -0.04f, 0f),
+					1.25f,
+					KeyframeAnimations.posVec(0f, -0.04f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.2916767f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.2916767f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
 		)
-		//*/
+		*/
 	}
 
 	@JvmField
 	val BERSERKER_RECOVERING = buildAnimation(4) {
-		//*
+		/*
 		addAnimation(
 			"head",
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.041676664f, KeyframeAnimations.posVec(0f, 0f, 3f),
+					0.041676664f,
+					KeyframeAnimations.posVec(0f, 0f, 3f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.posVec(0f, -2f, 2f),
+					0.25f,
+					KeyframeAnimations.posVec(0f, -2f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.3433333f, KeyframeAnimations.posVec(0f, -6f, 2f),
+					0.3433333f,
+					KeyframeAnimations.posVec(0f, -6f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.4167667f, KeyframeAnimations.posVec(0f, -5f, 2f),
+					0.4167667f,
+					KeyframeAnimations.posVec(0f, -5f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5416766f, KeyframeAnimations.posVec(0f, -6f, 2f),
+					0.5416766f,
+					KeyframeAnimations.posVec(0f, -6f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.5416765f, KeyframeAnimations.posVec(0f, -6f, 0f),
+					3.5416765f,
+					KeyframeAnimations.posVec(0f, -6f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					4f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					4f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2046,19 +2224,23 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.08343333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.08343333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.3433333f, KeyframeAnimations.degreeVec(72.5f, 0f, 0f),
+					0.3433333f,
+					KeyframeAnimations.degreeVec(72.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.2916765f, KeyframeAnimations.degreeVec(59.32f, 0f, 0f),
+					3.2916765f,
+					KeyframeAnimations.degreeVec(59.32f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					4f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					4f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2068,19 +2250,23 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.08343333f, KeyframeAnimations.posVec(0f, 0f, 3f),
+					0.08343333f,
+					KeyframeAnimations.posVec(0f, 0f, 3f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.posVec(0f, 0f, 2f),
+					0.20834334f,
+					KeyframeAnimations.posVec(0f, 0f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					4f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					4f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2090,31 +2276,38 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.08343333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.08343333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.3433333f, KeyframeAnimations.degreeVec(10f, 0f, 0f),
+					0.3433333f,
+					KeyframeAnimations.degreeVec(10f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.4167667f, KeyframeAnimations.degreeVec(7.5f, 0f, 0f),
+					0.4167667f,
+					KeyframeAnimations.degreeVec(7.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5416766f, KeyframeAnimations.degreeVec(10f, 0f, 0f),
+					0.5416766f,
+					KeyframeAnimations.degreeVec(10f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3f, KeyframeAnimations.degreeVec(10f, 0f, 0f),
+					3f,
+					KeyframeAnimations.degreeVec(10f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.75f, KeyframeAnimations.degreeVec(10f, 0f, 0f),
+					3.75f,
+					KeyframeAnimations.degreeVec(10f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					4f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					4f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2124,51 +2317,63 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.08343333f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.08343333f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.20834334f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.2916767f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.2916767f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.375f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.4583433f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.4583433f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5416766f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.5416766f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.625f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.75f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.875f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.875f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					1f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					1.25f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.875f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					1.875f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2178,51 +2383,63 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.08343333f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.08343333f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.20834334f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.2916767f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.2916767f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.375f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.4583433f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.4583433f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5834334f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.5834334f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.7083434f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.7083434f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.8343334f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.8343334f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.9583434f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.9583434f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.2083433f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					1.2083433f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.8343333f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					1.8343333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2232,51 +2449,63 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.08343333f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.08343333f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.20834334f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.2916767f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.2916767f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.3433333f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.3433333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.4167667f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.4167667f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.4583433f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.4583433f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5416766f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.5416766f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.6766666f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.6766666f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.7916766f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					0.7916766f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.9167666f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					0.9167666f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.1676667f, KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
+					1.1676667f,
+					KeyframeAnimations.degreeVec(0f, 0f, -2.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.7916767f, KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
+					1.7916767f,
+					KeyframeAnimations.degreeVec(0f, 0f, 2.5f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2286,23 +2515,28 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.08343333f, KeyframeAnimations.posVec(0f, 0f, 4f),
+					0.08343333f,
+					KeyframeAnimations.posVec(0f, 0f, 4f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.posVec(0f, 0f, 3f),
+					0.20834334f,
+					KeyframeAnimations.posVec(0f, 0f, 3f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.posVec(0f, 0f, 3f),
+					0.5f,
+					KeyframeAnimations.posVec(0f, 0f, 3f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					4f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					4f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2312,23 +2546,28 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.08343333f, KeyframeAnimations.degreeVec(-12.5f, 0f, 0f),
+					0.08343333f,
+					KeyframeAnimations.degreeVec(-12.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
+					0.20834334f,
+					KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					4f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					4f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2338,23 +2577,28 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0.041676664f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.041676664f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.posVec(0f, 0f, 3f),
+					0.125f,
+					KeyframeAnimations.posVec(0f, 0f, 3f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.posVec(0f, 0f, 2f),
+					0.25f,
+					KeyframeAnimations.posVec(0f, 0f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.posVec(0f, 0f, 3f),
+					0.5f,
+					KeyframeAnimations.posVec(0f, 0f, 3f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					4f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					4f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2364,23 +2608,28 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.041676664f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.041676664f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.degreeVec(-12.5f, 0f, 0f),
+					0.125f,
+					KeyframeAnimations.degreeVec(-12.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					4f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					4f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2390,71 +2639,85 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.041676664f, KeyframeAnimations.posVec(0f, 0.3f, 0f),
+					0.041676664f,
+					KeyframeAnimations.posVec(0f, 0.3f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.08343333f, KeyframeAnimations.posVec(0f, -0.48f, 0f),
+					0.08343333f,
+					KeyframeAnimations.posVec(0f, -0.48f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.posVec(0f, 0.55f, 0f),
+					0.125f,
+					KeyframeAnimations.posVec(0f, 0.55f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.16766666f, KeyframeAnimations.posVec(0f, -0.52f, 0f),
+					0.16766666f,
+					KeyframeAnimations.posVec(0f, -0.52f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.20834331f, KeyframeAnimations.posVec(0f, 0.39f, 0f),
+					0.20834331f,
+					KeyframeAnimations.posVec(0f, 0.39f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.24999999999999997f, KeyframeAnimations.posVec(0f, -0.21f, 0f),
+					0.24999999999999997f,
+					KeyframeAnimations.posVec(0f, -0.21f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.2916767f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.2916767f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
 		)
-		//*/
+		*/
 	}
 
 	@JvmField
 	val BERSERKER_PUNCH = buildAnimation(0.7083434) {
-		//*
+		/*
 		addAnimation(
 			"rightArm",
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.posVec(0f, 0f, 9f),
+					0.125f,
+					KeyframeAnimations.posVec(0f, 0f, 9f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.posVec(0f, 0f, -3.75f),
+					0.25f,
+					KeyframeAnimations.posVec(0f, 0f, -3.75f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.posVec(0f, 0f, -3.75f),
+					0.375f,
+					KeyframeAnimations.posVec(0f, 0f, -3.75f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.posVec(0f, 0f, 2.13f),
+					0.5f,
+					KeyframeAnimations.posVec(0f, 0f, 2.13f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.7083434f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.7083434f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2464,39 +2727,48 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.08343333f, KeyframeAnimations.degreeVec(-40.66f, 63.53f, 43f),
+					0.08343333f,
+					KeyframeAnimations.degreeVec(-40.66f, 63.53f, 43f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.degreeVec(-42.3f, 64.08f, 43.27f),
+					0.125f,
+					KeyframeAnimations.degreeVec(-42.3f, 64.08f, 43.27f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.16766666f, KeyframeAnimations.degreeVec(-43.94f, 64.63f, 43.9f),
+					0.16766666f,
+					KeyframeAnimations.degreeVec(-43.94f, 64.63f, 43.9f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.degreeVec(-45.58f, 65.19f, 44.77f),
+					0.20834334f,
+					KeyframeAnimations.degreeVec(-45.58f, 65.19f, 44.77f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(-75.67f, 31.5f, 26.94f),
+					0.25f,
+					KeyframeAnimations.degreeVec(-75.67f, 31.5f, 26.94f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.2916767f, KeyframeAnimations.degreeVec(-61.55f, -48.92f, -19.75f),
+					0.2916767f,
+					KeyframeAnimations.degreeVec(-61.55f, -48.92f, -19.75f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.4167667f, KeyframeAnimations.degreeVec(-61.55f, -48.92f, -19.75f),
+					0.4167667f,
+					KeyframeAnimations.degreeVec(-61.55f, -48.92f, -19.75f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.6766666f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.6766666f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2506,23 +2778,28 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.08343333f, KeyframeAnimations.posVec(0f, 0f, 1f),
+					0.08343333f,
+					KeyframeAnimations.posVec(0f, 0f, 1f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.posVec(0f, 0f, 1f),
+					0.20834334f,
+					KeyframeAnimations.posVec(0f, 0f, 1f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5416766f, KeyframeAnimations.posVec(0f, 0f, 1f),
+					0.5416766f,
+					KeyframeAnimations.posVec(0f, 0f, 1f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.7083434f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.7083434f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -2532,23 +2809,28 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.08343333f, KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
+					0.08343333f,
+					KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
+					0.20834334f,
+					KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5416766f, KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
+					0.5416766f,
+					KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.7083434f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.7083434f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -2558,27 +2840,33 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.125f, KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
+					0.125f,
+					KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
+					0.20834334f,
+					KeyframeAnimations.degreeVec(-7.5f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.2916767f, KeyframeAnimations.degreeVec(-2.41f, -2.5f, -4.33f),
+					0.2916767f,
+					KeyframeAnimations.degreeVec(-2.41f, -2.5f, -4.33f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(-2.41f, -2.5f, -4.33f),
+					0.5f,
+					KeyframeAnimations.degreeVec(-2.41f, -2.5f, -4.33f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.625f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -2588,27 +2876,33 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.08343333f, KeyframeAnimations.posVec(0f, 2f, 1f),
+					0.08343333f,
+					KeyframeAnimations.posVec(0f, 2f, 1f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.posVec(0f, 2f, 1f),
+					0.20834334f,
+					KeyframeAnimations.posVec(0f, 2f, 1f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.3433333f, KeyframeAnimations.posVec(0f, 0f, 1f),
+					0.3433333f,
+					KeyframeAnimations.posVec(0f, 0f, 1f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.posVec(0f, 0f, 1f),
+					0.5f,
+					KeyframeAnimations.posVec(0f, 0f, 1f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.7083434f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.7083434f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -2618,32 +2912,38 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.08343333f, KeyframeAnimations.degreeVec(20f, 0f, 0f),
+					0.08343333f,
+					KeyframeAnimations.degreeVec(20f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.20834334f, KeyframeAnimations.degreeVec(20f, 0f, 0f),
+					0.20834334f,
+					KeyframeAnimations.degreeVec(20f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.3433333f, KeyframeAnimations.degreeVec(22.5f, 0f, 0f),
+					0.3433333f,
+					KeyframeAnimations.degreeVec(22.5f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(22.5f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(22.5f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.7083434f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.7083434f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
 		)
-		//*/
+		*/
 	}
 
 	@JvmField
@@ -2654,195 +2954,243 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0.3433333f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.3433333f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.posVec(0f, -0.71f, 0f),
+					0.375f,
+					KeyframeAnimations.posVec(0f, -0.71f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.4167667f, KeyframeAnimations.posVec(0f, -0.15f, 0f),
+					0.4167667f,
+					KeyframeAnimations.posVec(0f, -0.15f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.45834337f, KeyframeAnimations.posVec(0f, 0.51f, 0f),
+					0.45834337f,
+					KeyframeAnimations.posVec(0f, 0.51f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.posVec(0f, -0.2f, 0f),
+					0.5f,
+					KeyframeAnimations.posVec(0f, -0.2f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5416766f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.5416766f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.5834334f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.5834334f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.posVec(0f, -0.97f, 0f),
+					0.625f,
+					KeyframeAnimations.posVec(0f, -0.97f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.6766665f, KeyframeAnimations.posVec(0f, 0.3f, 0f),
+					0.6766665f,
+					KeyframeAnimations.posVec(0f, 0.3f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.7083431f, KeyframeAnimations.posVec(0f, 0.32f, 0f),
+					0.7083431f,
+					KeyframeAnimations.posVec(0f, 0.32f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.7499999999999998f, KeyframeAnimations.posVec(0f, -0.23f, 0f),
+					0.7499999999999998f,
+					KeyframeAnimations.posVec(0f, -0.23f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.7916766f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.7916766f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.834333f, KeyframeAnimations.posVec(0f, -0.02f, 0f),
+					0.834333f,
+					KeyframeAnimations.posVec(0f, -0.02f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.8749999999999997f, KeyframeAnimations.posVec(0f, 0.1f, 0f),
+					0.8749999999999997f,
+					KeyframeAnimations.posVec(0f, 0.1f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.9167663f, KeyframeAnimations.posVec(0f, -0.09f, 0f),
+					0.9167663f,
+					KeyframeAnimations.posVec(0f, -0.09f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.9583429f, KeyframeAnimations.posVec(0f, -0.01f, 0f),
+					0.9583429f,
+					KeyframeAnimations.posVec(0f, -0.01f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					0.9999999999999996f, KeyframeAnimations.posVec(0f, 0.09f, 0f),
+					0.9999999999999996f,
+					KeyframeAnimations.posVec(0f, 0.09f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.0416763f, KeyframeAnimations.posVec(0f, -0.06f, 0f),
+					1.0416763f,
+					KeyframeAnimations.posVec(0f, -0.06f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.0834333f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.0834333f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.posVec(0f, -0.71f, 0f),
+					1.125f,
+					KeyframeAnimations.posVec(0f, -0.71f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.1676665f, KeyframeAnimations.posVec(0f, 0.73f, 0f),
+					1.1676665f,
+					KeyframeAnimations.posVec(0f, 0.73f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.2083433f, KeyframeAnimations.posVec(0f, -0.11f, 0f),
+					1.2083433f,
+					KeyframeAnimations.posVec(0f, -0.11f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.25f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.2916767f, KeyframeAnimations.posVec(0f, 1f, 0f),
+					1.2916767f,
+					KeyframeAnimations.posVec(0f, 1f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.3433335f, KeyframeAnimations.posVec(0f, -0.56f, 0f),
+					1.3433335f,
+					KeyframeAnimations.posVec(0f, -0.56f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.3750000000000002f, KeyframeAnimations.posVec(0f, -0.15f, 0f),
+					1.3750000000000002f,
+					KeyframeAnimations.posVec(0f, -0.15f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.416767f, KeyframeAnimations.posVec(0f, 0.21f, 0f),
+					1.416767f,
+					KeyframeAnimations.posVec(0f, 0.21f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.4583433f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.4583433f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.5000000000000004f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.5000000000000004f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.5416772f, KeyframeAnimations.posVec(0f, -0.08f, 0f),
+					1.5416772f,
+					KeyframeAnimations.posVec(0f, -0.08f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.583434f, KeyframeAnimations.posVec(0f, 0.12f, 0f),
+					1.583434f,
+					KeyframeAnimations.posVec(0f, 0.12f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.6250000000000007f, KeyframeAnimations.posVec(0f, -0.03f, 0f),
+					1.6250000000000007f,
+					KeyframeAnimations.posVec(0f, -0.03f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.6766674f, KeyframeAnimations.posVec(0f, -0.07f, 0f),
+					1.6766674f,
+					KeyframeAnimations.posVec(0f, -0.07f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.7083441f, KeyframeAnimations.posVec(0f, 0.06f, 0f),
+					1.7083441f,
+					KeyframeAnimations.posVec(0f, 0.06f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.75f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.7916767f, KeyframeAnimations.posVec(0f, 0.42f, 0f),
+					1.7916767f,
+					KeyframeAnimations.posVec(0f, 0.42f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.8343344f, KeyframeAnimations.posVec(0f, -0.85f, 0f),
+					1.8343344f,
+					KeyframeAnimations.posVec(0f, -0.85f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.875000000000001f, KeyframeAnimations.posVec(0f, 0.4f, 0f),
+					1.875000000000001f,
+					KeyframeAnimations.posVec(0f, 0.4f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.9167679f, KeyframeAnimations.posVec(0f, 0.04f, 0f),
+					1.9167679f,
+					KeyframeAnimations.posVec(0f, 0.04f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					1.9583433f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.9583433f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2.0000000000000013f, KeyframeAnimations.posVec(0f, -0.1f, 0f),
+					2.0000000000000013f,
+					KeyframeAnimations.posVec(0f, -0.1f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2.041678f, KeyframeAnimations.posVec(0f, 0.01f, 0f),
+					2.041678f,
+					KeyframeAnimations.posVec(0f, 0.01f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2.0834335f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					2.0834335f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2.125f, KeyframeAnimations.posVec(0f, 0.97f, 0f),
+					2.125f,
+					KeyframeAnimations.posVec(0f, 0.97f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2.1676674f, KeyframeAnimations.posVec(0f, -0.3f, 0f),
+					2.1676674f,
+					KeyframeAnimations.posVec(0f, -0.3f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2.208344f, KeyframeAnimations.posVec(0f, -0.32f, 0f),
+					2.208344f,
+					KeyframeAnimations.posVec(0f, -0.32f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2.2500000000000004f, KeyframeAnimations.posVec(0f, 0.23f, 0f),
+					2.2500000000000004f,
+					KeyframeAnimations.posVec(0f, 0.23f, 0f),
 					Interpolations.LINEAR
 				),
 				Keyframe(
-					2.2916765f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					2.2916765f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.LINEAR
 				)
 			)
@@ -2852,51 +3200,63 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.posVec(0f, 10f, 2f),
+					0.25f,
+					KeyframeAnimations.posVec(0f, 10f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.3433333f, KeyframeAnimations.posVec(0f, -15f, 0f),
+					0.3433333f,
+					KeyframeAnimations.posVec(0f, -15f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.75f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1f, KeyframeAnimations.posVec(0f, 10f, 2f),
+					1f,
+					KeyframeAnimations.posVec(0f, 10f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.0834333f, KeyframeAnimations.posVec(0f, -15f, 0f),
+					1.0834333f,
+					KeyframeAnimations.posVec(0f, -15f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.4167667f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.4167667f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.6766667f, KeyframeAnimations.posVec(0f, 10f, 2f),
+					1.6766667f,
+					KeyframeAnimations.posVec(0f, 10f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.posVec(0f, -15f, 0f),
+					1.75f,
+					KeyframeAnimations.posVec(0f, -15f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.4583435f, KeyframeAnimations.posVec(0f, -2.25f, 0f),
+					2.4583435f,
+					KeyframeAnimations.posVec(0f, -2.25f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.625f, KeyframeAnimations.posVec(0f, -2f, 0f),
+					2.625f,
+					KeyframeAnimations.posVec(0f, -2f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.5f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					3.5f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2906,55 +3266,68 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.08343333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.08343333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(-155f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.degreeVec(-155f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(-75f, 0f, 0f),
+					0.375f,
+					KeyframeAnimations.degreeVec(-75f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.8343334f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.8343334f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(-155f, 0f, 0f),
+					1f,
+					KeyframeAnimations.degreeVec(-155f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.degreeVec(-75f, 0f, 0f),
+					1.125f,
+					KeyframeAnimations.degreeVec(-75f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
+					1.25f,
+					KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.6766667f, KeyframeAnimations.degreeVec(-155f, 0f, 0f),
+					1.6766667f,
+					KeyframeAnimations.degreeVec(-155f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.7916767f, KeyframeAnimations.degreeVec(-75f, 0f, 0f),
+					1.7916767f,
+					KeyframeAnimations.degreeVec(-75f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.9167667f, KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
+					1.9167667f,
+					KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.625f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					2.625f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2964,15 +3337,18 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.SCALE,
 				Keyframe(
-					2.4583435f, KeyframeAnimations.scaleVec(1.0, 1.0, 1.0),
+					2.4583435f,
+					KeyframeAnimations.scaleVec(1.0, 1.0, 1.0),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.625f, KeyframeAnimations.scaleVec(1.0, 0.9, 1.0),
+					2.625f,
+					KeyframeAnimations.scaleVec(1.0, 0.9, 1.0),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.5f, KeyframeAnimations.scaleVec(1.0, 1.0, 1.0),
+					3.5f,
+					KeyframeAnimations.scaleVec(1.0, 1.0, 1.0),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -2982,51 +3358,63 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0.25f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.posVec(0f, 10f, 2f),
+					0.5f,
+					KeyframeAnimations.posVec(0f, 10f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5834334f, KeyframeAnimations.posVec(0f, -15f, 0f),
+					0.5834334f,
+					KeyframeAnimations.posVec(0f, -15f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.9167666f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0.9167666f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.1676667f, KeyframeAnimations.posVec(0f, 10f, 2f),
+					1.1676667f,
+					KeyframeAnimations.posVec(0f, 10f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.posVec(0f, -15f, 0f),
+					1.25f,
+					KeyframeAnimations.posVec(0f, -15f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					1.75f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2f, KeyframeAnimations.posVec(0f, 10f, 2f),
+					2f,
+					KeyframeAnimations.posVec(0f, 10f, 2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.0834335f, KeyframeAnimations.posVec(0f, -15f, 0f),
+					2.0834335f,
+					KeyframeAnimations.posVec(0f, -15f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.4583435f, KeyframeAnimations.posVec(0f, -2.25f, 0f),
+					2.4583435f,
+					KeyframeAnimations.posVec(0f, -2.25f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.625f, KeyframeAnimations.posVec(0f, -2f, 0f),
+					2.625f,
+					KeyframeAnimations.posVec(0f, -2f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.5f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					3.5f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -3036,55 +3424,68 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.3433333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.3433333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(-155f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(-155f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(-75f, 0f, 0f),
+					0.625f,
+					KeyframeAnimations.degreeVec(-75f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.75f, KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
+					0.75f,
+					KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.1676667f, KeyframeAnimations.degreeVec(-155f, 0f, 0f),
+					1.1676667f,
+					KeyframeAnimations.degreeVec(-155f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.2916767f, KeyframeAnimations.degreeVec(-75f, 0f, 0f),
+					1.2916767f,
+					KeyframeAnimations.degreeVec(-75f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.4167667f, KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
+					1.4167667f,
+					KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.8343333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.8343333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2f, KeyframeAnimations.degreeVec(-155f, 0f, 0f),
+					2f,
+					KeyframeAnimations.degreeVec(-155f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.125f, KeyframeAnimations.degreeVec(-75f, 0f, 0f),
+					2.125f,
+					KeyframeAnimations.degreeVec(-75f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.25f, KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
+					2.25f,
+					KeyframeAnimations.degreeVec(-82.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.625f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					2.625f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -3094,15 +3495,18 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.SCALE,
 				Keyframe(
-					2.4583435f, KeyframeAnimations.scaleVec(1.0, 1.0, 1.0),
+					2.4583435f,
+					KeyframeAnimations.scaleVec(1.0, 1.0, 1.0),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.625f, KeyframeAnimations.scaleVec(1.0, 0.9, 1.0),
+					2.625f,
+					KeyframeAnimations.scaleVec(1.0, 0.9, 1.0),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.5f, KeyframeAnimations.scaleVec(1.0, 1.0, 1.0),
+					3.5f,
+					KeyframeAnimations.scaleVec(1.0, 1.0, 1.0),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -3112,19 +3516,23 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.posVec(0f, 0f, -1f),
+					0.375f,
+					KeyframeAnimations.posVec(0f, 0f, -1f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.625f, KeyframeAnimations.posVec(0f, 0f, -1f),
+					2.625f,
+					KeyframeAnimations.posVec(0f, 0f, -1f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.5f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					3.5f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -3134,63 +3542,78 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(-20f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.degreeVec(-20f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(0.24f, 9.73f, -29.45f),
+					0.375f,
+					KeyframeAnimations.degreeVec(0.24f, 9.73f, -29.45f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(-5.33f, -5.92f, -29.15f),
+					0.5f,
+					KeyframeAnimations.degreeVec(-5.33f, -5.92f, -29.15f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(0.24f, -9.73f, 29.45f),
+					0.625f,
+					KeyframeAnimations.degreeVec(0.24f, -9.73f, 29.45f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(-5.33f, 5.92f, 29.15f),
+					1f,
+					KeyframeAnimations.degreeVec(-5.33f, 5.92f, 29.15f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.0834333f, KeyframeAnimations.degreeVec(0.24f, 9.73f, -29.45f),
+					1.0834333f,
+					KeyframeAnimations.degreeVec(0.24f, 9.73f, -29.45f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.1676667f, KeyframeAnimations.degreeVec(-5.33f, -5.92f, -29.15f),
+					1.1676667f,
+					KeyframeAnimations.degreeVec(-5.33f, -5.92f, -29.15f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.2916767f, KeyframeAnimations.degreeVec(0.24f, -9.73f, 29.45f),
+					1.2916767f,
+					KeyframeAnimations.degreeVec(0.24f, -9.73f, 29.45f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.6766667f, KeyframeAnimations.degreeVec(-5.33f, 5.92f, 29.15f),
+					1.6766667f,
+					KeyframeAnimations.degreeVec(-5.33f, 5.92f, 29.15f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.7916767f, KeyframeAnimations.degreeVec(0.24f, 9.73f, -29.45f),
+					1.7916767f,
+					KeyframeAnimations.degreeVec(0.24f, 9.73f, -29.45f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2f, KeyframeAnimations.degreeVec(-5.33f, -5.92f, -29.15f),
+					2f,
+					KeyframeAnimations.degreeVec(-5.33f, -5.92f, -29.15f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.125f, KeyframeAnimations.degreeVec(0.24f, -9.73f, 29.45f),
+					2.125f,
+					KeyframeAnimations.degreeVec(0.24f, -9.73f, 29.45f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.625f, KeyframeAnimations.degreeVec(10.12f, -4.63f, 0f),
+					2.625f,
+					KeyframeAnimations.degreeVec(10.12f, -4.63f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					3.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -3200,55 +3623,68 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(0f, 0f, 30f),
+					0.375f,
+					KeyframeAnimations.degreeVec(0f, 0f, 30f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
+					0.625f,
+					KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.0834333f, KeyframeAnimations.degreeVec(0f, 0f, 30f),
+					1.0834333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 30f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.1676667f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.1676667f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.2916767f, KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
+					1.2916767f,
+					KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.6766667f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.6766667f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.7916767f, KeyframeAnimations.degreeVec(0f, 0f, 30f),
+					1.7916767f,
+					KeyframeAnimations.degreeVec(0f, 0f, 30f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					2f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.125f, KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
+					2.125f,
+					KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.5834335f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					2.5834335f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -3258,55 +3694,68 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.2916767f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.2916767f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.4167667f, KeyframeAnimations.degreeVec(0f, 0f, 30f),
+					0.4167667f,
+					KeyframeAnimations.degreeVec(0f, 0f, 30f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5416766f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.5416766f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.6766666f, KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
+					0.6766666f,
+					KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.0416767f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.0416767f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.125f, KeyframeAnimations.degreeVec(0f, 0f, 30f),
+					1.125f,
+					KeyframeAnimations.degreeVec(0f, 0f, 30f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.2083433f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.2083433f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.3433333f, KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
+					1.3433333f,
+					KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.7083433f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.7083433f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.8343333f, KeyframeAnimations.degreeVec(0f, 0f, 30f),
+					1.8343333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 30f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.0416765f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					2.0416765f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.1676665f, KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
+					2.1676665f,
+					KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.625f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					2.625f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -3316,55 +3765,68 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0.3433333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.3433333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.4583433f, KeyframeAnimations.degreeVec(0f, 0f, 30f),
+					0.4583433f,
+					KeyframeAnimations.degreeVec(0f, 0f, 30f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5834334f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0.5834334f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.7083434f, KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
+					0.7083434f,
+					KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.0834333f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.0834333f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.1676667f, KeyframeAnimations.degreeVec(0f, 0f, 30f),
+					1.1676667f,
+					KeyframeAnimations.degreeVec(0f, 0f, 30f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.25f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.25f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.375f, KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
+					1.375f,
+					KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.75f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					1.75f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.875f, KeyframeAnimations.degreeVec(0f, 0f, 30f),
+					1.875f,
+					KeyframeAnimations.degreeVec(0f, 0f, 30f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.0834335f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					2.0834335f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.2083435f, KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
+					2.2083435f,
+					KeyframeAnimations.degreeVec(0f, 0f, -27.5f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.6766665f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					2.6766665f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -3374,63 +3836,78 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.POSITION,
 				Keyframe(
-					0f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.posVec(0f, 7f, 3f),
+					0.25f,
+					KeyframeAnimations.posVec(0f, 7f, 3f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.posVec(-5f, -3f, 0f),
+					0.375f,
+					KeyframeAnimations.posVec(-5f, -3f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.posVec(-3.67f, 0.67f, 0.2f),
+					0.5f,
+					KeyframeAnimations.posVec(-3.67f, 0.67f, 0.2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.posVec(4.59f, -3.88f, -2.6f),
+					0.625f,
+					KeyframeAnimations.posVec(4.59f, -3.88f, -2.6f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1f, KeyframeAnimations.posVec(1.53f, 1.63f, -1.31f),
+					1f,
+					KeyframeAnimations.posVec(1.53f, 1.63f, -1.31f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.0834333f, KeyframeAnimations.posVec(-5f, -3f, 0f),
+					1.0834333f,
+					KeyframeAnimations.posVec(-5f, -3f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.1676667f, KeyframeAnimations.posVec(-3.67f, 0.67f, 0.2f),
+					1.1676667f,
+					KeyframeAnimations.posVec(-3.67f, 0.67f, 0.2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.2916767f, KeyframeAnimations.posVec(4.59f, -3.88f, -2.6f),
+					1.2916767f,
+					KeyframeAnimations.posVec(4.59f, -3.88f, -2.6f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.6766667f, KeyframeAnimations.posVec(1.53f, 1.63f, -1.31f),
+					1.6766667f,
+					KeyframeAnimations.posVec(1.53f, 1.63f, -1.31f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.7916767f, KeyframeAnimations.posVec(-5f, -3f, 0f),
+					1.7916767f,
+					KeyframeAnimations.posVec(-5f, -3f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2f, KeyframeAnimations.posVec(-3.67f, 0.67f, 0.2f),
+					2f,
+					KeyframeAnimations.posVec(-3.67f, 0.67f, 0.2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.125f, KeyframeAnimations.posVec(4.59f, -3.88f, -2.6f),
+					2.125f,
+					KeyframeAnimations.posVec(4.59f, -3.88f, -2.6f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.625f, KeyframeAnimations.posVec(1.19f, -4.85f, -1.24f),
+					2.625f,
+					KeyframeAnimations.posVec(1.19f, -4.85f, -1.24f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.5f, KeyframeAnimations.posVec(0f, 0f, 0f),
+					3.5f,
+					KeyframeAnimations.posVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
@@ -3440,59 +3917,73 @@ object BerserkerAnimations
 			AnimationChannel(
 				AnimationChannel.Targets.ROTATION,
 				Keyframe(
-					0f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					0f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.25f, KeyframeAnimations.degreeVec(17.5f, 0f, 0f),
+					0.25f,
+					KeyframeAnimations.degreeVec(17.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.375f, KeyframeAnimations.degreeVec(17.5f, 0f, 0f),
+					0.375f,
+					KeyframeAnimations.degreeVec(17.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.5f, KeyframeAnimations.degreeVec(28.6f, -39.85f, -16.37f),
+					0.5f,
+					KeyframeAnimations.degreeVec(28.6f, -39.85f, -16.37f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					0.625f, KeyframeAnimations.degreeVec(25.84f, -11.25f, 1.32f),
+					0.625f,
+					KeyframeAnimations.degreeVec(25.84f, -11.25f, 1.32f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1f, KeyframeAnimations.degreeVec(24.42f, 14.22f, 11.2f),
+					1f,
+					KeyframeAnimations.degreeVec(24.42f, 14.22f, 11.2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.0834333f, KeyframeAnimations.degreeVec(17.5f, 0f, 0f),
+					1.0834333f,
+					KeyframeAnimations.degreeVec(17.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.1676667f, KeyframeAnimations.degreeVec(28.6f, -39.85f, -16.37f),
+					1.1676667f,
+					KeyframeAnimations.degreeVec(28.6f, -39.85f, -16.37f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.2916767f, KeyframeAnimations.degreeVec(25.84f, -11.25f, 1.32f),
+					1.2916767f,
+					KeyframeAnimations.degreeVec(25.84f, -11.25f, 1.32f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.6766667f, KeyframeAnimations.degreeVec(24.42f, 14.22f, 11.2f),
+					1.6766667f,
+					KeyframeAnimations.degreeVec(24.42f, 14.22f, 11.2f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					1.7916767f, KeyframeAnimations.degreeVec(17.5f, 0f, 0f),
+					1.7916767f,
+					KeyframeAnimations.degreeVec(17.5f, 0f, 0f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2f, KeyframeAnimations.degreeVec(28.6f, -39.85f, -16.37f),
+					2f,
+					KeyframeAnimations.degreeVec(28.6f, -39.85f, -16.37f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					2.125f, KeyframeAnimations.degreeVec(25.84f, -11.25f, 1.32f),
+					2.125f,
+					KeyframeAnimations.degreeVec(25.84f, -11.25f, 1.32f),
 					Interpolations.CATMULLROM
 				),
 				Keyframe(
-					3.5f, KeyframeAnimations.degreeVec(0f, 0f, 0f),
+					3.5f,
+					KeyframeAnimations.degreeVec(0f, 0f, 0f),
 					Interpolations.CATMULLROM
 				)
 			)
