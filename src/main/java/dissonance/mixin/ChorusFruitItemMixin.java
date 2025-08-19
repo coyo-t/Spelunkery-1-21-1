@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock;
 import net.orcinus.galosphere.init.GBlocks;
-import net.orcinus.galosphere.init.GCriteriaTriggers;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -56,7 +55,6 @@ public class ChorusFruitItemMixin
 				{
 					cir.setReturnValue(itemStack);
 					player.getCooldowns().addCooldown((ChorusFruitItem)(Object)this, 20);
-					GCriteriaTriggers.WARPED_TELEPORT.get().trigger(player);
 					world.gameEvent(player, GameEvent.BLOCK_CHANGE, blockPos);
 					world.playSound(null, blockPos, SoundEvents.RESPAWN_ANCHOR_SET_SPAWN, SoundSource.BLOCKS, 1.0F, 1.0F);
 					player.teleportTo(blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D);

@@ -27,8 +27,12 @@ import java.util.UUID;
 
 public class PinkSaltPillar extends Entity implements TraceableEntity
 {
-	private static final EntityDataAccessor<ItemStack> ITEM = SynchedEntityData.defineId(PinkSaltPillar.class, EntityDataSerializers.ITEM_STACK);
-	private static final EntityDataAccessor<Boolean> ACTIVE = SynchedEntityData.defineId(PinkSaltPillar.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<ItemStack>
+	ITEM = SynchedEntityData.defineId(PinkSaltPillar.class, EntityDataSerializers.ITEM_STACK);
+	
+	private static final EntityDataAccessor<Boolean>
+	ACTIVE = SynchedEntityData.defineId(PinkSaltPillar.class, EntityDataSerializers.BOOLEAN);
+	
 	@Nullable
 	private LivingEntity owner;
 	@Nullable
