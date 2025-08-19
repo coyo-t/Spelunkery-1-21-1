@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition
 import net.minecraft.client.model.geom.builders.MeshDefinition
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
-import net.orcinus.galosphere.client.animations.BerserkerAnimations
+import net.orcinus.galosphere.client.animations.GAnims
 import net.orcinus.galosphere.entities.Berserker
 
 @OnlyIn(Dist.CLIENT)
@@ -32,12 +32,12 @@ class BerserkerModel<T : Berserker>(root: ModelPart) : HierarchicalModel<T>()
 		val head = this.root.getChild("head")
 		head.xRot = headPitch * (Math.PI.toFloat() / 180)
 		head.yRot = netHeadYaw * (Math.PI.toFloat() / 180)
-		this.animateWalk(BerserkerAnimations.BERSERKER_WALK, limbSwing, limbSwingAmount, 3.0f, 4.5f)
-		this.animate(entity.attackAnimationState, BerserkerAnimations.BERSERKER_ATTACK, ageInTicks, 1.0f)
-		this.animate(entity.impalingAnimationState, BerserkerAnimations.BERSERKER_IMPALING, ageInTicks, 1.0f)
-		this.animate(entity.roarAnimationState, BerserkerAnimations.BERSERKER_SHAKE, ageInTicks, 1.0f)
-		this.animate(entity.punchAnimationState, BerserkerAnimations.BERSERKER_PUNCH, ageInTicks, 1.0f)
-		this.animate(entity.summoningAnimationState, BerserkerAnimations.BERSERKER_SPAWN_MINIONS, ageInTicks, 1.0f)
+		this.animateWalk(GAnims.Berserker.BERSERKER_WALK, limbSwing, limbSwingAmount, 3.0f, 4.5f)
+		this.animate(entity.attackAnimationState, GAnims.Berserker.BERSERKER_ATTACK, ageInTicks, 1.0f)
+		this.animate(entity.impalingAnimationState, GAnims.Berserker.BERSERKER_IMPALING, ageInTicks, 1.0f)
+		this.animate(entity.roarAnimationState, GAnims.Berserker.BERSERKER_SHAKE, ageInTicks, 1.0f)
+		this.animate(entity.punchAnimationState, GAnims.Berserker.BERSERKER_PUNCH, ageInTicks, 1.0f)
+		this.animate(entity.summoningAnimationState, GAnims.Berserker.BERSERKER_SPAWN_MINIONS, ageInTicks, 1.0f)
 	}
 
 	override fun renderToBuffer(poseStack: PoseStack, vertexConsumer: VertexConsumer, i: Int, j: Int, k: Int)

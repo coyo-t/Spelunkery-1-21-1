@@ -1,11 +1,3 @@
-local function KF (x, y, z, it)
-	if it == nil then
-		it = 'linear'
-	end
-	return { interpolation=it, value={x,y,z} }
-end
-local CR = 'catmull-rom'
-
 return {
 	shake = {
 		duration = 2.5,

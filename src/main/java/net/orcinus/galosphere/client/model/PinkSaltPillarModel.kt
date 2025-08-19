@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition
 import net.minecraft.client.model.geom.builders.MeshDefinition
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
-import net.orcinus.galosphere.client.animations.PinkSaltPillarAnimations
+import net.orcinus.galosphere.client.animations.GAnims
 import net.orcinus.galosphere.entities.PinkSaltPillar
 
 @OnlyIn(Dist.CLIENT)
@@ -29,8 +29,8 @@ class PinkSaltPillarModel<T : PinkSaltPillar>(root: ModelPart) : HierarchicalMod
 	)
 	{
 		this.root().allParts.forEach { it.resetPose() }
-		this.animate(entity.emergeAnimationState, PinkSaltPillarAnimations.PINK_SALT_PILLAR_EMERGE, ageInTicks)
-		this.animate(entity.retractAnimationState, PinkSaltPillarAnimations.PINK_SALT_PILLAR_RETRACT, ageInTicks)
+		this.animate(entity.emergeAnimationState, GAnims.PinkSaltPillar.PINK_SALT_PILLAR_EMERGE, ageInTicks)
+		this.animate(entity.retractAnimationState, GAnims.PinkSaltPillar.PINK_SALT_PILLAR_RETRACT, ageInTicks)
 	}
 
 	override fun renderToBuffer(poseStack: PoseStack, vertexConsumer: VertexConsumer, i: Int, j: Int, k: Int)

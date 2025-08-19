@@ -12,7 +12,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition
 import net.minecraft.util.Mth
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
-import net.orcinus.galosphere.client.animations.PreservedAnimations
+import net.orcinus.galosphere.client.animations.GAnims
 import net.orcinus.galosphere.entities.PreservedCorpse
 import kotlin.math.min
 
@@ -31,7 +31,7 @@ class PreservedModel<T : PreservedCorpse>(root: ModelPart) : HierarchicalModel<T
 	)
 	{
 		this.root().allParts.forEach(ModelPart::resetPose)
-		this.animate(entity.digAnimationState, PreservedAnimations.PRESERVED_EMERGING_FLOOR, ageInTicks)
+		this.animate(entity.digAnimationState, GAnims.PreservedCorpse.PRESERVED_EMERGING_FLOOR, ageInTicks)
 		val h = min(0.5f, 3.0f * limbSwingAmount)
 		val i = limbSwing * 0.8662f
 		val j = Mth.cos(i)
