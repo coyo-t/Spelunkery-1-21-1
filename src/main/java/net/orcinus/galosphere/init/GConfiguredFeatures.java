@@ -31,62 +31,65 @@ import net.orcinus.galosphere.world.gen.features.config.PinkSaltStrawPatchConfig
 
 import java.util.List;
 
-public class GConfiguredFeatures {
-
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_ALLURITE_CRYSTAL_FLOOR = registerConfiguredFeature("large_allurite_crystal_floor");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_LUMIERE_CRYSTAL_FLOOR = registerConfiguredFeature("large_lumiere_crystal_floor");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_ALLURITE_CRYSTAL_CEILING = registerConfiguredFeature("large_allurite_crystal_ceiling");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_LUMIERE_CRYSTAL_CEILING = registerConfiguredFeature("large_lumiere_crystal_ceiling");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ALLURITE_CRYSTAL_FLOOR = registerConfiguredFeature("allurite_crystal_floor");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LUMIERE_CRYSTAL_FLOOR = registerConfiguredFeature("lumiere_crystal_floor");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ALLURITE_CRYSTAL_CEILING = registerConfiguredFeature("allurite_crystal_ceiling");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LUMIERE_CRYSTAL_CEILING = registerConfiguredFeature("lumiere_crystal_ceiling");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_SILVER_SMALL = registerConfiguredFeature("ore_silver_small");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_SILVER_LARGE = registerConfiguredFeature("ore_silver_large");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> BOWL_LICHEN = registerConfiguredFeature("lichen_mushroom");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LICHEN_VEGETATION = registerConfiguredFeature("lichen_vegetation");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LICHEN_PATCH = registerConfiguredFeature("lichen_patch");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> GRAVEL_PATCH = registerConfiguredFeature("gravel_patch");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LICHEN_CORDYCEPS = registerConfiguredFeature("lichen_cordyceps");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_SALT_GROUND_NOISE_PATCH = registerConfiguredFeature("pink_salt_ground_noise_patch");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_SALT_CEILING_NOISE_PATCH = registerConfiguredFeature("pink_salt_ceiling_noise_patch");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_SALT_STRAW_CEILING_PATCH = registerConfiguredFeature("pink_salt_straw_ceiling_patch");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_SALT_STRAW_FLOOR_PATCH = registerConfiguredFeature("pink_salt_straw_floor_patch");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> OASIS = registerConfiguredFeature("oasis");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> BERSERKER = registerConfiguredFeature("mobs/berserker");
-
-    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> bootstapContext) {
-        HolderGetter<ConfiguredFeature<?, ?>> holderGetter = bootstapContext.lookup(Registries.CONFIGURED_FEATURE);
-        FeatureUtils.register(bootstapContext, LARGE_ALLURITE_CRYSTAL_FLOOR, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.ALLURITE_BLOCK.get().defaultBlockState(), GBlocks.ALLURITE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_ALLURITE_CLUSTER.get().defaultBlockState(), UniformInt.of(4, 7), CaveSurface.FLOOR, 0.25F));
-        FeatureUtils.register(bootstapContext, LARGE_LUMIERE_CRYSTAL_FLOOR, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.LUMIERE_BLOCK.get().defaultBlockState(), GBlocks.LUMIERE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_LUMIERE_CLUSTER.get().defaultBlockState(), UniformInt.of(4, 7), CaveSurface.FLOOR, 0.25F));
-        FeatureUtils.register(bootstapContext, LARGE_ALLURITE_CRYSTAL_CEILING, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.ALLURITE_BLOCK.get().defaultBlockState(), GBlocks.ALLURITE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_ALLURITE_CLUSTER.get().defaultBlockState(), UniformInt.of(4, 7), CaveSurface.CEILING, 0.25F));
-        FeatureUtils.register(bootstapContext, LARGE_LUMIERE_CRYSTAL_CEILING, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.LUMIERE_BLOCK.get().defaultBlockState(), GBlocks.LUMIERE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_LUMIERE_CLUSTER.get().defaultBlockState(), UniformInt.of(4, 7), CaveSurface.CEILING, 0.25F));
-        FeatureUtils.register(bootstapContext, ALLURITE_CRYSTAL_FLOOR, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.ALLURITE_BLOCK.get().defaultBlockState(), GBlocks.ALLURITE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_ALLURITE_CLUSTER.get().defaultBlockState(), UniformInt.of(1, 3), CaveSurface.FLOOR, 0.25F));
-        FeatureUtils.register(bootstapContext, LUMIERE_CRYSTAL_FLOOR, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.LUMIERE_BLOCK.get().defaultBlockState(), GBlocks.LUMIERE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_LUMIERE_CLUSTER.get().defaultBlockState(), UniformInt.of(1, 3), CaveSurface.FLOOR, 0.25F));
-        FeatureUtils.register(bootstapContext, ALLURITE_CRYSTAL_CEILING, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.ALLURITE_BLOCK.get().defaultBlockState(), GBlocks.ALLURITE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_ALLURITE_CLUSTER.get().defaultBlockState(), UniformInt.of(1, 3), CaveSurface.CEILING, 0.25F));
-        FeatureUtils.register(bootstapContext, LUMIERE_CRYSTAL_CEILING, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.LUMIERE_BLOCK.get().defaultBlockState(), GBlocks.LUMIERE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_LUMIERE_CLUSTER.get().defaultBlockState(), UniformInt.of(1, 3), CaveSurface.CEILING, 0.25F));
-        FeatureUtils.register(bootstapContext, ORE_SILVER_SMALL, Feature.ORE, new OreConfiguration(List.of(OreConfiguration.target(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), GBlocks.SILVER_ORE.get().defaultBlockState()), OreConfiguration.target(new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), GBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState())), 9));
-        FeatureUtils.register(bootstapContext, ORE_SILVER_LARGE, Feature.ORE, new OreConfiguration(List.of(OreConfiguration.target(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), GBlocks.SILVER_ORE.get().defaultBlockState()), OreConfiguration.target(new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), GBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState())), 12));
-        FeatureUtils.register(bootstapContext, BOWL_LICHEN, GFeatures.BOWL_LICHEN.get(), FeatureConfiguration.NONE);
-        FeatureUtils.register(bootstapContext, LICHEN_VEGETATION, GFeatures.SIMPLE_WATERLOGGED_BLOCK.get(), new SimpleBlockConfiguration(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(GBlocks.BOWL_LICHEN.get().defaultBlockState(), 4).add(GBlocks.LICHEN_ROOTS.get().defaultBlockState(), 14).add(Blocks.GLOW_LICHEN.defaultBlockState().setValue(BlockStateProperties.DOWN, true), 2))));
-        FeatureUtils.register(bootstapContext, LICHEN_PATCH, GFeatures.LICHEN_PATCH.get(), new VegetationPatchConfiguration(BlockTags.MOSS_REPLACEABLE, BlockStateProvider.simple(GBlocks.LICHEN_MOSS.get()), PlacementUtils.inlinePlaced(holderGetter.getOrThrow(LICHEN_VEGETATION)), CaveSurface.FLOOR, ConstantInt.of(1), 0.0F, 5, 0.8F, UniformInt.of(4, 7), 0.3F));
-        FeatureUtils.register(bootstapContext, GRAVEL_PATCH, Feature.VEGETATION_PATCH, new VegetationPatchConfiguration(GBlockTags.GRAVEL_MAY_REPLACE, BlockStateProvider.simple(Blocks.GRAVEL), PlacementUtils.inlinePlaced(holderGetter.getOrThrow(LICHEN_VEGETATION)), CaveSurface.FLOOR, ConstantInt.of(3), 0.8f, 2, 0.05f, UniformInt.of(4, 7), 0.7f));
-        FeatureUtils.register(bootstapContext, LICHEN_CORDYCEPS, GFeatures.LICHEN_CORDYCEPS_COLUMN.get(), FeatureConfiguration.NONE);
-        FeatureUtils.register(bootstapContext, PINK_SALT_GROUND_NOISE_PATCH, GFeatures.NOISE_PATCH.get(), new NoisePatchConfig(CaveSurface.FLOOR));
-        FeatureUtils.register(bootstapContext, PINK_SALT_CEILING_NOISE_PATCH, GFeatures.NOISE_PATCH.get(), new NoisePatchConfig(CaveSurface.CEILING));
-        FeatureUtils.register(bootstapContext, PINK_SALT_STRAW_CEILING_PATCH, GFeatures.PINK_SALT_STRAW_PATCH.get(), new PinkSaltStrawPatchConfig(UniformInt.of(2, 8), UniformInt.of(1, 4), UniformInt.of(1, 3), Direction.UP));
-        FeatureUtils.register(bootstapContext, PINK_SALT_STRAW_FLOOR_PATCH, GFeatures.PINK_SALT_STRAW_PATCH.get(), new PinkSaltStrawPatchConfig(UniformInt.of(2, 8), UniformInt.of(1, 4), UniformInt.of(1, 3), Direction.DOWN));
-        FeatureUtils.register(bootstapContext, OASIS, GFeatures.OASIS.get(), FeatureConfiguration.NONE);
-        FeatureUtils.register(bootstapContext, BERSERKER, GFeatures.BERSERKER.get(), FeatureConfiguration.NONE);
-    }
-
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> bootstapContext, ResourceKey<ConfiguredFeature<?, ?>> resourceKey, F feature, FC featureConfiguration) {
-        bootstapContext.register(resourceKey, new ConfiguredFeature<>(feature, featureConfiguration));
-    }
-
-    public static ResourceKey<ConfiguredFeature<?, ?>> registerConfiguredFeature(String id) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, Galosphere.id(id));
-    }
-
-
+public class GConfiguredFeatures
+{
+	
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_ALLURITE_CRYSTAL_FLOOR = registerConfiguredFeature("large_allurite_crystal_floor");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_LUMIERE_CRYSTAL_FLOOR = registerConfiguredFeature("large_lumiere_crystal_floor");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_ALLURITE_CRYSTAL_CEILING = registerConfiguredFeature("large_allurite_crystal_ceiling");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_LUMIERE_CRYSTAL_CEILING = registerConfiguredFeature("large_lumiere_crystal_ceiling");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ALLURITE_CRYSTAL_FLOOR = registerConfiguredFeature("allurite_crystal_floor");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LUMIERE_CRYSTAL_FLOOR = registerConfiguredFeature("lumiere_crystal_floor");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ALLURITE_CRYSTAL_CEILING = registerConfiguredFeature("allurite_crystal_ceiling");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LUMIERE_CRYSTAL_CEILING = registerConfiguredFeature("lumiere_crystal_ceiling");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_SILVER_SMALL = registerConfiguredFeature("ore_silver_small");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> ORE_SILVER_LARGE = registerConfiguredFeature("ore_silver_large");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> BOWL_LICHEN = registerConfiguredFeature("lichen_mushroom");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LICHEN_VEGETATION = registerConfiguredFeature("lichen_vegetation");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LICHEN_PATCH = registerConfiguredFeature("lichen_patch");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> GRAVEL_PATCH = registerConfiguredFeature("gravel_patch");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> LICHEN_CORDYCEPS = registerConfiguredFeature("lichen_cordyceps");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_SALT_GROUND_NOISE_PATCH = registerConfiguredFeature("pink_salt_ground_noise_patch");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_SALT_CEILING_NOISE_PATCH = registerConfiguredFeature("pink_salt_ceiling_noise_patch");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_SALT_STRAW_CEILING_PATCH = registerConfiguredFeature("pink_salt_straw_ceiling_patch");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_SALT_STRAW_FLOOR_PATCH = registerConfiguredFeature("pink_salt_straw_floor_patch");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> OASIS = registerConfiguredFeature("oasis");
+	public static final ResourceKey<ConfiguredFeature<?, ?>> BERSERKER = registerConfiguredFeature("mobs/berserker");
+	
+	public static void bootstrap (BootstrapContext<ConfiguredFeature<?, ?>> bootstapContext)
+	{
+		HolderGetter<ConfiguredFeature<?, ?>> holderGetter = bootstapContext.lookup(Registries.CONFIGURED_FEATURE);
+		FeatureUtils.register(bootstapContext, LARGE_ALLURITE_CRYSTAL_FLOOR, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.ALLURITE_BLOCK.get().defaultBlockState(), GBlocks.ALLURITE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_ALLURITE_CLUSTER.get().defaultBlockState(), UniformInt.of(4, 7), CaveSurface.FLOOR, 0.25F));
+		FeatureUtils.register(bootstapContext, LARGE_LUMIERE_CRYSTAL_FLOOR, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.LUMIERE_BLOCK.get().defaultBlockState(), GBlocks.LUMIERE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_LUMIERE_CLUSTER.get().defaultBlockState(), UniformInt.of(4, 7), CaveSurface.FLOOR, 0.25F));
+		FeatureUtils.register(bootstapContext, LARGE_ALLURITE_CRYSTAL_CEILING, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.ALLURITE_BLOCK.get().defaultBlockState(), GBlocks.ALLURITE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_ALLURITE_CLUSTER.get().defaultBlockState(), UniformInt.of(4, 7), CaveSurface.CEILING, 0.25F));
+		FeatureUtils.register(bootstapContext, LARGE_LUMIERE_CRYSTAL_CEILING, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.LUMIERE_BLOCK.get().defaultBlockState(), GBlocks.LUMIERE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_LUMIERE_CLUSTER.get().defaultBlockState(), UniformInt.of(4, 7), CaveSurface.CEILING, 0.25F));
+		FeatureUtils.register(bootstapContext, ALLURITE_CRYSTAL_FLOOR, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.ALLURITE_BLOCK.get().defaultBlockState(), GBlocks.ALLURITE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_ALLURITE_CLUSTER.get().defaultBlockState(), UniformInt.of(1, 3), CaveSurface.FLOOR, 0.25F));
+		FeatureUtils.register(bootstapContext, LUMIERE_CRYSTAL_FLOOR, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.LUMIERE_BLOCK.get().defaultBlockState(), GBlocks.LUMIERE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_LUMIERE_CLUSTER.get().defaultBlockState(), UniformInt.of(1, 3), CaveSurface.FLOOR, 0.25F));
+		FeatureUtils.register(bootstapContext, ALLURITE_CRYSTAL_CEILING, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.ALLURITE_BLOCK.get().defaultBlockState(), GBlocks.ALLURITE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_ALLURITE_CLUSTER.get().defaultBlockState(), UniformInt.of(1, 3), CaveSurface.CEILING, 0.25F));
+		FeatureUtils.register(bootstapContext, LUMIERE_CRYSTAL_CEILING, GFeatures.CRYSTAL_SPIKE.get(), new CrystalSpikeConfig(GBlocks.LUMIERE_BLOCK.get().defaultBlockState(), GBlocks.LUMIERE_CLUSTER.get().defaultBlockState(), GBlocks.GLINTED_LUMIERE_CLUSTER.get().defaultBlockState(), UniformInt.of(1, 3), CaveSurface.CEILING, 0.25F));
+		FeatureUtils.register(bootstapContext, ORE_SILVER_SMALL, Feature.ORE, new OreConfiguration(List.of(OreConfiguration.target(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), GBlocks.SILVER_ORE.get().defaultBlockState()), OreConfiguration.target(new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), GBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState())), 9));
+		FeatureUtils.register(bootstapContext, ORE_SILVER_LARGE, Feature.ORE, new OreConfiguration(List.of(OreConfiguration.target(new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES), GBlocks.SILVER_ORE.get().defaultBlockState()), OreConfiguration.target(new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES), GBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState())), 12));
+		FeatureUtils.register(bootstapContext, BOWL_LICHEN, GFeatures.BOWL_LICHEN.get(), FeatureConfiguration.NONE);
+		FeatureUtils.register(bootstapContext, LICHEN_VEGETATION, GFeatures.SIMPLE_WATERLOGGED_BLOCK.get(), new SimpleBlockConfiguration(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(GBlocks.BOWL_LICHEN.get().defaultBlockState(), 4).add(GBlocks.LICHEN_ROOTS.get().defaultBlockState(), 14).add(Blocks.GLOW_LICHEN.defaultBlockState().setValue(BlockStateProperties.DOWN, true), 2))));
+		FeatureUtils.register(bootstapContext, LICHEN_PATCH, GFeatures.LICHEN_PATCH.get(), new VegetationPatchConfiguration(BlockTags.MOSS_REPLACEABLE, BlockStateProvider.simple(GBlocks.LICHEN_MOSS.get()), PlacementUtils.inlinePlaced(holderGetter.getOrThrow(LICHEN_VEGETATION)), CaveSurface.FLOOR, ConstantInt.of(1), 0.0F, 5, 0.8F, UniformInt.of(4, 7), 0.3F));
+		FeatureUtils.register(bootstapContext, GRAVEL_PATCH, Feature.VEGETATION_PATCH, new VegetationPatchConfiguration(GBlockTags.GRAVEL_MAY_REPLACE, BlockStateProvider.simple(Blocks.GRAVEL), PlacementUtils.inlinePlaced(holderGetter.getOrThrow(LICHEN_VEGETATION)), CaveSurface.FLOOR, ConstantInt.of(3), 0.8f, 2, 0.05f, UniformInt.of(4, 7), 0.7f));
+		FeatureUtils.register(bootstapContext, LICHEN_CORDYCEPS, GFeatures.LICHEN_CORDYCEPS_COLUMN.get(), FeatureConfiguration.NONE);
+		FeatureUtils.register(bootstapContext, PINK_SALT_GROUND_NOISE_PATCH, GFeatures.NOISE_PATCH.get(), new NoisePatchConfig(CaveSurface.FLOOR));
+		FeatureUtils.register(bootstapContext, PINK_SALT_CEILING_NOISE_PATCH, GFeatures.NOISE_PATCH.get(), new NoisePatchConfig(CaveSurface.CEILING));
+		FeatureUtils.register(bootstapContext, PINK_SALT_STRAW_CEILING_PATCH, GFeatures.PINK_SALT_STRAW_PATCH.get(), new PinkSaltStrawPatchConfig(UniformInt.of(2, 8), UniformInt.of(1, 4), UniformInt.of(1, 3), Direction.UP));
+		FeatureUtils.register(bootstapContext, PINK_SALT_STRAW_FLOOR_PATCH, GFeatures.PINK_SALT_STRAW_PATCH.get(), new PinkSaltStrawPatchConfig(UniformInt.of(2, 8), UniformInt.of(1, 4), UniformInt.of(1, 3), Direction.DOWN));
+		FeatureUtils.register(bootstapContext, OASIS, GFeatures.OASIS.get(), FeatureConfiguration.NONE);
+	}
+	
+	public static <FC extends FeatureConfiguration, F extends Feature<FC>> void register (BootstrapContext<ConfiguredFeature<?, ?>> bootstapContext, ResourceKey<ConfiguredFeature<?, ?>> resourceKey, F feature, FC featureConfiguration)
+	{
+		bootstapContext.register(resourceKey, new ConfiguredFeature<>(feature, featureConfiguration));
+	}
+	
+	public static ResourceKey<ConfiguredFeature<?, ?>> registerConfiguredFeature (String id)
+	{
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, Galosphere.id(id));
+	}
+	
+	
 }
