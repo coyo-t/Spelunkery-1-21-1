@@ -14,20 +14,20 @@ import java.util.function.Supplier
 
 object GCreativeModeTabs
 {
-	private operator fun <T : ItemLike> CreativeModeTab.Output.plusAssign(s: Supplier<T>) = accept(s.get())
+	private operator fun <T : ItemLike> CreativeModeTab.Output.plusAssign(s: Supplier<T>)
+		= accept(s.get())
 
 	@JvmField
 	val CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Galosphere.MODID)
 
 	val GALOSPHERE = CREATIVE_MODE_TABS.register("galosphere") { res ->
-		CreativeModeTab.builder().apply {
+		CreativeModeTab.builder().run {
 			icon { GItems.ICON_ITEM.get().defaultInstance }
 			title(Component.translatable("itemGroup.galosphere.galosphere"))
 			displayItems { idp, output ->
 				output += GItems.SILVER_UPGRADE_SMITHING_TEMPLATE
 				output += GItems.PRESERVED_TEMPLATE
 				output += GItems.SALTBOUND_TABLET
-				output += GItems.BERSERKER_SPAWN_EGG
 				output += GItems.PRESERVED_SPAWN_EGG
 				output += GItems.ALLURITE_SHARD
 				output += GItems.LUMIERE_SHARD
@@ -152,6 +152,7 @@ object GCreativeModeTabs
 				output += GBlocks.CURED_MEMBRANE_BLOCK
 				output += GBlocks.STRANDED_MEMBRANE_BLOCK
 			}
-		}.build()
+			build()
+		}
 	}
 }

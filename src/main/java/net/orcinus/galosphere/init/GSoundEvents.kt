@@ -22,57 +22,11 @@ object GSoundEvents
 	val MUSIC_PINK_SALT_CAVES = register("music.biome.pink_salt_caves")
 
 	@JvmField
-	val LUMIERE_COMPOST = register("block.lumiere.compost")
-
-	@JvmField
-	val GLOW_FLARE_SPREAD = register("entity.glow_flare.spread")
-
-	@JvmField
 	val MONSTROMETER_CHARGE = register("block.monstrometer.charge")
 	@JvmField
 	val MONSTROMETER_ACTIVATE = register("block.monstrometer.activate")
 	@JvmField
 	val MONSTROMETER_DEACTIVATE = register("block.monstrometer.deactivate")
-
-	@JvmField
-	val SPECTRE_AMBIENT = register("entity.spectre.ambient")
-	@JvmField
-	val SPECTRE_BOTTLE_EMPTY = register("entity.spectre.bottle.empty")
-	@JvmField
-	val SPECTRE_BOTTLE_FILL = register("entity.spectre.bottle.fill")
-	@JvmField
-	val SPECTRE_DEATH = register("entity.spectre.death")
-	@JvmField
-	val SPECTRE_HURT = register("entity.spectre.hurt")
-	@JvmField
-	val SPECTRE_LOCK_TO_SPYGLASS = register("entity.spectre.lock_to_spyglass")
-	@JvmField
-	val SPECTRE_RECEIVE_ITEM = register("entity.spectre.receive_item")
-	@JvmField
-	val SPECTRE_MANIPULATE_BEGIN = register("entity.spectre.manipulate.begin")
-	@JvmField
-	val SPECTRE_MANIPULATE_END = register("entity.spectre.manipulate.end")
-
-	@JvmField
-	val BERSERKER_DEATH = register("entity.berserker.death")
-	@JvmField
-	val BERSERKER_HURT = register("entity.berserker.hurt")
-	@JvmField
-	val BERSERKER_IDLE = register("entity.berserker.idle")
-	@JvmField
-	val BERSERKER_DUO_SMASH = register("entity.berserker.duo_smash")
-	@JvmField
-	val BERSERKER_SMASH = register("entity.berserker.smash")
-	@JvmField
-	val BERSERKER_SUMMONING = register("entity.berserker.summoning")
-	@JvmField
-	val BERSERKER_PUNCH = register("entity.berserker.punch")
-	@JvmField
-	val BERSERKER_ROAR = register("entity.berserker.roar")
-	@JvmField
-	val BERSERKER_SHAKE = register("entity.berserker.shake")
-	@JvmField
-	val BERSERKER_STEP = register("entity.berserker.step")
 
 	@JvmField
 	val PRESERVED_DEATH = register("entity.preserved.death")
@@ -90,11 +44,6 @@ object GSoundEvents
 
 	@JvmField
 	val PINK_SALT_SHARD_LAND = register("entity.pink_salt_shard.land")
-
-	@JvmField
-	val SPECTERPILLAR_DEATH = register("entity.specterpillar.death")
-	@JvmField
-	val SPECTERPILLAR_HURT = register("entity.specterpillar.hurt")
 
 	@JvmField
 	val SALTBOUND_TABLET_PREPARE_ATTACK = register("item.saltbound_tablet.prepare_attack")

@@ -1,6 +1,7 @@
 package net.orcinus.galosphere
 
 import dissonance.mixin.LootTableAccessor
+import dissonance.util.LuaCoyote
 import dissonance.util.contains
 import dissonance.util.decremented
 import dissonance.util.get
@@ -20,6 +21,8 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance
 import net.minecraft.core.BlockPos
 import net.minecraft.core.BlockPos.MutableBlockPos
 import net.minecraft.core.component.DataComponents
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.core.registries.Registries
 import net.minecraft.network.chat.Component
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
@@ -57,7 +60,7 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent
 import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent
 import net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent.OverlayType
 import net.neoforged.neoforge.client.event.ViewportEvent.ComputeFogColor
-import net.neoforged.neoforge.common.ModConfigSpec
+import net.neoforged.neoforge.common.CreativeModeTabRegistry
 import net.neoforged.neoforge.common.NeoForge
 import net.neoforged.neoforge.event.AddReloadListenerEvent
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent
@@ -74,6 +77,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent
 import net.neoforged.neoforge.network.PacketDistributor
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.network.handling.IPayloadContext
+import net.neoforged.neoforge.registries.DeferredRegister
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock
 import net.orcinus.galosphere.client.model.PreservedModel
 import net.orcinus.galosphere.client.particles.CrystalRainParticle
@@ -94,6 +98,9 @@ import net.orcinus.galosphere.network.PlayCooldownSoundPacket
 import net.orcinus.galosphere.util.PreservedShulkerBox
 import org.apache.logging.log4j.LogManager
 import org.joml.Vector3d
+import party.iroiro.luajava.value.LuaTableValue
+import java.io.File
+import java.io.InputStreamReader
 import kotlin.math.max
 
 //@Mod(Galosphere.MODID)
@@ -107,40 +114,45 @@ class Galosphere(ev: IEventBus)
 			}
 		}
 
-//		modContainer.registerConfig(ModConfig.Type.COMMON, Config.COMMON)
-
-		GBlocks.BLOCKS.register(ev)
-		GBlockEntityTypes.BLOCK_ENTITIES.register(ev)
-		GCreativeModeTabs.CREATIVE_MODE_TABS.register(ev)
-		GDataComponents.DATA_COMPONENT_TYPES.register(ev)
-		GEnchantmentEffectComponents.DATA_COMPONENTS.register(ev)
-		GEntityTypes.ENTITY_TYPES.register(ev)
-		GFeatures.FEATURES.register(ev)
-		GItems.ITEMS.register(ev)
-		GMemoryModuleTypes.MEMORY_MODULE_TYPES.register(ev)
-		GMobEffects.MOB_EFFECTS.register(ev)
-		GPotions.POTIONS.register(ev)
-		GParticleTypes.PARTICLES.register(ev)
-		GRecipeSerializers.RECIPE_SERIALIZERS.register(ev)
-		GStructureProcessorTypes.STRUCTURE_PROCESSOR_TYPES.register(ev)
-		GSensorTypes.SENSOR_TYPES.register(ev)
-		GSoundEvents.SOUND_EVENTS.register(ev)
-
-		//#region client events
-
-		clientEventz(ev)
-
-		ev.addListener<BuildCreativeModeTabContentsEvent> { event ->
-
+		val creativeTabRegistar = CreativeTabLoadingTHingy.run {
+			L.uhh("creative tab.lua")
 		}
 
-		//#endregion
 
+		val registars = listOf(
+			GBlocks.BLOCKS,
+			GBlockEntityTypes.BLOCK_ENTITIES,
+//			GCreativeModeTabs.CREATIVE_MODE_TABS,
+			creativeTabRegistar,
+			GDataComponents.DATA_COMPONENT_TYPES,
+			GEnchantmentEffectComponents.DATA_COMPONENTS,
+			GEntityTypes.ENTITY_TYPES,
+			GFeatures.FEATURES,
+			GItems.ITEMS,
+			GMemoryModuleTypes.MEMORY_MODULE_TYPES,
+			GMobEffects.MOB_EFFECTS,
+			GPotions.POTIONS,
+			GParticleTypes.PARTICLES,
+			GRecipeSerializers.RECIPE_SERIALIZERS,
+			GStructureProcessorTypes.STRUCTURE_PROCESSOR_TYPES,
+			GSensorTypes.SENSOR_TYPES,
+			GSoundEvents.SOUND_EVENTS,
+		)
+
+		registars.forEach { it.register(ev)}
+
+		clientEventz(ev)
 		entityEventz(ev)
-
 		miscEventz(ev)
 
+		ev.addListener(::loadCreativeTabz)
 	}
+
+	private fun loadCreativeTabz (event: BuildCreativeModeTabContentsEvent)
+	{
+
+	}
+
 
 	private fun clientEventz(ev: IEventBus)
 	{
@@ -601,17 +613,8 @@ class Galosphere(ev: IEventBus)
 			return entity is LivingEntity && entity.hasEffect(GMobEffects.ASTRAL)
 		}
 
-		object Config
-		{
-			@JvmField
-			var COMMON: ModConfigSpec
+		fun getInternalResource (at:String)
+			= Galosphere::class.java.getResourceAsStream(at.trimStart('/')) ?: throw NoSuchFileException(File(at))
 
-			init
-			{
-				COMMON = ModConfigSpec.Builder().run {
-					build()
-				}
-			}
-		}
 	}
 }

@@ -14,8 +14,6 @@ object GModelLayers
 	val SPECTERPILLAR = ModelLayerLocation(id("specterpillar"), "main")
 	val GILDED_BEADS = ModelLayerLocation(id("gilded_beads"), "main")
 	@JvmField
-	val BERSERKER = ModelLayerLocation(id("blighted"), "main")
-	@JvmField
 	val PINK_SALT_PILLAR = ModelLayerLocation(id("pink_salt_pillar"), "main")
 	val IMPACT = ModelLayerLocation(id("impact"), "main")
 	@JvmField

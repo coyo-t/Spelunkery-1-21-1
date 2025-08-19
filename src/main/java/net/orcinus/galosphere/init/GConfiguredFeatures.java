@@ -54,7 +54,6 @@ public class GConfiguredFeatures
 	public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_SALT_STRAW_CEILING_PATCH = registerConfiguredFeature("pink_salt_straw_ceiling_patch");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> PINK_SALT_STRAW_FLOOR_PATCH = registerConfiguredFeature("pink_salt_straw_floor_patch");
 	public static final ResourceKey<ConfiguredFeature<?, ?>> OASIS = registerConfiguredFeature("oasis");
-	public static final ResourceKey<ConfiguredFeature<?, ?>> BERSERKER = registerConfiguredFeature("mobs/berserker");
 	
 	public static void bootstrap (BootstrapContext<ConfiguredFeature<?, ?>> bootstapContext)
 	{

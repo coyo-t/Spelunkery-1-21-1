@@ -29,9 +29,6 @@ object GItems
 	}
 
 	@JvmField
-	val BERSERKER_SPAWN_EGG = regIt("berserker_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.BERSERKER, 15568753, 6057047, Item.Properties()) }
-
-	@JvmField
 	val PRESERVED_SPAWN_EGG = regIt("preserved_spawn_egg") { DeferredSpawnEggItem(GEntityTypes.PRESERVED_CORPSE, 15703431, 7246179, Item.Properties()) }
 
 	@JvmField
