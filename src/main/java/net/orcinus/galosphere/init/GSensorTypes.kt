@@ -4,8 +4,7 @@ import net.minecraft.core.registries.Registries
 import net.minecraft.world.entity.ai.sensing.SensorType
 import net.neoforged.neoforge.registries.DeferredRegister
 import net.orcinus.galosphere.Galosphere
-import net.orcinus.galosphere.entities.ai.sensors.BerserkerEntitySensor
-import net.orcinus.galosphere.entities.ai.sensors.PreservedEntitySensor
+import net.orcinus.galosphere.entities.ai.PreservedEntitySensor
 
 object GSensorTypes
 {

@@ -2,7 +2,6 @@ package net.orcinus.galosphere.client.animations
 
 import dissonance.util.Animationz
 import dissonance.util.LuaCoyote
-import dissonance.util.buildAnimation
 import net.minecraft.client.animation.AnimationChannel
 import net.minecraft.client.animation.AnimationDefinition
 import net.minecraft.client.animation.Keyframe
@@ -10,7 +9,6 @@ import net.minecraft.client.animation.KeyframeAnimations
 import net.neoforged.api.distmarker.Dist
 import net.neoforged.api.distmarker.OnlyIn
 import net.orcinus.galosphere.Galosphere
-import party.iroiro.luajava.Lua
 import party.iroiro.luajava.value.LuaTableValue
 import java.io.InputStreamReader
 
@@ -166,19 +164,6 @@ object GAnims
 
 		val PRESERVED_EMERGING_FLOOR = BANK.getAnim("emerge_from_floor")
 		val PRESERVED_EMERGING_CEILING = BANK.getAnim("emerge_from_ceiling")
-	}
-
-	object Berserker
-	{
-		val BANK = loadAnims("berzerker.lua")
-
-		val BERSERKER_SHAKE = BANK.getAnim("shake")
-		val BERSERKER_ATTACK = BANK.getAnim("attack")
-		val BERSERKER_IMPALING = BANK.getAnim("impaling")
-		val BERSERKER_WALK = BANK.getAnim("walk")
-		val BERSERKER_RECOVERING = BANK.getAnim("recovering")
-		val BERSERKER_PUNCH = BANK.getAnim("punch")
-		val BERSERKER_SPAWN_MINIONS = BANK.getAnim("summon_minions")
 	}
 
 }

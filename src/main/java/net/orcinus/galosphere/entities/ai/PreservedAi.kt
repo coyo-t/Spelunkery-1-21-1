@@ -2,16 +2,22 @@ package net.orcinus.galosphere.entities.ai
 
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
+import com.google.common.collect.Iterables
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.util.valueproviders.UniformInt
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.Pose
 import net.minecraft.world.entity.ai.Brain
 import net.minecraft.world.entity.ai.behavior.*
 import net.minecraft.world.entity.ai.memory.MemoryModuleType
 import net.minecraft.world.entity.ai.memory.MemoryModuleType.IS_EMERGING
 import net.minecraft.world.entity.ai.memory.MemoryStatus
+import net.minecraft.world.entity.ai.sensing.NearestLivingEntitySensor
 import net.minecraft.world.entity.schedule.Activity
 import net.orcinus.galosphere.entities.PreservedCorpse
+import java.util.Optional
+import java.util.function.Predicate
 import com.google.common.collect.ImmutableList.of as immuOf
 import com.mojang.datafixers.util.Pair.of as pairOf
 
@@ -81,3 +87,50 @@ object PreservedAi
 		}
 	}
 }
+
+class PreservedEntitySensor : NearestLivingEntitySensor<PreservedCorpse>()
+{
+	override fun requires(): MutableSet<MemoryModuleType<*>>
+	{
+		return ImmutableSet.copyOf(
+			Iterables.concat(
+				super.requires(),
+				listOf(MemoryModuleType.NEAREST_ATTACKABLE)
+			)
+		)
+	}
+
+	override fun doTick(serverLevel: ServerLevel, entity: PreservedCorpse)
+	{
+		super.doTick(serverLevel, entity)
+		getClosest(entity) { it?.type === EntityType.PLAYER }
+		.or { getClosest(entity) { it?.type !== EntityType.PLAYER } }
+		.ifPresentOrElse(
+			{ entity.getBrain().setMemory(MemoryModuleType.NEAREST_ATTACKABLE, it) },
+			{ entity.getBrain().eraseMemory(MemoryModuleType.NEAREST_ATTACKABLE) }
+		)
+	}
+
+	override fun radiusXZ() = 24
+
+	override fun radiusY() = 2
+
+	companion object
+	{
+		private fun getClosest(
+			preservedCorpse: PreservedCorpse,
+			predicate: Predicate<LivingEntity?>?
+		): Optional<LivingEntity>
+		{
+			return preservedCorpse
+				.getBrain()
+				.getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES)
+				.stream()
+				.flatMap { it!!.stream() }
+				.filter(preservedCorpse::canTargetEntity)
+				.filter(predicate)
+				.findFirst()
+		}
+	}
+}
+

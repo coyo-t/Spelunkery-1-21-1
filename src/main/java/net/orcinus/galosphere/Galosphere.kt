@@ -75,15 +75,16 @@ import net.neoforged.neoforge.network.PacketDistributor
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent
 import net.neoforged.neoforge.network.handling.IPayloadContext
 import net.orcinus.galosphere.blocks.WarpedAnchorBlock
-import net.orcinus.galosphere.client.model.BerserkerModel
 import net.orcinus.galosphere.client.model.PreservedModel
 import net.orcinus.galosphere.client.particles.CrystalRainParticle
 import net.orcinus.galosphere.client.particles.ImpactParticle
 import net.orcinus.galosphere.client.particles.IndicatorParticle
 import net.orcinus.galosphere.client.particles.providers.PinkSaltFallingDustProvider
 import net.orcinus.galosphere.client.particles.providers.WarpedProvider
-import net.orcinus.galosphere.client.renderer.*
-import net.orcinus.galosphere.entities.Berserker
+import net.orcinus.galosphere.client.renderer.GildedBeadsRenderer
+import net.orcinus.galosphere.client.renderer.PinkSaltPillarRenderer
+import net.orcinus.galosphere.client.renderer.PinkSaltShardRenderer
+import net.orcinus.galosphere.client.renderer.PreservedRenderer
 import net.orcinus.galosphere.entities.PreservedCorpse
 import net.orcinus.galosphere.init.*
 import net.orcinus.galosphere.items.SaltboundTabletItem
@@ -242,7 +243,6 @@ class Galosphere(ev: IEventBus)
 		ev.addListener<EntityRenderersEvent.RegisterRenderers> {
 			with(it)
 			{
-				registerEntityRenderer(GEntityTypes.BERSERKER.get(), ::BerserkerRenderer)
 				registerEntityRenderer(GEntityTypes.PRESERVED_CORPSE.get(), ::PreservedRenderer)
 				registerEntityRenderer(GEntityTypes.PINK_SALT_PILLAR.get(), ::PinkSaltPillarRenderer)
 				registerEntityRenderer(GEntityTypes.PINK_SALT_SHARD.get(), ::PinkSaltShardRenderer)
@@ -278,7 +278,6 @@ class Galosphere(ev: IEventBus)
 					)
 					return@registerLayerDefinition LayerDefinition.create(meshdefinition, 32, 32)
 				}
-				registerLayerDefinition(GModelLayers.BERSERKER) { BerserkerModel.createBodyLayer() }
 				registerLayerDefinition(GModelLayers.PRESERVED) { PreservedModel.createBodyLayer() }
 				registerLayerDefinition(GModelLayers.PINK_SALT_PILLAR) {
 					val meshdefinition = MeshDefinition()
@@ -359,7 +358,6 @@ class Galosphere(ev: IEventBus)
 		ev.addListener<EntityAttributeCreationEvent> { event ->
 			with(event)
 			{
-				put(GEntityTypes.BERSERKER.get(), Berserker.createAttributes().build())
 				put(GEntityTypes.PRESERVED_CORPSE.get(), PreservedCorpse.createAttributes().build())
 			}
 		}

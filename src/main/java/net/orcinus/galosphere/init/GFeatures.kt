@@ -40,8 +40,5 @@ object GFeatures
 	val OASIS = FEATURES.register("oasis") { r -> OasisFeature(NoneFeatureConfiguration.CODEC) }
 
 	@JvmField
-	val BERSERKER = FEATURES.register("berserker") { r -> BerserkerFeature(NoneFeatureConfiguration.CODEC) }
-
-	@JvmField
 	val SIMPLE_WATERLOGGED_BLOCK = FEATURES.register("simple_waterlogged_block") { r -> SimpleWaterloggedBlockFeature(SimpleBlockConfiguration.CODEC) }
 }

@@ -18,16 +18,6 @@ object GEntityTypes
 		= EntityType.Builder.of(factory, this)
 
 	@JvmField
-	val BERSERKER = ENTITY_TYPES.register("berserker") { rl ->
-		(MobCategory.MONSTER buildAs ::Berserker).run {
-			sized(1.4f, 2.2f)
-			clientTrackingRange(16)
-			fireImmune()
-			build(rl.toString())
-		}
-	}
-
-	@JvmField
 	val PRESERVED_CORPSE = ENTITY_TYPES.register("preserved_corpse") { rl ->
 		(MobCategory.MONSTER buildAs ::PreservedCorpse).run {
 			sized(0.6f, 1.95f)

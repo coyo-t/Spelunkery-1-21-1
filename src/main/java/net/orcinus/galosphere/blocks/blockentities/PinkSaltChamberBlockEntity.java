@@ -153,19 +153,7 @@ public class PinkSaltChamberBlockEntity extends BlockEntity
 	
 	private void handleSpawning (ServerLevel serverLevel, BlockPos pos)
 	{
-		if (serverLevel.getDifficulty() == Difficulty.PEACEFUL)
-		{
-			serverLevel.setBlock(pos, GBlocks.PINK_SALT_CLUSTER.get().defaultBlockState(), 2);
-		}
-		else
-		{
-			var preservedCorpse = GEntityTypes.PRESERVED_CORPSE.get().spawn(serverLevel, null, null, pos, MobSpawnType.TRIGGERED, true, true);
-			preservedCorpse.setPos(pos.getX(), pos.getY(), pos.getZ());
-			preservedCorpse.setPersistenceRequired();
-			preservedCorpse.setFromChamber(true);
-			serverLevel.addFreshEntityWithPassengers(preservedCorpse);
-			this.preserves.add(preservedCorpse);
-		}
+		serverLevel.setBlock(pos, GBlocks.PINK_SALT_CLUSTER.get().defaultBlockState(), 2);
 	}
 	
 	private void addParticles (BlockPos blockPos, ServerLevel serverLevel, BlockPos pos)

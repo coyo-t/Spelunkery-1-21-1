@@ -50,43 +50,12 @@ public class PreservedCorpse extends Monster
 {
 	protected static final ImmutableList<? extends SensorType<? extends Sensor<? super PreservedCorpse>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY, GSensorTypes.PRESERVED_ENTITY_SENSOR.get());
 	protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.IS_EMERGING);
-	private boolean fromChamber;
 	public AnimationState digAnimationState = new AnimationState();
 	public AnimationState attackAnimationState = new AnimationState();
 	
 	public PreservedCorpse (EntityType<? extends Monster> entityType, Level level)
 	{
 		super(entityType, level);
-	}
-	
-	@Override
-	public void readAdditionalSaveData (CompoundTag compoundTag)
-	{
-		super.readAdditionalSaveData(compoundTag);
-		this.fromChamber = compoundTag.getBoolean("FromChamber");
-	}
-	
-	@Override
-	public void addAdditionalSaveData (CompoundTag compoundTag)
-	{
-		super.addAdditionalSaveData(compoundTag);
-		compoundTag.putBoolean("FromChamber", this.fromChamber);
-	}
-	
-	@Override
-	public boolean shouldDropExperience ()
-	{
-		return !this.fromChamber;
-	}
-	
-	public boolean isFromChamber ()
-	{
-		return this.fromChamber;
-	}
-	
-	public void setFromChamber (boolean fromChamber)
-	{
-		this.fromChamber = fromChamber;
 	}
 	
 	@Override
